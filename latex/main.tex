@@ -1,0 +1,110 @@
+\newcommand*{\DocType}{scrartcl}
+\newcommand*\ClassList{scrartcl,article}
+
+\documentclass[\DocType, abstract=on, paper=a4, fontsize=11pt]{generalclass}
+
+% Packages
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[automark]{scrpage2}
+%\usepackage[automark, headsepline,footsepline]{scrlayer-scrpage}
+\usepackage{xargs} % Use more than one optional parameter in a new commands
+\usepackage[pdftex,dvipsnames]{xcolor}  % Coloured text etc.
+\usepackage{graphicx} % Images etc.
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools} % e.g ":=" 
+\usepackage[super]{nth} % use superscripts for 1st, 2nd, 3rd
+\usepackage[sort, numbers, square]{natbib} % citeauthor, citet
+\usepackage{physics} % norm
+\usepackage{enumitem} % changing enumeration styles
+\usepackage{gensymb} % degree
+\usepackage{booktabs} % nice table separators
+\usepackage{tabularx} % better tables, X column
+\usepackage{caption} % change style of figure 
+\usepackage{subcaption} % subfigures
+\usepackage{tikz} % for pgfplots
+\usepackage{tkz-euclide} % for coordinate system etc.
+\usepackage{pgfplots} % plotting data
+\usepackage[section]{placeins} % place figures in the sections they appear in
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny, disable]{todonotes}
+\usepackage{parskip} % space between paragraphs instead of indent
+\usepackage{csquotes} % autmatic left quotation marks
+\usepackage{xr-hyper}  
+\usepackage[pagebackref, pdftex, colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+
+% use " as left quotation mark
+\MakeOuterQuote{"}
+	
+\usetikzlibrary{external, positioning, arrows}
+\tikzexternalize[prefix=out/figures/]
+
+% Disable tikz externalization for todo notes
+\makeatletter
+\renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[#1]{#2}\tikzexternalenable}
+\makeatother
+
+\rehead{right even}
+
+% Rename autorefnames
+\addto\extrasenglish{
+	\renewcommand{\sectionautorefname}{Section}
+	\renewcommand{\subsectionautorefname}{Section}
+	\renewcommand{\subsubsectionautorefname}{Section}
+}
+
+% Multiple abstracts
+\newenvironment{polyabstract}[1]
+{\renewcommand{\abstractname}{#1}\begin{abstract}}
+	{\end{abstract}}
+
+\makeatletter
+\let\oldtheequation\theequation
+\renewcommand\tagform@[1]{\maketag@@@{\ignorespaces#1\unskip\@@italiccorr}}
+\renewcommand\theequation{(\oldtheequation)}
+\makeatother
+
+% Captions for figures
+\captionsetup{justification=raggedright, format=plain, font=small,labelfont=bf}
+
+
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=orange,backgroundcolor=orange!25,bordercolor=orange,#1]{#2}}
+\newcommandx{\Todo}[2][1=]{\todo[linecolor=yellow,backgroundcolor=yellow!25,bordercolor=yellow,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=green,backgroundcolor=green!25,bordercolor=green,#1]{#2}}
+
+% Centered, equally spaced columns
+\newcolumntype{Y}{>{\centering\arraybackslash}X} % centered equidistant columns
+
+\setenumerate{label=(\arabic*),itemsep=0mm} % enumerate labeling and line distance
+\renewcommand{\baselinestretch}{1.1} % line distance
+\allowdisplaybreaks % Make big equations breakable
+
+\DeclareMathOperator{\loss}{loss}
+
+\pagenumbering{gobble}
+
+\begin{document}
+	\selectlanguage{english}
+	
+	\input{chapters/header}
+	
+	\input{chapters/reviewers}
+	
+	\input{chapters/abstract}
+	\pagebreak
+	
+	{
+	\hypersetup{linkcolor=black}
+	\tableofcontents
+	\pagebreak
+	}
+	
+	\pagenumbering{arabic}
+	
+	\pagebreak
+
+	\bibliography{bibliography}
+	\bibliographystyle{plainnat}
+	
+\end{document}
