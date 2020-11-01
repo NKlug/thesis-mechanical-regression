@@ -14,6 +14,7 @@
 \usepackage{graphicx} % Images etc.
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm} % better theorems
 \usepackage{mathtools} % e.g ":=" 
 \usepackage[super]{nth} % use superscripts for 1st, 2nd, 3rd
 \usepackage[sort, numbers, square]{natbib} % citeauthor, citet
@@ -80,7 +81,8 @@
 \renewcommand{\baselinestretch}{1.1} % line distance
 \allowdisplaybreaks % Make big equations breakable
 
-\DeclareMathOperator{\loss}{loss}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
 
 \pagenumbering{gobble}
 
@@ -103,6 +105,16 @@
 	\pagenumbering{arabic}
 	
 	\pagebreak
+	
+	\input{chapters/introduction}
+	
+	\input{chapters/rkhs}
+	
+	\input{chapters/mechanical_regression}
+	
+	\input{chapters/geodesic_shooting}
+	
+	\input{chapters/conclusion}
 
 	\bibliography{bibliography}
 	\bibliographystyle{plainnat}
