@@ -12,7 +12,7 @@ def create_spiral(phi, jitter, coils, rotation, n=100):
     :return: the generated spiral
     """
     # adjust start sample for arcsin (which is defined on [-1, 1])
-    roll = np.arange(coils**2, n + coils**2 + 1, dtype=np.float32)
+    roll = np.arange(coils**2, n + coils**2, dtype=np.float32)
     roll = np.sqrt(roll)
     angles = np.cumsum(np.arcsin(coils / roll)) + rotation
     roll = np.stack([-np.cos(phi * angles) * roll + 0.5, np.sin(phi * angles) * roll + 0.5], axis=-1)

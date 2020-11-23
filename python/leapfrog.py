@@ -14,8 +14,8 @@ def explicit_leapfrog(dq_h, dp_h, q0, p0, step, t_stop=1):
     :return: flows q and p
     """
     num_steps = int(1 / step) * t_stop
-    q = np.zeros(num_steps)
-    p = np.zeros(num_steps)
+    q = np.zeros((num_steps, *q0.shape))
+    p = np.zeros((num_steps, *p0.shape))
     q[0] = q0
     p[0] = p0
     for i in range(1, num_steps):
