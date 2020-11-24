@@ -18,7 +18,8 @@ def V(p0, X, Y, mu=0.01):
     :return: Value of V in (3.17)
     """
     q, _ = explicit_leapfrog(ham.dq_h, ham.dp_h, X, p0, step=0.001)
-    return mu / 2 * vector_vector_mult(vector_matrices_mult(p0, gamma(X, X)), p0) + optimal_recovery_loss(q, Y, K_block)
+    return mu / 2 * vector_vector_mult(vector_matrices_mult(p0, gamma(X, X)), p0) + \
+           optimal_recovery_loss(q[-1], Y, K_block)
 
 
 def derivative_V(p0, direction, X, Y, h=0.001):
