@@ -12,6 +12,9 @@ def K_block(u, v):
     :return:
     """
     assert u.shape == v.shape
+    # reshape input arrays for easier distance computation
+    u = np.reshape(u.view(), (u.shape[0]//2, 2))
+    v = np.reshape(v.view(), (v.shape[0]//2, 2))
     # Calculate pairwise distances first
     x = np.linalg.norm(u[:, None, :] - v[None, :, :], axis=-1)
     return np.exp(- (x ** 2) / 25) + 0.1
@@ -25,7 +28,5 @@ def gamma(u, v):
     :param v:
     :return:
     """
-    assert u.shape == v.shape
-    gaussian = np.exp(-np.linalg.norm(u - v, axis=-1) ** 2 / 25) + 0.1
-    identity_matrices = np.tile(np.identity(u.shape[-1]), reps=(u.shape[0], 1, 1))
-    return scalar_vector_matrices_mult(gaussian, identity_matrices)
+    gaussian = K_block(u, v)
+    return np.kron(gaussian, np.eye(u.shape[-1]))
