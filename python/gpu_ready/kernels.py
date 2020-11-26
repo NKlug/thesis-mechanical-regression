@@ -1,6 +1,4 @@
-import numpy as np
-from multiplication_helpers import scalar_vector_matrices_mult
-
+import tensorflow as tf
 
 def K_block(u, v):
     """
@@ -11,14 +9,11 @@ def K_block(u, v):
     :param v:
     :return:
     """
-    assert u.shape == v.shape
-    # reshape input arrays for easier distance computation
-    u = np.reshape(u.view(), (u.shape[0]//2, 2))
-    v = np.reshape(v.view(), (v.shape[0]//2, 2))
+    u = tf.reshape(u, (u.shape[0]//2, 2))
+    v = tf.reshape(v, (v.shape[0]//2, 2))
     # Calculate pairwise distances first
-    x = np.linalg.norm(u[:, None, :] - v[None, :, :], axis=-1)
-    return np.exp(- (x ** 2) / 25) + 0.1
-
+    x = tf.norm(u[:, None, :] - v[None, :, :], axis=-1)
+    return tf.exp(- (x ** 2) / 25) + 0.1
 
 def gamma(u, v):
     """
@@ -29,4 +24,6 @@ def gamma(u, v):
     :return:
     """
     gaussian = K_block(u, v)
-    return np.kron(gaussian, np.eye(u.shape[-1]))
+    identity_op = tf.linalg.LinearOperatorIdentity(num_rows=2, dtype=tf.float32)
+    gaussian_op = tf.linalg.LinearOperatorFullMatrix(gaussian)
+    return tf.linalg.LinearOperatorKronecker([gaussian_op, identity_op]).to_dense()
