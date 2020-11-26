@@ -9,8 +9,8 @@ def symmetric_difference_quotient(f, x, h=None):
     :param x: the point
     :return:
     """
-    # TODO ensure we use float64 everywhere
+    x = np.asarray(x)
     if h is None:
         h = np.cbrt(np.finfo(np.float32).eps)  # https://en.wikipedia.org/wiki/Numerical_differentiation#Step_size
-    h = np.tile(h, reps=(x.shape[:-1], 1))
-    return (f(x - h) + f(x + h)) / (2 * h)
+    h = np.tile(h, reps=x.shape)
+    return (f(x + h) - f(x - h)) / (2 * h)

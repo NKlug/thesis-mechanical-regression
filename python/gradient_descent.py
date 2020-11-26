@@ -10,7 +10,7 @@ def gradient_descent(grad_f, start, learning_rate, steps):
     return solutions
 
 
-def adam(grad_f, start, X, Y, steps, alpha=0.001, beta_1=0.9, beta_2=0.999, epsilon=10e-8):
+def adam(grad_f, start, X, Y, steps, alpha=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-8, callback=None):
     solutions = np.zeros((steps, *start.shape))
     solutions[0] = start
     m = 0
@@ -22,4 +22,6 @@ def adam(grad_f, start, X, Y, steps, alpha=0.001, beta_1=0.9, beta_2=0.999, epsi
         m = m / (1 - np.power(beta_1, t))
         v = v / (1 - np.power(beta_2, t))
         solutions[t] = solutions[t - 1] - alpha * m / (np.sqrt(v) + epsilon)
+        if callback:
+            callback(solutions[t], X, Y)
     return solutions

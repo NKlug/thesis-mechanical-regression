@@ -29,3 +29,8 @@ def vector_vector_mult(a, b):
     :return:
     """
     return np.einsum('ij,ij->i', a, b)
+
+
+def kron(a, n):
+    return np.repeat(a, n*np.ones(a.shape[0],np.int),axis=0)
+
