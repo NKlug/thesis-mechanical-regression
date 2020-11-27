@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+
 def K_block(u, v):
     """
     K: X x X -> L(Y, Y), which means R^2 x R^2 -> R, which means R^(nx2) x R^(nx2) -> R^n for n values.
@@ -9,11 +10,14 @@ def K_block(u, v):
     :param v:
     :return:
     """
-    u = tf.reshape(u, (u.shape[0]//2, 2))
-    v = tf.reshape(v, (v.shape[0]//2, 2))
+    u = tf.reshape(u, (u.shape[0] // 2, 2))
+    v = tf.reshape(v, (v.shape[0] // 2, 2))
     # Calculate pairwise distances first
-    x = tf.norm(u[:, None, :] - v[None, :, :], axis=-1)
-    return tf.exp(- (x ** 2) / 25) + 0.1
+    pw_difference = u[:, None, :] - v[None, :, :]
+    # Use scalar product instead of norm**2 due to numerical instability when differentiating
+    x = tf.einsum('ijk,ijk->ij', pw_difference, pw_difference)
+    return tf.exp(- x / 25) + 0.1
+
 
 def gamma(u, v):
     """
