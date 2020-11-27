@@ -7,7 +7,7 @@ def optimal_recovery_loss(x, y, k):
     :param k: kernel
     :param x: training data
     :param y: training labels
-    :return:
+    :return: the loss
     """
     v = tf.linalg.matvec(k(x, x), y)
     return tf.linalg.tensordot(y, v, axes=1)

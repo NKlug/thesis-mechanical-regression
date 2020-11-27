@@ -3,6 +3,12 @@ from kernels import gamma
 
 
 def dq_h(q, p):
+    """
+    Partial derivative of the Hamiltonian in (1.13) in [Owhadi2020] w.r.t q
+    :param q: coordinates
+    :param p: momenta
+    :return: the partial derivative vector
+    """
     with tf.GradientTape() as t:
         t.watch(q)
         v = tf.linalg.matvec(gamma(q, q), p)
@@ -11,4 +17,10 @@ def dq_h(q, p):
 
 
 def dp_h(q, p):
+    """
+    Partial derivative of the Hamiltonian in (1.13) in [Owhadi2020] w.r.t q
+    :param q: coordinates
+    :param p: momenta
+    :return: the partial derivative vector
+    """
     return tf.linalg.matvec(gamma(q, q), p)

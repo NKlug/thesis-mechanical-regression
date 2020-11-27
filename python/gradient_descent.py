@@ -7,6 +7,15 @@ from geodesic_shooting import V
 
 
 def find_optimal_p0(X, Y, steps, checkpoint_its=1000, experiment=None):
+    """
+    Approximates the optimal initial momentum by minimizing (3.17) in [Owhadi2020]
+    w.r.t. p(0).
+    :param X: training data
+    :param Y: training labels
+    :param steps: number of steps to run on the optimizer
+    :param checkpoint_its: number of iterations after which to save the parameters
+    :param experiment: name of the experiment
+    """
     p0 = tf.Variable(tf.random.normal(shape=X.shape), trainable=True, dtype=tf.float32)
     trainable_variables = [p0]
     loss = lambda: V(p0, X, Y, is_training=True)
@@ -24,5 +33,4 @@ def find_optimal_p0(X, Y, steps, checkpoint_its=1000, experiment=None):
             tf.summary.experimental.set_step(i)
             optimizer.minimize(loss, var_list=trainable_variables)
             if i % checkpoint_its == 0:
-                checkpoint.save(checkpoint_dir)
-    return p0
+                checkpoint.save(path.join(checkpoint_dir, 'checkpoint_' + str(i)))

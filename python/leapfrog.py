@@ -3,6 +3,16 @@ from tqdm import tqdm
 
 
 def _one_step(dq_h, dp_h, q, p, step):
+    """
+    Performs one step of the Leapfrog scheme described in Equation (3.35) in
+    [Owhadi2020]
+    :param dq_h: partial derivative of the hamiltonian w.r.t q
+    :param dp_h: partial derivative of the hamiltonian w.r.t p
+    :param q: current value of the generalized coordinates q
+    :param p: current value of the generalized momenta p
+    :param step: step size
+    :return: the new q and p
+    """
     curr_p = p
     curr_q = q
     curr_p = curr_p - step / 2 * dq_h(curr_q, curr_p)
