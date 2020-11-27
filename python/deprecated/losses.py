@@ -1,4 +1,4 @@
-import tensorflow as tf
+import numpy as np
 
 
 def optimal_recovery_loss(x, y, k):
@@ -9,5 +9,4 @@ def optimal_recovery_loss(x, y, k):
     :param y: training labels
     :return:
     """
-    v = tf.linalg.matvec(k(x, x), y)
-    return tf.linalg.tensordot(y, v, axes=1)
+    return y.T @ np.linalg.inv(k(x, x)) @ y
