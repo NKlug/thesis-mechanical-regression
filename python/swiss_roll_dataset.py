@@ -23,9 +23,9 @@ def create_spiral(phi, jitter, coils, rotation, n=100):
     return roll
 
 
-def generate_swiss_roll_dataset(phi, jitter=0, coils=3, seed=0):
+def generate_swiss_roll(phi, jitter=0, coils=3, seed=0):
     """
-    Generates the swissroll dataset in Section 3.13.2 in [Owhadi2020]
+    Generates sampled points on a swissroll, i.e. two intertwined spirals
     :param phi: angular velocity
     :param jitter: standard deviation of gaussian noise
     :param coils: parameter to adjust number of coils
@@ -37,3 +37,20 @@ def generate_swiss_roll_dataset(phi, jitter=0, coils=3, seed=0):
     roll_2 = create_spiral(phi, jitter, coils, np.pi)
 
     return roll_1, roll_2
+
+
+def generate_swiss_roll_dataset(phi, jitter=0, coils=3, seed=0):
+    """
+    Create the swissroll dataset in Section 3.13.2 in [Owhadi2020]
+    :param phi: angular velocity
+    :param jitter: standard deviation of gaussian noise
+    :param coils: parameter to adjust number of coils
+    :param seed: seed for random sampling
+    :return: Training data and labels
+    """
+    X = tf.concat(generate_swiss_roll(phi=phi, jitter=jitter, coils=coils, seed=seed), axis=0)
+    X = tf.reshape(X, (-1))
+    Y = tf.concat([tf.ones(100), -tf.ones(100)], axis=0)
+    X = tf.cast(X, tf.float32)
+    Y = tf.cast(Y, tf.float32)
+    return X, Y
