@@ -1,9 +1,9 @@
 import tensorflow as tf
 
 import hamiltonians as ham
-from python import gamma, K_block
+from kernels import gamma, K_block
 from leapfrog import explicit_leapfrog
-from python import optimal_recovery_loss
+from losses import optimal_recovery_loss
 
 
 def V(p0, X, Y, mu=0.01, is_training=False):
