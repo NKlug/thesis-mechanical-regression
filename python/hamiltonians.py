@@ -1,5 +1,5 @@
 import tensorflow as tf
-from kernels import gamma
+from kernels import Gamma
 
 
 def dq_h(q, p):
@@ -11,7 +11,7 @@ def dq_h(q, p):
     """
     with tf.GradientTape() as t:
         t.watch(q)
-        v = tf.linalg.matvec(gamma(q, q), p)
+        v = tf.linalg.matvec(Gamma(q, q), p)
         h = 0.5 * tf.tensordot(p, v, axes=1)
     return t.gradient(h, q)
 
@@ -23,4 +23,4 @@ def dp_h(q, p):
     :param p: momenta
     :return: the partial derivative vector
     """
-    return tf.linalg.matvec(gamma(q, q), p)
+    return tf.linalg.matvec(Gamma(q, q), p)
