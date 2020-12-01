@@ -16,7 +16,7 @@ def find_optimal_p0(X, Y, steps, checkpoint_its=1000, experiment=None):
     :param checkpoint_its: number of iterations after which to save the parameters
     :param experiment: name of the experiment
     """
-    p0 = tf.Variable(tf.random.normal(shape=X.shape), trainable=True, dtype=tf.float32, name='p0')
+    p0 = tf.Variable(tf.random.normal(shape=X.shape, dtype=tf.float64), trainable=True, dtype=tf.float64, name='p0')
     trainable_variables = [p0]
     loss = lambda: V(p0, X, Y, is_training=True)
     optimizer = tf.optimizers.Adam()

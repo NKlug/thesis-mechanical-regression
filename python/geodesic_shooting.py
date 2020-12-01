@@ -9,6 +9,7 @@ from losses import optimal_recovery_loss
 def V(p0, X, Y, mu=0.01, is_training=False):
     """
     Function \mathfrak{V} in Equation (3.17) in [Owhadi2020]
+    :param is_training: if True, the loss will be logged to Tensorboard
     :param p0: Initial momentum
     :param q1: Final locations
     :param X: Training data

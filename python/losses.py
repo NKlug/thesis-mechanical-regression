@@ -9,5 +9,6 @@ def optimal_recovery_loss(x, y, k):
     :param y: training labels
     :return: the loss
     """
-    v = tf.linalg.matvec(k(x, x), y)
-    return tf.linalg.tensordot(y, v, axes=1)
+    # solve d = k(x, x) @ y rather than computing the inverse because of numerical stability
+    d = tf.linalg.solve(k(x, x), y[:, None])[:, 0]
+    return tf.tensordot(y, d, axes=1)
