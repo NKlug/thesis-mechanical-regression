@@ -16,7 +16,7 @@ def K(u, v):
     v = tf.reshape(v, (v.shape[0] // 2, 2))
     # Calculate pairwise differences first
     pw_difference = u[:, None, :] - v[None, :, :]
-    # Use scalar product instead of norm**2 due to numerical instability when differentiating
+    # Use scalar product instead of squared norm due to numerical instability when differentiating the square root
     x = tf.einsum('ijk,ijk->ij', pw_difference, pw_difference)  # Elementwise scalar product
     return tf.exp(- x / 25) + 0.1
 
@@ -24,7 +24,8 @@ def K(u, v):
 def Gamma(u, v):
     """
     X x X -> L(X, X), which means R^2 x R^2 -> R^(2x2). In this implementation, this is
-    R^(2n) x R^(2n) -> R^(2n x 2n) (block operator matrix)
+    R^(2n) x R^(2n) -> R^(2n x 2n) (block operator matrix).
+    The blocks are: K(u_i, v_j) * I, where I is the 2x2 unit matrix.
     :param u:
     :param v:
     :return:
