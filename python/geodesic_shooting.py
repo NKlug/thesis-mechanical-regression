@@ -8,6 +8,15 @@ from shooting_function_V import V
 
 class Model(object):
     def __init__(self, X, Y, checkpoint_interval, log_dir, checkpoint_dir, experiment=None):
+        """
+        A model of the mechanical regression problem proposed in [Owhadi2020].
+        :param X: training data
+        :param Y: training labels
+        :param checkpoint_interval: number of iterations after which to save the parameters
+        :param log_dir: logging directory
+        :param checkpoint_dir: checkpoint directory
+        :param experiment: optional experiment name. If None defaults to current date and time.
+        """
         self.X = X
         self.Y = Y
         self.checkpoint_interval = checkpoint_interval
@@ -39,11 +48,7 @@ class Model(object):
         """
         Approximates the optimal initial momentum by minimizing (3.17) in [Owhadi2020]
         w.r.t. p(0).
-        :param X: training data
-        :param Y: training labels
         :param steps: number of steps to run on the optimizer
-        :param checkpoint_its: number of iterations after which to save the parameters
-        :param experiment: name of the experiment
         """
         for i in tqdm(range(steps)):
             with self.summary_writer.as_default():
