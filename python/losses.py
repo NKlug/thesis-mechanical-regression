@@ -10,5 +10,6 @@ def optimal_recovery_loss(x, y, k):
     :return: the loss
     """
     # solve d = k(x, x) @ y rather than computing the inverse because of numerical stability
-    d = tf.linalg.solve(k(x, x), y[:, None])[:, 0]
+    kernel_mat = k(x, x)
+    d = tf.linalg.solve(kernel_mat + 1e-6 * tf.eye(kernel_mat.shape[0], dtype=tf.float64), y[:, None])[:, 0]
     return tf.tensordot(y, d, axes=1)
