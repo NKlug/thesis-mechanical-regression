@@ -1,4 +1,4 @@
-from gradient_descent import find_optimal_p0
+from geodesic_shooting import Model
 from swiss_roll_dataset import generate_swiss_roll_dataset
 import tensorflow as tf
 
@@ -10,5 +10,7 @@ if __name__ == '__main__':
     # Create Dataset: X is (2N x 1) and Y is (N x 1)
     X, Y = generate_swiss_roll_dataset(1, jitter=0.1, coils=0.65, n=40)
 
+    model = Model(X=X, Y=Y, checkpoint_interval=10, log_dir='../training/logs',
+                  checkpoint_dir='../training/checkpoints')
     # approximate the optimal initial momentum
-    find_optimal_p0(X, Y, steps=100000, checkpoint_its=100)
+    model.train(steps=1000000)
