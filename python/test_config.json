@@ -1,0 +1,10 @@
+{
+  "experiment": "Test Experiment",
+  "log_base_dir": "../training/logs",
+  "checkpoint_base_dir": "../training/checkpoints",
+  "dataset": "default_swiss_roll",
+  "s": 5,
+  "r": 0.1,
+  "h": 0.2,
+  "mu": 0.01
+}

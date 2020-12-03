@@ -1,9 +1,7 @@
 import tensorflow as tf
 
-from geodesic_shooting.kernels import Gamma
 
-
-def dq_h(q, p):
+def dq_h(q, p, Gamma):
     """
     Partial derivative of the Hamiltonian in (1.13) in [Owhadi2020] w.r.t q
     :param q: coordinates
@@ -17,7 +15,7 @@ def dq_h(q, p):
     return t.gradient(h, q)
 
 
-def dp_h(q, p):
+def dp_h(q, p, Gamma):
     """
     Partial derivative of the Hamiltonian in (1.13) in [Owhadi2020] w.r.t q
     :param q: coordinates
