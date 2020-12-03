@@ -1,5 +1,6 @@
 import tensorflow as tf
-from kernels import Gamma
+
+from geodesic_shooting.kernels import Gamma
 
 
 def dq_h(q, p):

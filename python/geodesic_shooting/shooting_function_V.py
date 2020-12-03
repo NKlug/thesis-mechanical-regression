@@ -1,11 +1,9 @@
 import tensorflow as tf
 
-import hamiltonians as ham
-from kernels import Gamma, K
-from leapfrog import explicit_leapfrog
-from losses import optimal_recovery_loss
-
-import pickle as pkl
+from geodesic_shooting import hamiltonians as ham
+from geodesic_shooting.kernels import Gamma, K
+from geodesic_shooting.leapfrog import explicit_leapfrog
+from geodesic_shooting.losses import optimal_recovery_loss
 
 
 def V(p0, X, Y, mu=0.01, is_training=False, global_step=None):

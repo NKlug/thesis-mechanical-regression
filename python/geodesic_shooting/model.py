@@ -1,13 +1,14 @@
-import tensorflow as tf
-from tqdm import tqdm
 from datetime import datetime
 from os import path
 
-from shooting_function_V import V
+import tensorflow as tf
+from tqdm import tqdm
+
+from geodesic_shooting.shooting_function_V import V
 
 
 class Model(object):
-    def __init__(self, X, Y, checkpoint_interval, log_dir, checkpoint_dir, experiment=None):
+    def __init__(self, X, Y, checkpoint_interval, log_dir, checkpoint_dir, hyper_params, experiment=None):
         """
         A model of the mechanical regression problem proposed in [Owhadi2020].
         :param X: training data
@@ -23,7 +24,7 @@ class Model(object):
         if experiment is None:
             self.experiment = datetime.now().strftime('%Y_%m_%d_%H:%Mh')
         else:
-            self.experiment = experiment
+            self.experiment = datetime.now().strftime('%Y_%m_%d_') + str(experiment)
         self.log_dir = path.join(log_dir, self.experiment)
         self.checkpoint_dir = path.join(checkpoint_dir, self.experiment)
 

@@ -1,6 +1,7 @@
-from geodesic_shooting import Model
-from swiss_roll_dataset import generate_swiss_roll_dataset
 import tensorflow as tf
+
+from geodesic_shooting.model import Model
+from geodesic_shooting.swiss_roll_dataset import generate_swiss_roll_dataset
 
 if __name__ == '__main__':
     # limit gpu memory allocation
