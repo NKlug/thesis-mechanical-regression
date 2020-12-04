@@ -5,7 +5,7 @@ from geodesic_shooting.swiss_roll_dataset import generate_swiss_roll_dataset
 
 
 class TrainingParameters(object):
-    def __init__(self, dataset, mu, h, s, r, checkpoint_base_dir, log_base_dir, experiment=None):
+    def __init__(self, dataset, mu, h, s, r, ls_regularizer, checkpoint_base_dir, log_base_dir, experiment=None):
         """
         Hyper parameters for the model.
         :param dataset: name of dataset
@@ -23,6 +23,7 @@ class TrainingParameters(object):
         self.h = h
         self.s = s
         self.r = r
+        self.ls_regularizer = ls_regularizer
         if experiment is None:
             self.experiment = datetime.now().strftime('%Y_%m_%d_%H:%Mh')
         else:

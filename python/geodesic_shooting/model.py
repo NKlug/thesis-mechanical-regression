@@ -3,6 +3,7 @@ from tqdm import tqdm
 
 import geodesic_shooting.hamiltonians as ham
 from geodesic_shooting import kernels
+from geodesic_shooting.losses import optimal_recovery_loss
 from geodesic_shooting.shooting_function_V import V
 
 
@@ -29,12 +30,14 @@ class Model(object):
         self.Gamma = lambda u, v: kernels.Gamma(u, v, s=model_params.s, r=model_params.r)
         self.dq_h = lambda q, p: ham.dq_h(q, p, self.Gamma)
         self.dp_h = lambda q, p: ham.dp_h(q, p, self.Gamma)
+        self.recovery_loss = lambda x, y, k: optimal_recovery_loss(x, y, k, regularizer=model_params.ls_regularizer)
         self.loss = lambda: V(self.p0, self.X, self.Y, mu=model_params.mu,
                               leapfrog_step=model_params.h,
                               Gamma=self.Gamma,
                               K=self.K,
                               dq_h=self.dq_h,
                               dp_h=self.dp_h,
+                              recovery_loss=self.recovery_loss,
                               is_training=True,
                               global_step=self.global_step)
         self.optimizer = tf.optimizers.Adam()
