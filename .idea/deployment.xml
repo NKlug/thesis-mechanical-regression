@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="cluster-math" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="cluster-math">
+        <serverdata>
+          <mappings>
+            <mapping deploy="thesis-mechanical-regression" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/training" />
+            <excludedPath local="true" path="$PROJECT_DIR$/latex" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

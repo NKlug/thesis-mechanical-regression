@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="OPEN_SSH" host="cluster-math" id="cad29ff6-b69d-4d1d-b457-9ab89b2bc3fd" port="22" nameFormat="DESCRIPTIVE" username="klugniko" />
+    </configs>
+  </component>
+</project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f30cae24-ca72-457d-90e7-98de4c9ddc82" name="cluster-math">
+        <fileTransfer rootFolder="/homes/stud/klugniko" accessType="SFTP" host="cluster-math" port="22" sshConfigId="cad29ff6-b69d-4d1d-b457-9ab89b2bc3fd" sshConfig="klugniko@cluster-math:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
