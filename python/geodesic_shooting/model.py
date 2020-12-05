@@ -60,6 +60,6 @@ class Model(object):
         """
         for i in tqdm(range(steps)):
             with self.summary_writer.as_default():
-                self.global_step = i
+                self.global_step.assign(i)
                 self.optimizer.minimize(self.loss, var_list=self.trainable_variables)
-                self.checkpoint_manager.save()
+                self.checkpoint_manager.save(check_interval=True)

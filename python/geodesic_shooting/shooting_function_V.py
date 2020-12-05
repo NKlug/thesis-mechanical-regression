@@ -23,6 +23,6 @@ def V(p0, X, Y, mu, leapfrog_step, Gamma, K, dq_h, dp_h, recovery_loss, is_train
     if is_training:
         if global_step is None:
             raise Exception('Global step must not be None when training!')
-        tf.summary.scalar('loss/recovery', recovery_loss, step=global_step)
-        tf.summary.scalar('loss/deformation', deformation_loss, step=global_step)
+        tf.summary.scalar('loss/recovery', recovery_loss, step=global_step.numpy())
+        tf.summary.scalar('loss/deformation', deformation_loss, step=global_step.numpy())
     return loss
