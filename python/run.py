@@ -23,11 +23,11 @@ if __name__ == '__main__':
     params = get_params_from_config(config_path)
 
     # check if there already exists an experiment with the same name
-    if path.exists(params.checkpoint_dir) and len(listdir(params.checkpoint_dir)) != 0 and not args.force:
+    if path.exists(params.checkpoint_dir) and len(listdir(params.checkpoint_dir)) != 0:
         print("There is already an experiment '{}' in '{}'! Aborting...".format(params['experiment'],
                                                                                 params.checkpoint_dir))
         exit(1)
 
     model = Model(checkpoint_interval=10, model_params=params)
     # approximate the optimal initial momentum
-    model.train(steps=100000)
+    model.train(steps=150000)
