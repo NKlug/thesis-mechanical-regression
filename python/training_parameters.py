@@ -1,4 +1,3 @@
-from datetime import datetime
 from os import path
 
 from geodesic_shooting.swiss_roll_dataset import generate_swiss_roll_dataset
@@ -6,6 +5,7 @@ from geodesic_shooting.swiss_roll_dataset import generate_swiss_roll_dataset
 
 class TrainingParameters(object):
     def __init__(self, dataset, mu, h, s, r, ls_regularizer, checkpoint_base_dir, log_base_dir, name=None,
+                 user_dir_override=None,
                  *args, **kwargs):
         """
         Hyper parameters for the model.
@@ -26,8 +26,10 @@ class TrainingParameters(object):
         self.r = r
         self.ls_regularizer = ls_regularizer
         if name is None:
-            self.experiment = datetime.now().strftime('%Y_%m_%d_%H:%Mh')
-        else:
-            self.experiment = datetime.now().strftime('%Y_%m_%d_') + str(name)
+            raise Exception('Experiment name must not be None!')
+        self.experiment = name
+        if user_dir_override is not None:
+            checkpoint_base_dir = checkpoint_base_dir.replace('~', user_dir_override)
+            log_base_dir = log_base_dir.replace('~', user_dir_override)
         self.checkpoint_dir = path.realpath(path.expanduser(path.join(checkpoint_base_dir, self.experiment)))
         self.log_dir = path.realpath(path.expanduser(path.join(log_base_dir, self.experiment)))

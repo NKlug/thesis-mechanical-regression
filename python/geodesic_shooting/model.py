@@ -18,6 +18,7 @@ class Model(object):
         self.X, self.Y = model_params.dataset
         self.log_dir = model_params.log_dir
         self.checkpoint_dir = model_params.checkpoint_dir
+        self.model_params = model_params
 
         # Initialize variables
         self.global_step = tf.Variable(0, name='global_step')
@@ -51,6 +52,18 @@ class Model(object):
                                                              checkpoint_interval=self.checkpoint_interval,
                                                              step_counter=self.global_step,
                                                              max_to_keep=None)
+
+    def restore(self, checkpoint=None):
+        """
+        Restore the parameters at a checkpoint.
+        :param checkpoint: Checkpoint to restore. If None, the latest checkpoint is used.
+        """
+        if checkpoint is None:
+            if self.checkpoint_manager.latest_checkpoint is None:
+                raise Exception('No checkpoint found in {}!'.format(self.checkpoint_manager.directory))
+            checkpoint = self.checkpoint_manager.latest_checkpoint
+        print('Restoring checkpoint {}.'.format(checkpoint))
+        self.checkpoint.restore(checkpoint).assert_existing_objects_matched()
 
     def train(self, steps):
         """

@@ -19,7 +19,7 @@ def from_json(file_path):
         return json.load(json_file)
 
 
-def get_params_from_config(file_path):
+def get_params_from_config(file_path, user_dir_override=None):
     data = from_json(file_path)
 
-    return TrainingParameters(**data)
+    return TrainingParameters(**data, user_dir_override=user_dir_override)
