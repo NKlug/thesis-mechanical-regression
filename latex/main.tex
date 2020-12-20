@@ -29,7 +29,7 @@
 \usepackage{tkz-euclide} % for coordinate system etc.
 \usepackage{pgfplots} % plotting data
 \usepackage[section]{placeins} % place figures in the sections they appear in
-\usepackage[colorinlistoftodos,prependcaption,textsize=tiny, disable]{todonotes}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \usepackage{parskip} % space between paragraphs instead of indent
 \usepackage{csquotes} % autmatic left quotation marks
 \usepackage{xr-hyper}  
@@ -81,8 +81,13 @@
 \renewcommand{\baselinestretch}{1.1} % line distance
 \allowdisplaybreaks % Make big equations breakable
 
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
 
 \pagenumbering{gobble}
 
@@ -107,6 +112,8 @@
 	\pagebreak
 	
 	\input{chapters/introduction}
+	
+	\input{chapters/neural_networks}
 	
 	\input{chapters/rkhs}
 	

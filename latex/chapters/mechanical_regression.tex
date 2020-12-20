@@ -1,8 +1,87 @@
 \section{Mechanical Regression}
 
+\Todo{Include figure of typical ResNet Layout}
+Artificial Neural Networks are a popular method to solve the Supervised Learning problem described in Section X.
+Especially Residual Neural Networks have shown great success in enabling very deep models.
+As described earlier, RNNs usually consist of several Residual Blocks followed by dense mapping to the target space $Y$.
+This section essentially follows Chapter 3 in \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ANNs, concretely RNNs.
 
-\subsection{Experiments}
-\subsubsection{Implementation}
 
-Instead of \mathbb{R}^{nx2} \mathbb{R^2n}.
-Proof that we can then use standard matrix multiplication.
+
+We will now take a similar approach and try to approximate the target function $f^\dagger$ by a function
+\begin{equation}
+	f^\ast \coloneqq f \circ \Phi_L \ ,
+\end{equation}
+where 
+\begin{equation}
+	\Phi_L \coloneqq \phi_L \circ \phi_{L-1} \circ \ldots \circ \phi_1
+\end{equation} 
+is the composition of $L$ Residual Blocks, that is, functions $\phi_k = I + v_k$.
+Here, the $v_k$ are functions mapping the input space $\cX$ onto itself and $I$ is the identity operator.
+Thus, we can regard $\Phi_L$ as a large deformation of $\cX$.
+$f: \cX \to \cY$ is a function mapping the deformed space to the target space $\cY$.
+
+By default, the $v_k$ and $f$ can be arbitrary functions.
+\Todo{ref: chapter on regularization in Deep Learning? At least explain further!}
+Thus, as common in Machine Learning, in order to avoid overfitting the functions to the data, we penalize $v_k$s and $f$s with large norms.
+For that, we introduce two RKHSs:
+$\mathcal{V} \subseteq \{\cX \rightarrow \cX\}$ and $\mathcal{H} \subseteq \{\cX \rightarrow \cY\}$. 
+By \autoref{theo:kernel-for-rkhs} there is a Kernel associated with each RKHS.
+Let $\Gamma$ be the Kernel associated with $\mathcal{V}$ and $K$ that of $\mathcal{H}$.
+We then can identify $f$ and the $v_k$ as solutions to the following problem:
+\begin{equation}
+	\label{eq:min-v-f}
+	\begin{cases}
+		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
+		+ \lambda \norm{f}_\mathcal{H}^2 
+		+ l((f \circ \Phi_L)(X), Y) \\
+		\text{such that~} & v_1, \ldots, v_L \in \mathcal{V}, f \in \mathcal{H} \ .
+	\end{cases}
+\end{equation}
+Here, $\nu$ and $\lambda$ are strictly positive balancing parameters.
+$l$ is a (positive) loss measuring the similarity of the predicted outputs, that is, the image of $X$ under $f \circ \Phi_L$.
+
+Utilizing the Ridge Regression Loss $l_R$ (\autoref{eq:ridge-regression-loss}), we can rewrite the above minimization problem as
+\begin{equation}
+	\begin{cases}
+		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
+		+ l_R(\Phi_L(X), Y) \\
+		\text{such that~} & v_1, \ldots, v_L \in \mathcal{V}\ .
+	\end{cases}
+\end{equation}
+By "hiding" the regularity of $f$ in the loss we can, for now, ignore $f$ and focus on the functions $v_k$.
+For that, we first introduce additional variables $q_{i,j}$ with $2 \leq i \leq L+1$, $1 \leq j \leq N$:
+\begin{align}
+	q_{1, j} &\coloneqq X_j \, \\
+	q_{i, j} &\coloneqq (\phi_{i-1} \circ \ldots \circ \phi_1) (X_j) \ .
+\end{align}
+Regard the following minimization problem:
+\begin{equation}
+	\label{eq:min-q}
+	\begin{cases}
+	\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} (q_{k+1} - q_k)^\mathrm{T} \Gamma(q_k, q_k)^{-1} (q_{k+1} - q_k) + l(q_{L+1}, Y) \\
+	\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
+	\end{cases}
+\end{equation}
+We will now prove that \autoref{eq:min-q} is in fact equivalent to \autoref{eq:min-v-f} and, assuming we know the solution to the latter problem, provides us with an explicit solution for the $v_k$s.
+
+\begin{theorem}
+	$v_1, \ldots, v_L \in \mathcal{V}$ minimize \autoref{eq:min-v-f} 
+	$\Leftrightarrow$
+	$q_1, \ldots, q_{L+1} \in \cX^N$ minimize \autoref{eq:min-q}.
+\end{theorem}
+\begin{proof}
+	With the above definition of the $q_k$ we have $v_k(q_k) = q_{k+1} - q_k$ for all $1 \leq k \leq L$.
+	Thus, we can rewrite \autoref{eq:min-v-f} as
+	\begin{equation}
+		\label{eq:min-q-v}
+		\begin{cases}
+		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
+		+ \lambda \norm{f}_\mathcal{H}^2 
+		+ l((f \circ \Phi_L)(X), Y) \\
+		\text{such that~} & v_1, \ldots, v_L \in \mathcal{V},\ \forall k \in [L]: v_k(q_k) = q_{k+1} - q_k, \\
+		& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \\
+		\end{cases}
+	\end{equation}
+	
+\end{proof}

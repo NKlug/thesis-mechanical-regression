@@ -1,1 +1,28 @@
 \section{Reproducing Kernel Hilbert Spaces}
+
+\begin{definition}[RKHS]
+	content...
+\end{definition}
+
+\begin{theorem}
+	\label{theo:kernel-for-rkhs}
+	For every RKHS $\mathfrak{H}$ there exists a unique associated Kernel $K$.
+\end{theorem}
+\begin{proof}
+	content...
+\end{proof}
+
+Example: Gaussian/RBF-Kernel, Polynomial Kernel
+\subsection{Optimal Recovery}
+
+\begin{theorem}[Representer Theorem]
+	\label{theo:representer}
+\end{theorem}
+
+\subsection{Ridge Regression}
+
+\begin{equation}
+	\label{eq:ridge-regression-loss}
+	l(X, Y) \coloneqq \inf_{f \in \mathcal{H}} \lambda \norm{f}_\mathcal{H}^2 
+	+ l_\cY (f(X), Y)
+\end{equation}
