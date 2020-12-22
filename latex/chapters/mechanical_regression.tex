@@ -59,7 +59,7 @@ Regard the following minimization problem:
 \begin{equation}
 	\label{eq:min-q}
 	\begin{cases}
-	\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} (q_{k+1} - q_k)^\mathrm{T} \Gamma(q_k, q_k)^{-1} (q_{k+1} - q_k) + l(q_{L+1}, Y) \\
+	\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \frac{(q_{k+1} - q_k)^\mathrm{T}}{\Delta t} \Gamma(q_k, q_k)^{-1} \frac{(q_{k+1} - q_k)}{\Delta t} + l(q_{L+1}, Y) \\
 	\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 	\end{cases}
 \end{equation}
@@ -85,3 +85,10 @@ We will now prove that \autoref{eq:min-q} is in fact equivalent to \autoref{eq:m
 	\end{equation}
 	
 \end{proof}
+
+\subsection{Least Action Principle}
+
+
+\subsection{Hamiltonian Representation}
+
+\subsection{Continuous Limit and Adherence Values}

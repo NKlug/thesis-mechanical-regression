@@ -1,6 +1,7 @@
 \section{Reproducing Kernel Hilbert Spaces}
 
 \begin{definition}[RKHS]
+	\label{def:rkhs}
 	content...
 \end{definition}
 
@@ -13,11 +14,55 @@
 \end{proof}
 
 Example: Gaussian/RBF-Kernel, Polynomial Kernel
+
+\subsection{Product Space and Block Operator Notation}
+Let $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$ be the $N$-fold product space and $A, B \in \cY^N$.
+Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert Space itself.
+
+\begin{definition}[Block Operator Matrix]
+	content...
+\end{definition}
+
+\input{figures/figure_block_operator_example}
+
+\begin{example}
+	Let $\cY = \R^n$.
+	Then we have $\cL(\cY) \cong \R^{n\times n}$, which means applying a (bounded) linear operator to a $y \in \cY$ can be expressed as matrix-vector multiplication.
+	Then $\cL(\cY^N) \cong \R^{nN \times nN}$:
+	To see this, let $\mathbf{A} \in \cL(\cY^N)$ and $\mathbf{y} \in \cY^N$. 
+	Write $\mathbf{A} = (\mathbf{A}_{i, j})$ with $\mathbf{A}_{i,j} \in \cL(\cY)$. 
+	We obtain the corresponding $(nN \times nN)$-matrix by first applying the canonical isomorphism $\cL(\cY) \cong \R^{n\times n}$ to each $\mathbf{A}_{i,j}$ and then "flattening" the result.
+	Furthermore, we have another isomorphism $\cY^N \cong \R^{nN}$ which is given by consecutively pasting the elements of $\cY^N$ into one vector of size $nN$.
+	\autoref{fig:block-operator-example} illustrates both isomorphisms.
+	
+	These new representations of $\mathbf{A}$ and $\mathbf{y}$ make it particularly easy to compute $\mathbf{A}\cdot \mathbf{y} = \mathbf{x}$:
+	Simply map $\mathbf{A}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y}$ to $y \in \R^{nN}$, calculate $A \cdot y = x$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in\cY^N$.	
+	\Todo{Image: Block Operator Matrix -> "flattened" Matrix}
+\end{example}
+
+
 \subsection{Optimal Recovery}
 
 \begin{theorem}[Representer Theorem]
 	\label{theo:representer}
 \end{theorem}
+
+The optimal recovery loss is defined as
+\begin{equation}
+	\label{eq:optimal-recovery-loss}
+	l(X, Y) \coloneqq \min\{\norm{f}_\mathcal{H} ~|~ f\in \mathcal{H} \text{~and~} f(X) = Y\}
+\end{equation}
+
+By \autoref{theo:representer}, the $f \in \mathcal{H}$ which minimizes \autoref{eq:optimal-recovery-loss} admits a representation as 
+\begin{equation}
+	f(x) = \sum_{i=1}^N K(x, X_i) Z_i \ ,
+\end{equation}
+where the $Z_i$ are the solutions to the following linear system ($1 \leq j \leq N$):
+\begin{equation}
+	\sum_{i=1}^{N} K(X_j, X_i) Z_i = Y_j
+\end{equation}
+
+Using Block Operator notation
 
 \subsection{Ridge Regression}
 
