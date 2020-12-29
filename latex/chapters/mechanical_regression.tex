@@ -71,16 +71,16 @@ We will now prove that \autoref{eq:min-q} is in fact equivalent to \autoref{eq:m
 	$q_1, \ldots, q_{L+1} \in \cX^N$ minimize \autoref{eq:min-q}.
 \end{theorem}
 \begin{proof}
-	With the above definition of the $q_k$ we have $v_k(q_k) = q_{k+1} - q_k$ for all $1 \leq k \leq L$.
+	With the above definition of the $q_k$ we have $v_k(q_k) = q_{k+1} - q_k$ for all $k \in [L]$.
 	Thus, we can rewrite \autoref{eq:min-v-f} as
 	\begin{equation}
 		\label{eq:min-q-v}
 		\begin{cases}
-		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
-		+ \lambda \norm{f}_\mathcal{H}^2 
-		+ l((f \circ \Phi_L)(X), Y) \\
-		\text{such that~} & v_1, \ldots, v_L \in \mathcal{V},\ \forall k \in [L]: v_k(q_k) = q_{k+1} - q_k, \\
-		& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \\
+			\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
+			+ \lambda \norm{f}_\mathcal{H}^2 
+			+ l((f \circ \Phi_L)(X), Y) \\
+			\text{such that~} & v_1, \ldots, v_L \in \mathcal{V},\ \forall k \in [L]: v_k(q_k) = q_{k+1} - q_k, \\
+			& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \\
 		\end{cases}
 	\end{equation}
 	

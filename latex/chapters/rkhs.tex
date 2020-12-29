@@ -19,26 +19,40 @@ Example: Gaussian/RBF-Kernel, Polynomial Kernel
 Let $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$ be the $N$-fold product space and $A, B \in \cY^N$.
 Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert Space itself.
 
+
 \begin{definition}[Block Operator Matrix]
 	content...
 \end{definition}
+
+\begin{definition}[$\cY^N$]
+	content...
+\end{definition}
+Explain: We can express the corresponding inner product as matrix multiplication.
 
 \input{figures/figure_block_operator_example}
 
 \begin{example}
 	Let $\cY = \R^n$.
+	\Todo{Discard Example, make it lemma/theorem.
+		Replace $\R$ by general field, as Hilbert Spaces are vector spaces,
+		make first isomorphism monoid homomorphism, maybe even ring homomorphism.
+		This means we can work with $\mathbf{K}$ just like a regular matrix.
+		Check if $\mathbf{K}$ really is symmetric or not just hermitian.
+		Also prove that there is an inverse under certain circumstances.}
 	Then we have $\cL(\cY) \cong \R^{n\times n}$, which means applying a (bounded) linear operator to a $y \in \cY$ can be expressed as matrix-vector multiplication.
-	Then $\cL(\cY^N) \cong \R^{nN \times nN}$:
-	To see this, let $\mathbf{A} \in \cL(\cY^N)$ and $\mathbf{y} \in \cY^N$. 
+	We now claim that in this case $\cL(\cY^N) \cong \R^{nN \times nN}$ and that the computation of $\mathbf{A}\cdot \mathbf{y}$ can be expressed as a standard matrix-vector product.
+	For the first part, let $\mathbf{A} \in \cL(\cY^N)$ and $\mathbf{y} \in \cY^N$. 
 	Write $\mathbf{A} = (\mathbf{A}_{i, j})$ with $\mathbf{A}_{i,j} \in \cL(\cY)$. 
 	We obtain the corresponding $(nN \times nN)$-matrix by first applying the canonical isomorphism $\cL(\cY) \cong \R^{n\times n}$ to each $\mathbf{A}_{i,j}$ and then "flattening" the result.
-	Furthermore, we have another isomorphism $\cY^N \cong \R^{nN}$ which is given by consecutively pasting the elements of $\cY^N$ into one vector of size $nN$.
+	For the second part, we first have to consider another isomorphism $\cY^N \cong \R^{nN}$ which is given by consecutively pasting the elements of $\cY^N$ into one vector of size $nN$.
 	\autoref{fig:block-operator-example} illustrates both isomorphisms.
 	
 	These new representations of $\mathbf{A}$ and $\mathbf{y}$ make it particularly easy to compute $\mathbf{A}\cdot \mathbf{y} = \mathbf{x}$:
 	Simply map $\mathbf{A}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y}$ to $y \in \R^{nN}$, calculate $A \cdot y = x$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in\cY^N$.	
 	\Todo{Image: Block Operator Matrix -> "flattened" Matrix}
 \end{example}
+
+With $K$ being the Kernel associated with the RKHS $\mathcal{H}$ and $A, B \in \cY^N$ we will write $\mathbf{K}(A, B)$ for the matrix with the entries $K(A_i, B_j)$ at position $(i, j)$.
 
 
 \subsection{Optimal Recovery}
@@ -55,15 +69,41 @@ The optimal recovery loss is defined as
 
 By \autoref{theo:representer}, the $f \in \mathcal{H}$ which minimizes \autoref{eq:optimal-recovery-loss} admits a representation as 
 \begin{equation}
+	\label{eq:optimal-recovery-f}
 	f(x) = \sum_{i=1}^N K(x, X_i) Z_i \ ,
 \end{equation}
 where the $Z_i$ are the solutions to the following linear system ($1 \leq j \leq N$):
 \begin{equation}
 	\sum_{i=1}^{N} K(X_j, X_i) Z_i = Y_j
 \end{equation}
+For better readability we translate this expression into block operator notation:
+Introduce the block operator matrix $\mathbf{K}(X, X)$ with entries $K(X_i, X_j)$ and $Z = (Z_i)_{i \in [N]} \in \cY^N$.
+Using block operator notation, we can write the linear system more concisely as $\mathbf{K}(X, X) \cdot Z = Y$.
+Assuming the kernel $K$ is non-degenerate and the $X_i$ are pairwise distinct, we can, by \Todo{ref!}Lemma ??, find an inverse of $\mathbf{K}(X, X)$ and write $Z = \mathbf{K}(X, X)^{-1} \cdot Y$.
 
-Using Block Operator notation
-
+Let $x \in X$ and $\mathbf{K}(x, X)$ be the vector with elements $K(x, X_i)$.
+Using this notation, we can rewrite \autoref{eq:optimal-recovery-f} as
+\begin{equation}
+	f(x) = \mathbf{K}(x, X) \cdot \mathbf{K}(X, X) \cdot Y \ .
+\end{equation}
+The value of the loss function is the $\mathcal{H}$-norm of this $f$.
+As $\mathcal{H}$ is a Hilbert Space, we can compute it using the scalar product:
+\begin{align}
+	\norm{f}_\mathcal{H} &= \left< f, f\right>_\mathcal{H}\\
+	&= \left< \sum_{i=1}^N K(x, X_i) Z_i, \sum_{i=1}^N K(x, X_j) Z_j \right>_\mathcal{H}\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(x, X_i) Z_i, K(x, X_j) Z_j \right>_\mathcal{H}\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_i, X_j) Z_j \right>_\cY\\
+	&= \left< Z, \mathbf{K}(X, X) \cdot Z\right >_{\cY^N}\\
+	&= Z^\mathrm{T} \cdot \mathbf{K}(X, X) \cdot Z \\
+	&= (\mathbf{K}(X, X)^{-1} \cdot Y)^\mathrm{T} \cdot \mathbf{K}(X, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y\\
+	&= Y^\mathrm{T} \cdot (\mathbf{K}(X, X)^{-1})^\mathrm{T} \cdot Y\\
+	&=  Y^\mathrm{T} \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
+\end{align}
+In the fourth line we used the reproducing property and in the second to last line the symmetry of $\mathbf{K}$, which is a result of $K$ being Hermitian.
+All in all, this leaves us with an appealing and compact form for the optimal recovery loss:
+\begin{equation}
+	l(X, Y) = Y^\mathrm{T} \mathbf{K}(X, X)^{-1} Y \ .
+\end{equation}
 \subsection{Ridge Regression}
 
 \begin{equation}
@@ -71,3 +111,5 @@ Using Block Operator notation
 	l(X, Y) \coloneqq \inf_{f \in \mathcal{H}} \lambda \norm{f}_\mathcal{H}^2 
 	+ l_\cY (f(X), Y)
 \end{equation}
+
+Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery with multiplication by a constant.
