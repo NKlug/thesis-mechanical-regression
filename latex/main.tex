@@ -32,11 +32,16 @@
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \usepackage{parskip} % space between paragraphs instead of indent
 \usepackage{csquotes} % autmatic left quotation marks
-\usepackage{xr-hyper}  
+\usepackage[activate=true,final,tracking=true,kerning=true,factor=1100,stretch=10,shrink=10]{microtype} % even better line spacing
+\usepackage{xr-hyper} 
 \usepackage[pagebackref, pdftex, colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[capitalize,nameinlink,noabbrev]{cleveref} % better "\autoref"
 
 % use " as left quotation mark
 \MakeOuterQuote{"}
+
+% Avoid cref double parantheses for equations
+\creflabelformat{equation}{#2\textup{#1}#3}
 	
 \usetikzlibrary{external, positioning, arrows}
 \tikzexternalize[prefix=out/figures/]
@@ -86,12 +91,15 @@
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\R}{\mathbb{R}}
 
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{example}{Example}[section]
 \theoremstyle{theorem}
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
 
 
 \pagenumbering{gobble}
