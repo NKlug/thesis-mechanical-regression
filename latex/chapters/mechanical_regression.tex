@@ -64,8 +64,8 @@ Regard the following minimization problem:
 \begin{equation}
 	\label{eq:min-q}
 	\begin{cases}
-	\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \frac{(q_{k+1} - q_k)^\mathrm{T}}{\Delta t} \Gamma(q_k, q_k)^{-1} \frac{(q_{k+1} - q_k)}{\Delta t} + l(q_{L+1}, Y) \\
-	\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
+		\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L} \frac{(q_{k+1} - q_k)^\mathrm{T}}{\Delta t} \mathbf{\Gamma}(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
+		\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 	\end{cases}
 \end{equation}
 We will now prove that \cref{eq:min-q} is in fact equivalent to \cref{eq:min-v-f} and, assuming we know the solution to the latter problem, provides us with an explicit solution for the $v_k$s.
@@ -74,7 +74,7 @@ We will now prove that \cref{eq:min-q} is in fact equivalent to \cref{eq:min-v-f
 	$v_1, \ldots, v_L \in \mathcal{V}$ minimize \cref{eq:min-v-f} 
 	$\Leftrightarrow$
 	$q_1, \ldots, q_{L+1} \in \cX^N$ minimize \cref{eq:min-q} and
-	$v_k(x) = \mathbf{Gamma}(x, q_k)^\mathrm{T}\mathbf{\Gamma}(q_k, q_k)^(-1) (q_{k+1} - q_k)$.
+	$v_k(x) = \mathbf{\Gamma}(x, q_k)^\mathrm{T}\mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)$.
 \end{theorem}
 \begin{proof}
 	Using the above defined $q_k$ we have $v_k(q_k) = q_{k+1} - q_k$ for all $k \in [L]$.
@@ -104,7 +104,7 @@ We will now prove that \cref{eq:min-q} is in fact equivalent to \cref{eq:min-v-f
 	We end up with a problem of the following form:
 	\begin{equation}
 		\begin{cases}
-			\min &\sum_{i=1}^n f_i(x_i)\\
+			\text{Minimize} &\sum_{i=1}^n f_i(x_i)\\
 			\text{such that} & \forall i \in [n]: x_i \in A_i \ ,
 		\end{cases}
 	\end{equation}
@@ -112,21 +112,22 @@ We will now prove that \cref{eq:min-q} is in fact equivalent to \cref{eq:min-v-f
 	One can easily verify that minimization problems of this type have a global minimum at $x_i^\ast = \argmin\{f_i(x_i)~|~ x_i \in A_i\}$, the boundedness ensuring that at least one such minimum exists.
 
 	Thus, we have to find the minima of $\min\{\norm{v_k}_\mathcal{V}^2~|~ v_k \in \mathcal{V}, v_k(q_k) = q_{k+1} - q_k\} = l_{\text{OR}}(q_k, q_{k+1} - q_k)$, $l_{\text{OR}}$ being the optimal recovery loss from \cref{sec:optimal-recovery}.
-	From that section for the minimal $v_k$ we conveniently get the following representations for the minimal $v_k$ and the target value:
+	From that section we conveniently get the following representations for the minimal $v_k$ and the target value:
 	\begin{align}
 		v_k & = \mathbf{\Gamma}(x, q_k)^\mathrm{T}\mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)\\
 		\norm{v_k}_\mathcal{H}^2 &= (q_{k+1} - q_k)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)
 	\end{align}
 	Here, $\mathbf{\Gamma}$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\mathbf{\Gamma}(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
-	
-	Having now computed optimal $v_k$ -- or rather their squared $\mathcal{H}$-norms -- as a function of $q_2, \ldots q_{L+1}$ we can reformulate \cref{eq:min-q-v} without the $v_k$ as variables.
+	++
+	Having now computed optimal $v_k$ -- or rather their squared $\mathcal{H}$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{eq:min-q-v} without the $v_k$ as variables.
 	Define $\Delta t \coloneqq \frac{1}{L}$.
 	We get:
 	\begin{equation}
+		\label{eq:}
 		\begin{cases}
 			\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L}  
-			\frac{(q_{k+1} - q_k)^\mathrm{T}}{\Delta t} \mathbf{\Gamma}(q_k, q_k)
-			\frac{(q_{k+1} - q_k)}{\Delta t} \cdot \Delta t
+			\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)
+			\left(\frac{q_{k+1} - q_k}{\Delta t}\right) \cdot \Delta t
 			+ l(q_{L+1}, Y) \\
 			\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 		\end{cases}
@@ -136,6 +137,45 @@ We will now prove that \cref{eq:min-q} is in fact equivalent to \cref{eq:min-v-f
 
 \subsection{Least Action Principle}
 
+Take a closer look at the first term of the objective function in \cref{eq:min-q} (the parameter $\nu$ has been deliberately omitted here):
+\begin{equation}
+	\label{eq:discrete-lagrangian}
+	\frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} \Delta t \ .
+\end{equation}
+With some imagination this very much looks like an approximation of the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
+This would require the sequence $q_k$ to be a discrete equidistant sampling of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
+Without loss of generality we choose $A = [0, 1]$ and write $q_k = q(k \Delta t)$.
+This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative $\dot{q}$ on at the point $k \Delta t = \frac{k}{L}$ and we get the approximation
+\begin{equation}
+	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} 
+	\approx \dot{q}\left(\frac{k}{L}\right)^\mathrm{T} \mathbf{\Gamma}\left(q\left(\frac{k}{L}\right), q\left(\frac{k}{L}\right)\right)^{-1}\dot{q}\left(\frac{k}{L}\right)
+\end{equation}
+This leads us to the obvious question if the solutions of the problem in \cref{eq:min-q} are also approximating the solutions of a similar continuous problem.
+As it turns out, they do.
+Consider 
+\begin{equation}
+	\mathcal{A}(q) \coloneqq \int_{0}^{1} \fL(q, \dot{q}, t) \mathrm{d}t \ ,
+\end{equation}
+with
+\begin{equation}
+	\fL(q, \dot{q}, t) \coloneqq \frac{1}{2} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t) \ .
+\end{equation}
+We will later prove the following theorem:
+\begin{theorem}
+	The minimal value of \cref{eq:min-q} converges towards the minimal value of             
+	\Todo{Theorem 3.11 from paper} 
+	\begin{equation}
+	\label{eq:cont-least-action}
+		\begin{cases}
+			\text{Minimize~} & \nu \mathcal{A}(q) + l(q(1), Y)\\
+			\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+		\end{cases}
+	\end{equation}
+	$C^1([0,1], \cX^N$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
+\end{theorem}
+\Todo{Überleitung zur Physik}
+
+Assuming a physical point of view, $\cL$ is the \Todo{ref!}\emph{Lagrangian} and $\mathcal{A}$ the \emph{action}.
 
 \subsection{Hamiltonian Representation}
 
