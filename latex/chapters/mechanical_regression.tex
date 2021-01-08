@@ -154,16 +154,18 @@ This leads us to the obvious question if the solutions of the problem in \cref{e
 As it turns out, they do.
 Consider 
 \begin{equation}
+\label{eq:action}
 	\mathcal{A}(q) \coloneqq \int_{0}^{1} \fL(q, \dot{q}, t) \mathrm{d}t \ ,
 \end{equation}
 with
 \begin{equation}
+\label{eq:lagrangian}
 	\fL(q, \dot{q}, t) \coloneqq \frac{1}{2} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t) \ .
 \end{equation}
-We will later prove the following theorem:
+As a result, we get the following theorem.
 \begin{theorem}
 	The minimal value of \cref{eq:min-q} converges towards the minimal value of             
-	\Todo{Theorem 3.11 from paper} 
+	\info{Theorem 3.11 from paper} 
 	\begin{equation}
 	\label{eq:cont-least-action}
 		\begin{cases}
@@ -171,11 +173,29 @@ We will later prove the following theorem:
 			\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
 		\end{cases}
 	\end{equation}
-	$C^1([0,1], \cX^N$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
 \end{theorem}
-\Todo{Überleitung zur Physik}
+As usual, $C^1([0,1], \cX^N)$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
+We will save the proof for later.
 
-Assuming a physical point of view, $\cL$ is the \Todo{ref!}\emph{Lagrangian} and $\mathcal{A}$ the \emph{action}.
+Equations \ref{eq:action} and \ref{eq:lagrangian} closely resemble characteristic equations from the framework of Lagrangian physics.
+Within that framework, $q$ is the trajectory of the particle, $\fL$ the \emph{Lagrangian function} and $\mathcal{A}$ the \emph{Action}.
+In our case, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles.
+We will now explore if the rich theory of Lagrangian physics can help us analyze our problem.
+
+The action is the integral over the Lagrangian between two points in time $t_1, t_2$.
+Here, we chose $t_1 = 0$ and $t_1 = 1$.
+One core principle in Lagrangian Mechanics is \emph{Hamilton's Principle}, also called the \emph{Principle of Least Action}.
+It states that
+\Todo{Citation needed!}
+the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times $t_1$ and $t_2$ is a stationary point, that is, extremal point, of the action $\mathcal{A}$.
+We do not have the time to dive deeper into the underlying theory, but the interested reader is referred to \Todo{References}.
+
+One immediate consequence of Hamilton's Principle are the Euler-Lagrange equation(s):
+\begin{equation}
+	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\delta \fL}{\delta \dot{q}} - \frac{\delta \fL}{\delta q} = 0
+\end{equation}
+
+
 
 \subsection{Hamiltonian Representation}
 
