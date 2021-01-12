@@ -177,23 +177,38 @@ As a result, we get the following theorem.
 As usual, $C^1([0,1], \cX^N)$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
 We will save the proof for later.
 
-Equations \ref{eq:action} and \ref{eq:lagrangian} closely resemble characteristic equations from the framework of Lagrangian physics.
+Equations \ref{eq:action} and \ref{eq:lagrangian} closely resemble characteristic equations from the framework of Lagrangian and Hamiltonian mechanics.
 Within that framework, $q$ is the trajectory of the particle, $\fL$ the \emph{Lagrangian function} and $\mathcal{A}$ the \emph{Action}.
 In our case, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles.
 We will now explore if the rich theory of Lagrangian physics can help us analyze our problem.
 
 The action is the integral over the Lagrangian between two points in time $t_1, t_2$.
-Here, we chose $t_1 = 0$ and $t_1 = 1$.
+Here, we chose $t_1 = 0$ and $t_2 = 1$.
 One core principle in Lagrangian Mechanics is \emph{Hamilton's Principle}, also called the \emph{Principle of Least Action}.
 It states that
 \Todo{Citation needed!}
-the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times $t_1$ and $t_2$ is a stationary point, that is, extremal point, of the action $\mathcal{A}$.
-We do not have the time to dive deeper into the underlying theory, but the interested reader is referred to \Todo{References}.
+the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times $t_1$ and $t_2$ is a stationary point of the action $\mathcal{A}$.
+We do not have the time to dive deeper into the underlying theory, but the interested reader is referred to \Todo{References, one of them could be Feynman lectures 2 chapter 19}.
+Note that "Principle of Least Action" is a misnomer and should rather be "Principle of Stationary Action".
 
-One immediate consequence of Hamilton's Principle are the Euler-Lagrange equation(s):
+\Todo{Why doesn't the endpoint have to be fixed? This is e.g. mentioned in Classical Mechanics by Goldstein p45}
+
+The path of least action need not always be the path for which the action becomes minimal, but rather stationary.
+However, if we can show that there exists a minimum of \cref{eq:cont-least-action}, this will, \Todo{Why exactly -- do we have some similar theorem like "partial derivative zero implies extremum?"}by ..., be a point of stationary action
+
+Let $q(1)$ be arbitrary but fixed.
+Then a minimizer $q^\ast$ of \cref{eq:cont-least-action} with $q^\ast(1) = q(1)$ is a minimizer of $\mathcal{A}(q)$.
+By [Kielhöfer - Variationsrechnung, Satz 1.4.2] it follows that $q^\ast$ fulfills the Euler-Lagrange equation:
 \begin{equation}
-	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\delta \fL}{\delta \dot{q}} - \frac{\delta \fL}{\delta q} = 0
+	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}} - \frac{\partial \fL}{\partial q} = 0 \ ,
 \end{equation}
+which in this concrete case is:
+\begin{equation}
+	\frac{\mathrm{d}}{\mathrm{d}t} \left(\mathbf{\Gamma}(q, q)^{-1} \dot{q} \right)
+	= \frac{\partial}{\partial q} \left(\frac{1}{2} \dot{q}^\mathrm{T} \mathbf{\Gamma}(q, q)^{-1} \dot{q}\right) \ .
+\end{equation}
+
+As this is true for all endpoints $q(1)$, it especially holds true for the value for which the whole expression is minimal.
 
 
 
