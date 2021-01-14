@@ -26,13 +26,21 @@ Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i
 
 
 \begin{definition}[Block Operator Matrix]
-	content...
+	A \emph{Block Operator Matrix} $\mathbf{A}$ is an $(N \times N)$-Matrix with Elements in $\cL(Y, Y)$.
 \end{definition}
 
 \begin{definition}[$\cY^N$]
 	content...
 \end{definition}
 Explain: We can express the corresponding inner product as matrix multiplication.
+
+\begin{theorem}
+	$(\cL(\cY^N, \cY^N), +, \circ)$ is a  ring.
+\end{theorem}
+\begin{proof}
+	We conduct the proof by showing that $\cL(\cY^N, \cY^N) \cong \R^{nN \times nN}$.
+\end{proof}
+
 
 \input{figures/figure_block_operator_example}
 
@@ -118,4 +126,4 @@ All in all, this leaves us with an appealing and compact form for the optimal re
 	+ l_\cY (f(X), Y)
 \end{equation}
 
-Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery with multiplication by a constant.
+Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery.
