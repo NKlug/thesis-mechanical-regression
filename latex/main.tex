@@ -32,6 +32,7 @@
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \usepackage{parskip} % space between paragraphs instead of indent
 \usepackage{csquotes} % autmatic left quotation marks
+\usepackage{aliascnt}
 \usepackage[activate=true,final,tracking=true,kerning=true,factor=1100,stretch=10,shrink=10]{microtype} % even better line spacing
 \usepackage{xr-hyper} 
 \usepackage[pagebackref, pdftex, colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
@@ -53,6 +54,27 @@
 
 \rehead{right even}
 
+\makeatletter
+
+\let\oldtheequation\theequation
+\renewcommand\tagform@[1]{\maketag@@@{\ignorespaces#1\unskip\@@italiccorr}}
+\renewcommand\theequation{(\oldtheequation)}
+
+
+% Multiple abstracts
+\newenvironment{polyabstract}[1]
+{\renewcommand{\abstractname}{#1}\begin{abstract}}
+	{\end{abstract}}
+
+\newaliascnt{problem}{equation}
+\newenvironment{problem}%
+{\begin{equation*}\refstepcounter{problem}}
+{\eqno \hbox{\@eqnnum}\end{equation*}\@ignoretrue}
+
+\makeatother
+
+\crefname{problem}{Problem}{Problem}
+
 % Rename autorefnames
 \addto\extrasenglish{
 	\renewcommand{\sectionautorefname}{Section}
@@ -60,16 +82,7 @@
 	\renewcommand{\subsubsectionautorefname}{Section}
 }
 
-% Multiple abstracts
-\newenvironment{polyabstract}[1]
-{\renewcommand{\abstractname}{#1}\begin{abstract}}
-	{\end{abstract}}
 
-\makeatletter
-\let\oldtheequation\theequation
-\renewcommand\tagform@[1]{\maketag@@@{\ignorespaces#1\unskip\@@italiccorr}}
-\renewcommand\theequation{(\oldtheequation)}
-\makeatother
 
 % Captions for figures
 \captionsetup{justification=raggedright, format=plain, font=small,labelfont=bf}
