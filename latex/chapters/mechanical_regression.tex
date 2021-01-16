@@ -191,6 +191,9 @@ the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times
 We do not have the time to dive deeper into the underlying theory, but the interested reader is referred to \Todo{References, one of them could be Feynman lectures 2 chapter 19}.
 Note that "Principle of Least Action" is a misnomer and should rather be "Principle of Stationary Action".
 
+
+Hamilton's principle has a strong physical background:
+The true evolution of a system $q$ between two states $q(t_1)$ and $q(t_2)$ is a stationary point of the action.
 \Todo{Why doesn't the endpoint have to be fixed? This is e.g. mentioned in Classical Mechanics by Goldstein p45}
 
 The path of least action need not always be the path for which the action becomes minimal, but rather stationary.
@@ -200,18 +203,58 @@ Let $q(1)$ be arbitrary but fixed.
 Then a minimizer $q^\ast$ of \cref{eq:cont-least-action} with $q^\ast(1) = q(1)$ is a minimizer of $\mathcal{A}(q)$.
 By [Kielhöfer - Variationsrechnung, Satz 1.4.2] it follows that $q^\ast$ fulfills the Euler-Lagrange equation:
 \begin{equation}
-	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}} - \frac{\partial \fL}{\partial q} = 0 \ ,
+	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}} - \frac{\partial \fL}{\partial q} = 0 \ .
 \end{equation}
-which in this concrete case is:
+Bear in mind that $q$ is a vector.
+So to be precise, we would have to write $N$ Euler-Lagrange equations, one for each $q_i$ (just imagine $q_i$ and $\dot{q}_i$ in the equation above).
+Nonetheless, in the following we can always treat all $q_i$ the same.
+So for the sake of readability and convenience we will stick to the vector notation, which together with block operator matrices allows concise formulation.
+The Euler-Lagrange equation with the Lagrangian from \cref{eq:lagrangian} reads
 \begin{equation}
+\label{eq:concrete-lagrangian}
 	\frac{\mathrm{d}}{\mathrm{d}t} \left(\mathbf{\Gamma}(q, q)^{-1} \dot{q} \right)
 	= \frac{\partial}{\partial q} \left(\frac{1}{2} \dot{q}^\mathrm{T} \mathbf{\Gamma}(q, q)^{-1} \dot{q}\right) \ .
 \end{equation}
 
 As this is true for all endpoints $q(1)$, it especially holds true for the value for which the whole expression is minimal.
 
-
-
 \subsection{Hamiltonian Representation}
+
+An alternative formulation of Lagrangian mechanics is the Hamiltonian formalism.
+In its own, it does not add anything particularly new but rather gives us a more powerful framework to work with the already established theory.
+In essence, a change of variables from $(q, \dot{q}, t)$ to $(q, p, t)$ is applied through a certain kind of transformation, called \emph{Legendre transformation}.
+The obtained $(q, p)$ are called the \emph{canonical variables}, concretely canonical coordinate and canonical momentum.
+We will briefly derive the Hamiltonian formulation for our application, but not cover all the theoretical details.
+For a complete formal derivation from a physical point of view, see \cite[Chapter~8]{goldstein01}.
+For a more mathematical approach, see \cite[Chapter~2]{marsden10}.
+
+First, define the canonical momentum
+\begin{equation}
+	p = \frac{\partial \fL}{\partial \dot{q}} \ .
+\end{equation}
+Note that just as we actually had $N$ Euler-Lagrange Equations above, we now also have $N$ canonical momenta, each defined as $p_i = \frac{\partial \fL}{\partial \dot{q}_i}$.
+However, treating them separately will bring us no benefit, so we again just treat them as one and call $p$ \emph{the} canonical momentum.
+Next, define the \emph{Hamiltonian function}.
+\begin{equation}
+	\fH(q, p) = p^\mathrm{T}\dot{q} - \fL(q, \dot{q})
+\end{equation}
+\begin{theorem}
+	Any minimizer $q$ of \cref{eq:cont-least-action} follows the Hamiltonian equations
+	\begin{align}
+		\dot{q} &= \frac{\partial \fH(q, p)}{\partial p} = \mathbf{\Gamma}(q, q) p\\
+		\dot{p} &= -\frac{\partial \fH(q, p)}{\partial q} 
+		= -\frac{\partial \left(\frac{1}{2} p^\mathrm{T} \mathbf{\Gamma}(q, q) p\right)}{\partial q}
+	\end{align}
+\end{theorem}
+\begin{proof}
+	
+\end{proof}
+
+\begin{corollary}
+	Along $q$ the energy is preserved.
+\end{corollary}
+
+Just as before, $q(1)$ was unknown, now, $p(0)$ is to be determined.
+This means we our problem now reduces to the search for the initial momentum $p(0)$.
 
 \subsection{Continuous Limit and Adherence Values}
