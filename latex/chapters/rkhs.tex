@@ -15,6 +15,25 @@
 
 Example: Gaussian/RBF-Kernel, Polynomial Kernel
 
+\subsection{Features Space and Feature Maps}
+
+\begin{equation}
+	\label{eq:kernel-feature-map}
+	K(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)
+\end{equation}
+
+\begin{theorem}
+	\begin{equation}
+		\left< \psi^\T(\cdot) \alpha, \psi^\T(\cdot) \beta\right>_\mathcal{H} = \left< \alpha, \beta\right>_\mathcal{F} \ .
+	\end{equation}
+\end{theorem}
+\begin{corollary}
+	\label{cor:feature-space-norm}
+	\begin{equation}
+		\norm{\psi^\T(\cdot)\alpha}_\mathcal{H}^2 = \norm{\alpha}_\mathcal{F}^2 \ .
+	\end{equation}
+\end{corollary}
+
 \subsection{Product Space and Block Operator Notation}
 Later on, it would be quite cumbersome to always treat the $X_i$ separately.
 Hence we will now introduce block operator syntax which will enable us to write equations more concisely.
@@ -113,7 +132,7 @@ As $\mathcal{H}$ is a Hilbert Space, we can compute it using the scalar product:
 	&= Y^\mathrm{T} \cdot (\mathbf{K}(X, X)^{-1})^\mathrm{T} \cdot Y\\
 	&=  Y^\mathrm{T} \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
 \end{align}
-In the fourth line we used the reproducing property and in the second to last line the symmetry of $\mathbf{K}$, which is a result of $K$ being Hermitian.
+In the fourth line we used the reproducing property and in the second to last line the fact $\mathbf{K}$ that $K$ is Hermitian, that is, $K^(x, y)\T = K(y, x)$.
 All in all, this leaves us with an appealing and compact form for the optimal recovery loss:
 \begin{equation}
 	l(X, Y) = Y^\mathrm{T} \mathbf{K}(X, X)^{-1} Y \ .

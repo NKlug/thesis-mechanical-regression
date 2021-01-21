@@ -6,6 +6,11 @@ Especially Residual Neural Networks have shown great success in enabling very de
 As described earlier, RNNs usually consist of several Residual Blocks followed by dense mapping to the target space $Y$.
 This section essentially follows Chapter 3 in \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ANNs, concretely RNNs.
 
+\begin{condition}
+	\begin{enumerate}
+		\item There exist a finite dimensional feature space and map $\mathcal{F}$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded
+	\end{enumerate}
+\end{condition}
 
 
 We will now take a similar approach and try to approximate the target function $f^\dagger$ by a function
@@ -25,17 +30,17 @@ By default, the $v_k$ and $f$ can be arbitrary functions.
 \Todo{ref: chapter on regularization in Deep Learning? At least explain further!}
 Thus, as common in Machine Learning, in order to avoid overfitting the functions to the data, we penalize $v_k$s and $f$s with large norms.
 For that, we introduce two RKHSs:
-$\mathcal{V} \subseteq \{\cX \rightarrow \cX\}$ and $\mathcal{H} \subseteq \{\cX \rightarrow \cY\}$. 
+$\cV \subseteq \{\cX \rightarrow \cX\}$ and $\cH \subseteq \{\cX \rightarrow \cY\}$. 
 By \cref{theo:kernel-for-rkhs} there is a Kernel associated with each RKHS.
-Let $\Gamma$ be the Kernel associated with $\mathcal{V}$ and $K$ that of $\mathcal{H}$.
+Let $\Gamma$ be the Kernel associated with $\cV$ and $K$ that of $\cH$.
 We then can identify $f$ and the $v_k$ as solutions to the following problem:
 \begin{problem}
 	\label{prob:min-v-f}
 	\begin{cases}
-		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
-		+ \lambda \norm{f}_\mathcal{H}^2 
+		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+		+ \lambda \norm{f}_\cH^2 
 		+ l((f \circ \Phi_L)(X), Y) \\
-		\text{such that~} & v_1, \ldots, v_L \in \mathcal{V}, f \in \mathcal{H} \ .
+		\text{such that~} & v_1, \ldots, v_L \in \cV, f \in \cH \ .
 	\end{cases}
 \end{problem}
 Here, $\nu$ and $\lambda$ are strictly positive balancing parameters.
@@ -44,9 +49,9 @@ $l$ is a (positive) loss measuring the similarity of the predicted outputs, that
 Utilizing the Ridge Regression Loss $l_R$ (\cref{eq:ridge-regression-loss}), we can rewrite the above minimization problem as
 \begin{problem}
 	\begin{cases}
-		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
+		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
 		+ l_R(\Phi_L(X), Y) \\
-		\text{such that~} & v_1, \ldots, v_L \in \mathcal{V}\ .
+		\text{such that~} & v_1, \ldots, v_L \in \cV\ .
 	\end{cases}
 \end{problem}
 By "hiding" the regularity of $f$ in the loss we can for now focus on the functions $v_k$.
@@ -71,7 +76,7 @@ Regard the following minimization problem:
 We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min-v-f} and, assuming we know the solution to the latter problem, provides us with an explicit solution for the $v_k$s.
 
 \begin{theorem}
-	$v_1, \ldots, v_L \in \mathcal{V}$ minimize \cref{prob:min-v-f} 
+	$v_1, \ldots, v_L \in \cV$ minimize \cref{prob:min-v-f} 
 	$\Leftrightarrow$
 	$q_1, \ldots, q_{L+1} \in \cX^N$ minimize \cref{prob:min-q} and
 	$v_k(x) = \mathbf{\Gamma}(x, q_k)^\mathrm{T}\mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)$.
@@ -82,9 +87,9 @@ We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min
 	\begin{problem}
 		\label{prob:min-q-v}
 		\begin{cases}
-			\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\mathcal{V}^2
+			\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
 			+ l(q_{L+1}, Y) \\
-			\text{such that~} & v_1, \ldots, v_L \in \mathcal{V},\ \forall k \in [L]: v_k(q_k) = q_{k+1} - q_k, \\
+			\text{such that~} & v_1, \ldots, v_L \in \cV,\ \forall k \in [L]: v_k(q_k) = q_{k+1} - q_k, \\
 			& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 		\end{cases}
 	\end{problem}
@@ -94,7 +99,7 @@ We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min
 	
 	We will now derive closed form expressions for the $v_k$ as a function of the $q_k$.
 	For that, let $q_k \in \cX^N$, $2 \leq k \leq N$ be arbitrary but fixed .
-	This means $l(q^{L+1}, Y)$ is constant and $v_k \in V_{k, q} \coloneqq \{v \in \mathcal{V}~|~ v_k(q_k) = q_{k+1} - q_k\}$.
+	This means $l(q^{L+1}, Y)$ is constant and $v_k \in V_{k, q} \coloneqq \{v \in \cV~|~ v_k(q_k) = q_{k+1} - q_k\}$.
 %	These sets remain convex: Let $\lambda \in [0, 1]$ and $v_{k, 1}, v_{k, 2} \in V_{k, q}$, then we get
 %	\begin{align}
 %		(\lambda v_{k, 1} + (1 - \lambda) v_{k, 2})(q_k) &= (\lambda v_{k, 1})(q_k) + ((1 - \lambda) v_{k, 2})(q_k)\\
@@ -111,15 +116,15 @@ We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min
 	with bounded $f_i: A_i \rightarrow \R$.
 	One can easily verify that minimization problems of this type have a global minimum at $x_i^\ast = \argmin\{f_i(x_i)~|~ x_i \in A_i\}$, the boundedness ensuring that at least one such minimum exists.
 
-	Thus, we have to find the minima of $\min\{\norm{v_k}_\mathcal{V}^2~|~ v_k \in \mathcal{V}, v_k(q_k) = q_{k+1} - q_k\} = l_{\text{OR}}(q_k, q_{k+1} - q_k)$, $l_{\text{OR}}$ being the optimal recovery loss from \cref{sec:optimal-recovery}.
+	Thus, we have to find the minima of $\min\{\norm{v_k}_\cV^2~|~ v_k \in \cV, v_k(q_k) = q_{k+1} - q_k\} = l_{\text{OR}}(q_k, q_{k+1} - q_k)$, $l_{\text{OR}}$ being the optimal recovery loss from \cref{sec:optimal-recovery}.
 	From that section we conveniently get the following representations for the minimal $v_k$ and the target value:
 	\begin{align}
 		v_k & = \mathbf{\Gamma}(x, q_k)^\mathrm{T}\mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)\\
-		\norm{v_k}_\mathcal{H}^2 &= (q_{k+1} - q_k)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)
+		\norm{v_k}_\cH^2 &= (q_{k+1} - q_k)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} (q_{k+1} - q_k)
 	\end{align}
 	Here, $\mathbf{\Gamma}$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\mathbf{\Gamma}(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
 	++
-	Having now computed optimal $v_k$ -- or rather their squared $\mathcal{H}$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
+	Having now computed optimal $v_k$ -- or rather their squared $\cH$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
 	Define $\Delta t \coloneqq \frac{1}{L}$.
 	We get:
 	\begin{problem}
@@ -202,18 +207,40 @@ From $\frac{\partial \fL}{\partial t} = 0$ it follows that:
 	It follows that
 	\begin{equation}
 		0 = \frac{\mathrm{d}}{\mathrm{d} t} \left( \left(\sum_{i=1}^{N} \frac{\partial \fL}{\partial \dot{q_i}} \dot{q_i} \right) -  \fL \right) 
-		= \frac{\mathrm{d}}{\mathrm{d} t} \left( \fL - \sum_{i=1}^{N} p_i \dot{q_i}\right)
+		= \frac{\mathrm{d}}{\mathrm{d} t} \left( \left(\sum_{i=1}^{N} p_i \dot{q_i} \right ) - \fL \right)
 		= \frac{\mathrm{d}}{\mathrm{d} t} \fH \ ,
 	\end{equation}
 	which means that the energy function does not change over time and hence is constant.
 \end{proof}
 
 Our next task will be to show that there exists a unique solution to the system in \cref{eq:hamiltonian-system}.
-If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}.
-Of course, we can only identify the flow once we have determined the optimal $q(1)$.
+If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}:
+A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and if that system has a unique solution, this must be it.
+Of course, we can only identify the flow once we have determined the optimal $q(1)$ as otherwise we would be lacking an initial value.
 
+\begin{theorem}
+	There exists a unique solution $(q, p)$ for the Hamiltonian system in \cref{eq:hamiltonian-system} with $q \in C^2([0, 1] \cX^N)$ and $p \in C^1([0, 1] \cX^N)$.
+\end{theorem}
 
-
+\begin{proof}
+	Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
+	Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
+	\begin{equation}
+		\begin{split}
+			\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
+			\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
+		\end{split}
+	\end{equation}
+	with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
+	Using \cref{cor:feature-space-norm} we get:
+	\begin{align}
+		\norm{\alpha}_\mathcal{F}^2 &= \norm{\psi^\T \alpha}_\cV^2\\
+		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
+		&= \norm{\sum_{i=1}^N \Gamma(x, q_i)^\T p_i}_\cV^2\\
+		&= \norm{\sum_{i=1}^N \Gamma(q_i, x) p_i}_\cV^2\\
+		&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(q_i, x)p_i, \Gamma(q_j, x) \psi(q_j)p_i \right>_\cV\\
+	\end{align}
+\end{proof}
 
 
 \subsection{Geodesic Shooting}
