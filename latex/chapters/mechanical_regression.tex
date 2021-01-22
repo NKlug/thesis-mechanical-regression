@@ -12,7 +12,7 @@ This section essentially follows Chapter 3 in \cite{owhadi20} and aims to provid
 	\end{enumerate}
 \end{condition}
 
-
+\subsection{Modeling Residual Neural Networks}
 We will now take a similar approach and try to approximate the target function $f^\dagger$ by a function
 \begin{equation}
 	f^\ast \coloneqq f \circ \Phi_L \ ,
@@ -155,16 +155,27 @@ For a more mathematical approach, see \cite[Chapter~2]{marsden10}.
 
 First, define the canonical momentum
 \begin{equation}
-	p = \frac{\partial \fL}{\partial \dot{q}} \ .
+	p(t) \coloneqq \frac{\partial \fL(q, \dot{q}, t)}{\partial \dot{q}} = \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t) \ .
 \end{equation}
 Note that just as we actually had $N$ Euler-Lagrange Equations above, we now also have $N$ canonical momenta, each defined as $p_i = \frac{\partial \fL}{\partial \dot{q}_i}$.
 Again, we use vector notation, and call $p$ \emph{the} canonical momentum.
 Next, we define the \emph{Hamiltonian function}, often also called \emph{energy function} \cite{marsden10}:
 \begin{equation}
-	\fH(q, p, t) = p(t)^\mathrm{T}\dot{q}(t) - \fL(q, \dot{q}, t)
+	\fH(q, p, t) \coloneqq p(t)^\mathrm{T}\dot{q}(t) - \fL(q, \dot{q}, t) \ .
 \end{equation}
 In physical context, $\fH$ can often be expressed as the sum of the system's kinetic and potential energies.
 Hence $\fH$ is a measure of the total energy of the system.
+Here, we get
+\begin{align}
+	\fH(q, p, t) &= \frac{1}{2} \dot{q}(t)^\T \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q(t)} \\
+	&= \frac{1}{2} \dot{q}(t)^\T \mathbf{\Gamma}(q(t), q(t))^{-1} \mathbf{\Gamma}(q(t), q(t)) \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t)\\
+	&= \frac{1}{2}  \left(\mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t)\right)^\T \mathbf{\Gamma}(q(t), q(t)) \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t)\\
+	&= \frac{1}{2} p(t)^\T \mathbf{\Gamma}(q(t), q(t)) p(t) \ .
+\end{align}
+
+As you can see, the equations already get quite cluttered.
+Thus, in the following we will, for simplicity, often omit the time dependence of $p$ and $q$.
+For example, we write $\Gamma(q, q)$ instead of $\Gamma(q(t), q(t))$.
 
 The next theorem describes the correspondence between Lagrangian and Hamiltonian mechanics:
 \begin{theorem}
@@ -193,6 +204,7 @@ This means we our problem now reduces to the search for the initial momentum $p(
 From $\frac{\partial \fL}{\partial t} = 0$ it follows that:
 \Todo{Think about whether to keep this. Seems kind of irrelevant}
 \begin{corollary}
+	\label{cor:energy-preservation}
 	Along $q$ the energy is preserved.
 \end{corollary}
 \begin{proof}
@@ -219,7 +231,7 @@ A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and i
 Of course, we can only identify the flow once we have determined the optimal $q(1)$ as otherwise we would be lacking an initial value.
 
 \begin{theorem}
-	There exists a unique solution $(q, p)$ for the Hamiltonian system in \cref{eq:hamiltonian-system} with $q \in C^2([0, 1] \cX^N)$ and $p \in C^1([0, 1] \cX^N)$.
+	There exists a unique solution $(q, p)$ for the Hamiltonian system in \cref{eq:hamiltonian-system} with $q \in C^2([0, 1], \cX^N)$ and $p \in C^1([0, 1], \cX^N)$.
 \end{theorem}
 
 \begin{proof}
@@ -236,10 +248,15 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	\begin{align}
 		\norm{\alpha}_\mathcal{F}^2 &= \norm{\psi^\T \alpha}_\cV^2\\
 		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
-		&= \norm{\sum_{i=1}^N \Gamma(x, q_i)^\T p_i}_\cV^2\\
-		&= \norm{\sum_{i=1}^N \Gamma(q_i, x) p_i}_\cV^2\\
-		&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(q_i, x)p_i, \Gamma(q_j, x) \psi(q_j)p_i \right>_\cV\\
+		&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
+		&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
+		&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
+		&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
+		&= p^\T \mathbf{\Gamma}p \ .
 	\end{align}
+	In the second to last step we again used the reproducing property of the kernel $\Gamma$.
+	This gives us $\norm{\alpha}_\mathcal{F}^2 = 2 \fH(q, p)$.
+	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\mathcal{F}^2$ is, too.
 \end{proof}
 
 
