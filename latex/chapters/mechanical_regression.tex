@@ -238,6 +238,7 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
 	Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
 	\begin{equation}
+	\label{eq:feature-hamiltonian}
 		\begin{split}
 			\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
 			\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
@@ -252,11 +253,20 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 		&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
 		&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
 		&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
-		&= p^\T \mathbf{\Gamma}p \ .
+		&= p^\T \mathbf{\Gamma}(q, q) p \ .
 	\end{align}
 	In the second to last step we again used the reproducing property of the kernel $\Gamma$.
 	This gives us $\norm{\alpha}_\mathcal{F}^2 = 2 \fH(q, p)$.
 	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\mathcal{F}^2$ is, too.
+	From \cref{eq:feature-hamiltonian} we first get
+	\begin{align}
+		\norm{\dot{p_i}(t)}_\cX &= \norm{-\grad_{q_i}{\left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)}}_\cX\\
+		&= \norm{-\grad_{q_i}{\left<p_i(t), \psi^\mathrm{T}(q_i(t)) \alpha \right>}}_\cX\\
+		&= \norm{\left<p_i(t), \frac{\partial}{\partial q_i} \left(\psi^\mathrm{T}(q_i(t)) \alpha \right)\right>}_\cX\\
+		&\leq \norm{p_i(t)}_\cX \norm{\frac{\partial}{\partial q_i} \left(\psi^\mathrm{T}(q_i(t)) \alpha \right)}_\cX\\
+	\end{align}
+	
+	
 \end{proof}
 
 
