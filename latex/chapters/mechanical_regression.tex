@@ -8,7 +8,7 @@ This section essentially follows Chapter 3 in \cite{owhadi20} and aims to provid
 
 \begin{condition}
 	\begin{enumerate}
-		\item There exist a finite dimensional feature space and map $\mathcal{F}$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded
+		\item There exist a finite dimensional feature space and map $\cF$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded
 	\end{enumerate}
 \end{condition}
 
@@ -247,7 +247,7 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
 	Using \cref{cor:feature-space-norm} we get:
 	\begin{align}
-		\norm{\alpha}_\mathcal{F}^2 &= \norm{\psi^\T \alpha}_\cV^2\\
+		\norm{\alpha}_\cF^2 &= \norm{\psi^\T \alpha}_\cV^2\\
 		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
 		&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
 		&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
@@ -256,14 +256,35 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 		&= p^\T \mathbf{\Gamma}(q, q) p \ .
 	\end{align}
 	In the second to last step we again used the reproducing property of the kernel $\Gamma$.
-	This gives us $\norm{\alpha}_\mathcal{F}^2 = 2 \fH(q, p)$.
-	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\mathcal{F}^2$ is, too.
-	From \cref{eq:feature-hamiltonian} we first get
+	This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
+	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too.
+	Ultimately, we want to use a global version of the Picard-Lindelöf theorem to prove that the Hamiltonian system does have a unique solution.
+	For this, we need the vector field $(q, p)$ to be uniformly Lipschitz continuous.
+	If we can proof that both $\dot{q}$ and $\dot{p}$ are bounded, the Lipschitz property follow immediately:
+	\begin{equation}
+	\ .
+	\end{equation}
+	The boundedness of $\dot{q}$ is easy to see:
+	\begin{equation}
+		\ .
+	\end{equation}
+	Then, for each entry $\dot{p}_{i, j}$ of $\dot{p}_i$
 	\begin{align}
-		\norm{\dot{p_i}(t)}_\cX &= \norm{-\grad_{q_i}{\left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)}}_\cX\\
-		&= \norm{-\grad_{q_i}{\left<p_i(t), \psi^\mathrm{T}(q_i(t)) \alpha \right>}}_\cX\\
-		&= \norm{\left<p_i(t), \frac{\partial}{\partial q_i} \left(\psi^\mathrm{T}(q_i(t)) \alpha \right)\right>}_\cX\\
-		&\leq \norm{p_i(t)}_\cX \norm{\frac{\partial}{\partial q_i} \left(\psi^\mathrm{T}(q_i(t)) \alpha \right)}_\cX\\
+		\abs{p_{i,j}} &= \abs{\frac{\partial}{\partial q_{i, j}}\left<p_i, \psi^\T(q_i) \alpha \right> }\\
+		&= \abs{\left<p_i, \frac{\partial}{\partial q_{i, j}} \psi^\T(q_i) \alpha \right> }\\
+		&\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) }_\cX
+	\end{align}
+	Observe the second factor, $\psi^\T(q_i) \alpha$. $\psi^\T$ is a matrix, or rather a bounded linear operator in $L(\cF, \cX)$, and $\alpha \in \cF$.
+	This matrix-vector product is a continuous, bilinear operator and thus we can apply the product rule for partial derivatives.
+	As $\alpha$ does not depend on $q_{i, j}$, the equality $\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) = \left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha$ holds true. The partial derivative of $\psi^\T$ is again a bounded linear operator.
+	Let $\norm{\cdot}_O$ be a suitable operator norm, then 
+	\begin{equation}
+		\norm{\left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha}_\cX \leq \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \norm{\alpha}_\cF \ .
+	\end{equation}
+	Thus
+	\begin{align}
+		\abs{p_{i,j}} &\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i)\right) \alpha }_\cX\\
+		&\leq  \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \cdot \norm{\alpha }_\cF \ .
 	\end{align}
 	
 	
