@@ -7,6 +7,7 @@ As described earlier, RNNs usually consist of several Residual Blocks followed b
 This section essentially follows Chapter 3 in \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ANNs, concretely RNNs.
 
 \begin{condition}
+	\label{cond:feature-condition}
 	\begin{enumerate}
 		\item There exist a finite dimensional feature space and map $\cF$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded
 	\end{enumerate}
@@ -178,6 +179,7 @@ Thus, in the following we will, for simplicity, often omit the time dependence o
 For example, we write $\Gamma(q, q)$ instead of $\Gamma(q(t), q(t))$.
 
 The next theorem describes the correspondence between Lagrangian and Hamiltonian mechanics:
+\Todo{Important: Explain meaning of partial symbol (is to be read as a gradient) or write differently}
 \begin{theorem}
 	If $q$ minimizes \cref{prob:cont-least-action}, $(q, p)$ follow Hamilton's equations
 	\begin{equation}
@@ -245,7 +247,7 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 		\end{split}
 	\end{equation}
 	with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
-	Using \cref{cor:feature-space-norm} we get:
+	From \cref{cor:feature-space-norm} we get:
 	\begin{align}
 		\norm{\alpha}_\cF^2 &= \norm{\psi^\T \alpha}_\cV^2\\
 		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
@@ -257,37 +259,81 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	\end{align}
 	In the second to last step we again used the reproducing property of the kernel $\Gamma$.
 	This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
-	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too.
-	Ultimately, we want to use a global version of the Picard-Lindelöf theorem to prove that the Hamiltonian system does have a unique solution.
-	For this, we need the vector field $(q, p)$ to be uniformly Lipschitz continuous.
-	If we can proof that both $\dot{q}$ and $\dot{p}$ are bounded, the Lipschitz property follow immediately:
+	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).
+	Our goal is to use a global version of the Picard-Lindelöf theorem \cite[~Theorem 1.2.3]{arino06} to prove that the Hamiltonian system does have a unique solution.
+	For this, we need the vector field $(q, p)$ to be globally Lipschitz continuous.
+	Showing component-wise Lipschitz continuity suffices because we can choose the global constant $L$ as the maximum of the components'.
+	We will show the Lipschitz property by proofing that $\dot{q}$ and $\dot{p}$ are bounded.
+	\Todo{Is this bogus math? This looks like a system of PDEs, is Picard-Lindelöf even applicable? Not and yes!
+	The derivative wrt time of (q, p) is the componentwise derivative!}
+	This will do:
+	Let $\dot{q}$ and $\dot{p}$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$ and
 	\begin{equation}
-	\ .
+	\label{eq:hamiltonian-time-derivative}
+		\begin{pmatrix}
+			\dot{q}\\\dot{p}
+		\end{pmatrix}
+		= \frac{\mathrm{d}}{\mathrm{d} t}\begin{pmatrix}q\\p\end{pmatrix}
+		= f\left(t, \begin{pmatrix}q\\p\end{pmatrix}\right) 
+		\coloneqq 			
+		\begin{pmatrix}\mathbf{\Gamma}(q, q)p\\ 
+		-\frac{\partial \left(\frac{1}{2} p^\mathrm{T} \mathbf{\Gamma}(q, q) p\right)}{\partial q}
+		\end{pmatrix} 
 	\end{equation}
-	The boundedness of $\dot{q}$ is easy to see:
+	Then by the mean value theorem there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX$ such that
+	\begin{align}
+		\norm{f\left(t, x\right) - f\left(t, y\right) }
+		= \norm{
+			\frac{\mathrm{d}}{\mathrm{d} t}f\left(t, z \right)}
+		\cdot \norm{x-y} \ .
+	\end{align}
+	Because of the equality in \cref{eq:hamiltonian-time-derivative} we immediately arrive at the desired result:
+	$\norm{f\left(t, x\right) - f\left(t, y\right) } \leq L \norm{x - y}$.
+	For the detailed requirements of the Picard-Lindelöf theorem the reader is referred to \cite{arino06, tenenbaum85}.
+	
+	All that is left to show now is the boundedness of $\dot{q}$ and $\dot{p}$.
+	That of of $\dot{q}$ is easy to see from \cref{eq:feature-hamiltonian}:
 	\begin{equation}
-		\ .
+		\norm{\dot{q}_i}_\cX \leq \norm{\psi^T(q_i)}_O \norm{\alpha}_\cF 
+		\leq \sup_{x \in \cX}\norm{\psi^T(x)}_O \norm{\alpha}_\cF\ .
 	\end{equation}
-	Then, for each entry $\dot{p}_{i, j}$ of $\dot{p}_i$
+	Here, $\norm{\cdot}_O$ is the operator norm \cite{conway07}.
+	Because of the assuption in \cref{cond:feature-condition}, $\psi$ is bounded.
+	This implies that the adjoint $\psi^\T$ is, too.
+	We already saw that $\alpha$ is constant.
+	It remains to show the boundedness of $\dot{p_i}$.
+	First consider each entry $\dot{p}_{i, j}$ of $\dot{p}_i$.
+	By Cauchy-Schwarz we get
 	\begin{align}
 		\abs{p_{i,j}} &= \abs{\frac{\partial}{\partial q_{i, j}}\left<p_i, \psi^\T(q_i) \alpha \right> }\\
 		&= \abs{\left<p_i, \frac{\partial}{\partial q_{i, j}} \psi^\T(q_i) \alpha \right> }\\
-		&\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) }_\cX
+		&\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) }_\cX \ .
 	\end{align}
-	Observe the second factor, $\psi^\T(q_i) \alpha$. $\psi^\T$ is a matrix, or rather a bounded linear operator in $L(\cF, \cX)$, and $\alpha \in \cF$.
-	This matrix-vector product is a continuous, bilinear operator and thus we can apply the product rule for partial derivatives.
-	As $\alpha$ does not depend on $q_{i, j}$, the equality $\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) = \left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha$ holds true. The partial derivative of $\psi^\T$ is again a bounded linear operator.
-	Let $\norm{\cdot}_O$ be a suitable operator norm, then 
+	Observe the second factor, $\psi^\T(q_i) \alpha$. $\psi^\T$ is a matrix (actually a bounded linear operator in $L(\cF, \cX)$, but we are finite-dimensional), and $\alpha \in \cF$.
+	The matrix-vector product is a continuous, bilinear operator and thus we can apply the product rule for partial derivatives.
+	$\alpha$ does not depend on $q_{i, j}$, thus the equality $\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) = \left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha$ holds true. The partial derivative of $\psi^\T$ is again a bounded linear operator.
 	\begin{equation}
 		\norm{\left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha}_\cX \leq \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \norm{\alpha}_\cF \ .
 	\end{equation}
-	Thus
+	Together with the already established inequality we get
 	\begin{align}
-		\abs{p_{i,j}} &\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i)\right) \alpha }_\cX\\
+		\abs{\dot{p}_{i,j}} &\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i)\right) \alpha }_\cX\\
 		&\leq  \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \cdot \norm{\alpha }_\cF \ .
 	\end{align}
-	
-	
+	In total, this gives
+	\begin{align}
+		\norm{\dot{p}_i}^2 &= \sum_{i=1}^N \dot{p}_{i,j}^2\\
+		&\leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sum_{i=1}^N  \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O^2\\
+		& = \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \norm{\grad \psi^T(q_i)}^2 \\
+		& \leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)}^2 \ ,
+	\end{align}
+	which is, of course, equivalent to 
+	\begin{equation}
+	\label{eq:norm-p-inequality}
+		\norm{\dot{p}_i}\leq \norm{p_i}_\cX \cdot \norm{\alpha }_\cF \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)} \ .
+	\end{equation}
+	All factors on the right side are bounded: $p_i$ is a continuous function defined on a compact interval, $\alpha$ is constant, as we have seen, and the last term by \cref{cond:feature-condition}.
+	This means $\dot{p_i}$ and therefore $\dot{p}$ are bounded, too.
 \end{proof}
 
 
