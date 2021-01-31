@@ -174,18 +174,19 @@ Here, we get
 	&= \frac{1}{2} p(t)^\T \mathbf{\Gamma}(q(t), q(t)) p(t) \ .
 \end{align}
 
-As you can see, the equations already get quite cluttered.
+As you can see, the equations already become quite cluttered.
 Thus, in the following we will, for simplicity, often omit the time dependence of $p$ and $q$.
 For example, we write $\Gamma(q, q)$ instead of $\Gamma(q(t), q(t))$.
 
 The next theorem describes the correspondence between Lagrangian and Hamiltonian mechanics:
 \Todo{Important: Explain meaning of partial symbol (is to be read as a gradient) or write differently}
 \begin{theorem}
+	\label{theo:hamiltonian-dynamic}
 	If $q$ minimizes \cref{prob:cont-least-action}, $(q, p)$ follow Hamilton's equations
 	\begin{equation}
 	\label{eq:hamiltonian-system}
 		\begin{split}
-				\dot{q} &= \frac{\partial \fH(q, p)}{\partial p} = \mathbf{\Gamma}(q, q) p\\
+			\dot{q} &= \frac{\partial \fH(q, p)}{\partial p} = \mathbf{\Gamma}(q, q) p\\
 			\dot{p} &= -\frac{\partial \fH(q, p)}{\partial q} 
 			= -\frac{\partial \left(\frac{1}{2} p^\mathrm{T} \mathbf{\Gamma}(q, q) p\right)}{\partial q}
 		\end{split}
@@ -249,7 +250,7 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
 	From \cref{cor:feature-space-norm} we get:
 	\begin{align}
-		\norm{\alpha}_\cF^2 &= \norm{\psi^\T \alpha}_\cV^2\\
+		\norm{\alpha}_\cF^2 &= \norm{\psi^\T(x) \alpha}_\cV^2\\
 		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
 		&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
 		&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
@@ -261,7 +262,11 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
 	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).
 	Our goal is to use a global version of the Picard-Lindelöf theorem \cite[~Theorem 1.2.3]{arino06} to prove that the Hamiltonian system does have a unique solution.
-	For this, we need the vector field $(q, p)$ to be globally Lipschitz continuous.
+	From this it immediately follows that $q$ and $p$ are $C^1$.
+	The right side of the first line in \cref{eq:feature-hamiltonian} is also differentiable by $t$.
+	Thus $q$ is $C^2$.
+	
+	For being able to apply Picard-Lindelöf we need the vector field $(q, p)$ to be globally Lipschitz continuous.
 	Showing component-wise Lipschitz continuity suffices because we can choose the global constant $L$ as the maximum of the components'.
 	We will show the Lipschitz property by proofing that $\dot{q}$ and $\dot{p}$ are bounded.
 	\Todo{Is this bogus math? This looks like a system of PDEs, is Picard-Lindelöf even applicable? Not and yes!
@@ -334,10 +339,40 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	\end{equation}
 	All factors on the right side are bounded: $p_i$ is a continuous function defined on a compact interval, $\alpha$ is constant, as we have seen, and the last term by \cref{cond:feature-condition}.
 	This means $\dot{p_i}$ and therefore $\dot{p}$ are bounded, too.
+	This concludes the proof.
 \end{proof}
 
+See Allansonnière for Theorem 3.7 of paper
 
 \subsection{Geodesic Shooting}
+
+Using the Hamiltonian representation, we can now formulate another equivalent problem.
+
+\begin{theorem}
+$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \mathbf{\Gamma}^{-1}(q, q)\dot{q}$, $(q, p)$ satisfy Hamilton's equations \ref{eq:hamiltonian-system}, $q(0) = X$ and $p(0)$ minimizes
+\begin{equation}
+	\label{eq:p0-min-function}
+	\mathfrak{V}(p(0), X, Y) \coloneqq  \frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)
+\end{equation}
+\end{theorem}
+\begin{proof}
+	Sketch (for now):
+	Let $q$ minimize \cref{prob:cont-least-action} and define $p$ as above.
+	Then $q(0) = X$ and by \cref{theo:hamiltonian-dynamic} $(q, p)$ satisfy Hamilton's equations.
+	We have $\cL(t, q, \dot{q}) = \cH(t, q, p)$ and know from \cref{cor:energy-preservation} that $\cH$ is constant across time.
+	This implies that
+	\begin{equation}
+		\mathcal{A}(q) = \int_{0}^{1} \cL(t, q, \dot{q}) \mathrm{d}t 
+		= \int_{0}^{1} \cH(t, q, p) \mathrm{d}t = \cH(\beta, q, p)
+	\end{equation}
+	for $\beta \in [0, 1]$.
+	Therefore $(q, p)$ minimize $\nu \cH(0, q, p) + l(q(1), Y)$ and for $\beta = 0$ we get
+	\begin{align}
+		\nu \cH(0, q, p) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(q(0), q(0))p(0) + l(q(1), Y)\\
+		&= \frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y) \ .
+	\end{align}
+	Vice versa, if $p(0)$ minimizes $\mathfrak{V}$ and $(q, p)$ follow the Hamilton's equations with the same argument $q$ minimizes \cref{prob:cont-least-action}.
+\end{proof}
 
 \subsection{Continuous Limit and Adherence Values}
 
