@@ -23,7 +23,7 @@ class Evaluator(object):
 
             q, _ = simulate_flow(self.model.dq_h, self.model.dp_h, self.model.X, self.model.p0,
                                  step=self.model.model_params.h, t_stop=1)
-            q = q.reshape((-1, self.model.X.shape[0], 2))
+            q = q.reshape((-1, self.model.X.shape[0]//2, 2))
             all_flows.append(q)
 
         return np.asarray(all_flows)

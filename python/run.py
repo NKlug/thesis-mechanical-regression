@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
     # limit gpu memory allocation
     gpus = tf.config.list_physical_devices('GPU')
-    if len(gpus) > 0:
-        tf.config.experimental.set_memory_growth(gpus[0], True)
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
 
     print("Creating model from the following config:")
     config_path = path.realpath(path.expanduser(args.config))
