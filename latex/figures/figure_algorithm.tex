@@ -1,25 +1,32 @@
 \begin{figure}
 	\centering
-	\begin{minipage}{.8\linewidth}
+	\begin{minipage}{.45\linewidth}
 		\scriptsize
-		\begin{algorithmic}[H]
+		\begin{algorithmic}[1]
 			\STATE \texttt{find\_optimal\_p0(initial\_$p_0$, X, Y)} \{
 			\begin{ALC@g}
 				\STATE $p_0 \coloneqq$ initial\_$p_0$
 				\WHILE{$p_0$ not converged}
 				\STATE $q_1 \coloneqq$ \texttt{solve\_hamiltonian\_system($p_0$, X)}
 				\STATE $v \coloneqq \frac{\nu}{2} p_0^\T \mathbf{\Gamma}(X, X)p_0 + l(q_1, Y)$
-				\STATE $p0 \coloneqq$ \texttt{optimizer.minimize(v, p0)}
+				\STATE $p_0 \coloneqq$ \texttt{optimizer.minimize(v, $p_0$)}
 				\ENDWHILE
 			\end{ALC@g}
 			
 			\STATE \}
 			\STATE \
+
+		\end{algorithmic}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\linewidth}
+		\scriptsize
+		\begin{algorithmic}[1]
 			\STATE \texttt{solve\_hamiltonian\_system($p_0$, X)} \{
 			\begin{ALC@g}
 				\STATE $p \coloneqq$ $p_0$
 				\STATE $q \coloneqq X$
-				\FOR{$i \coloneqq 1$, $i \leq int(\frac{1}{step})$, $i++$}
+				\FOR{$i \coloneqq 1$ to  $\mathrm{int}(\frac{1}{step})$}
 				\STATE $p \coloneqq p - \frac{step}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
 				\STATE $q \coloneqq step \cdot \mathbf{\Gamma}(q,q) p$
 				\STATE $p \coloneqq p - \frac{step}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
@@ -30,6 +37,6 @@
 			\STATE \}
 		\end{algorithmic}
 	\end{minipage}
-	\caption{asdf}
+	\caption{Coarse summary of geodesic shooting algorithm.}
 	\label{fig:algo}
 \end{figure}
