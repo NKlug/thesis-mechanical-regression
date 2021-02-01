@@ -1,16 +1,70 @@
 \section{Algorithm: Geodesic Shooting}
 
+The goal of this section is to reproduce the experiments in \cite{owhadi20} (is this really the goal?).
+Coarse structure:
+\begin{enumerate}
+	\item Introduction/transition to the algorithm - motivated by the infinite depth limit
+	\item A proper motivation is needed though
+	\item The algorithm: Step by step
+	\item Notes on implementation: Automatic gradients, tikhonov regularization, optimizer, convergence
+	\item Experimental results: Dataset, kernel choice, Images with different parameters, maybe something like precision?
+\end{enumerate}
+
 Instead of $\mathbb{R}^{n\times2}$ $\mathbb{R}^{2n}$.
 We utilize the Block Operator Matrix Notation, which makes calculations particularly easy as everything can be written over $\mathbb{R}^{n\times n}$ (more or less).
 Proof that we can then use standard matrix multiplication.
 
 \input{figures/figure_algorithm}
 
-\begin{definition}
-	content...
-\end{definition}
+
 
 Dataset: We use a common benchmark dataset, the Swiss Rolls Dataset.
 It can be generated as two interleaved spirals, one spiral belonging to class A, the other to class B.
 
+\subsection{An Algorithm based on Mechanical Regression}
+
+In \cref{theo:geodesic-shooting} (and visually in \cref{fig:convergence}) we saw an equivalent formulation of the optimization problem modeled by ResNets.
+This gives rise to a new idea for an algorithm which solves the mechanical regression task by geodesic shooting.
+Given the data points $X$ and $Y$, the basic idea is as follows:
+\begin{enumerate}[label=\arabic*.]
+	\item Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.
+	\item Choose an initial momentum $p(0)$.
+	\item Minimize $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ by iterating the following steps:
+	\begin{enumerate}[label=\arabic*.]
+		\item Solve the Hamiltonian system \ref{eq:hamiltonian-system} with initial conditions $q(0) = X$, $p(0) = p0$.
+		\item Compute $q(1)$ and with that, the gradient of $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ with respect to $p(0)$.
+		\item Update $p(0)$ accordingly.
+	\end{enumerate}
+	\item Solve the differential equation \ref{eq:phi-v-differential-equation} with $q(0) = X$ and $p(0)$ the optimal momentum computed above to obtain $\Phi^v(\cdot, 1): \cX \rightarrow \cX$.
+	\item Compute $f: \cX \rightarrow \cY$ as the minimizer of $l(\Phi^v(X, 1), Y)$ and approximate the target function $f^\dagger$ with $f \circ \Phi^v(\cdot, 1)$.
+\end{enumerate}
+
+We will now examine the individual steps in depth.
+The first two steps are fairly straight forward.
+Viable choices for the loss are, of course, the optimal recovery and the ridge regression loss, which includes common losses such as the empirical squared error.
+The kernels can be chosen arbitrarily, in theory every function satisfying the definition is possible.
+In classical machine learning, popular kernel choices (e.g. for Support Vector Machines) include linear, polynomial, Gaussian/Radial Basis Function (RBF), sigmoid and ANOVA kernels.
+
+
+
+
+
+
+This subsection contains
+\begin{itemize}
+	\item Pseudo code algorithm
+	\item explanation of the algorithm and it's steps
+	\item Note on the leapfrog integration scheme and why its used
+\end{itemize}
+
+\subsection{Notes on the Implementation}
+
+For $\bGamma$ and $K$ we choose variants of the general purpose Gaussian kernel:...
+
+The implementation of the algorithm used in the experiments is available at \href{https://github.com/NKlug/thesis-mechanical-regression}{https://github.com/NKlug/thesis-mechanical-regression}.
+
+Tikhonov regularization was necessary!
+
 \subsection{Experimental Results}
+
+

@@ -6,6 +6,7 @@ Take a closer look at the first term of the objective function in \cref{prob:min
 With some imagination this very much looks like an approximation of the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
 This would require the sequence $q_k$ to be a discrete equidistant sampling of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
 Without loss of generality we choose $A = [0, 1]$ and write $q_k = q(k \Delta t)$.
+\Todo{Nice wording: The dot signifying the time derivative d dt	}
 This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative $\dot{q}$ on at the point $k \Delta t = \frac{k}{L}$ and we get the approximation
 \begin{equation}
 	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} 
