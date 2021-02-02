@@ -45,8 +45,31 @@ Viable choices for the loss are, of course, the optimal recovery and the ridge r
 The kernels can be chosen arbitrarily, in theory every function satisfying the definition is possible.
 In classical machine learning, popular kernel choices (e.g. for Support Vector Machines) include linear, polynomial, Gaussian/Radial Basis Function (RBF), sigmoid and ANOVA kernels.
 
+The first difficulties arise when implementing step 3.1, which involves solving the Hamiltonian system \ref{eq:hamiltonian-system}.
+This system cannot be solved exactly and thus has to be approximated.
+For solving (systems of) differential equations, many integration schemes exist, some of them preserving different invariants.
+The Hamiltonian system we are dealing with has many invariants:
+We have already seen that the energy is preserved, other invariants are the canonical symplectic 2-form \cite{marsden10} and the area/volume in the so called phase space (the space in which $(q(t), p(t))$ lies) \cite{hairer06}.
+In their implementation \citet{owhadi20} use a slightly modified version of the classical Störmer-Verlet method (also known as leapfrog method)\footnote{This method was even used by Newton in his \emph{Principia Mathematica} \cite{hairer03}.}.
+However, as the Hamiltonian, here, is non-separable.
+That means that it cannot be written as $\cH(q, p) = T(p) + U(q)$, which is often possible in physical applications, where $T$ corresponds to the kinetic and $U$ to the potential energy of the system.
+Non-separability of the Hamiltonian implies that the Störmer-Verlet scheme is implicit \cite{hairer06}, which makes it difficult to implement and computationally inefficient.
+Thus \citet{owhadi20} use a modified scheme, which is given by
+\begin{align}
+	p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \frac{\partial}{\partial q}\fH\left(q_n, p_n\right) \\
+	q_{n+1} &\gets q + h \frac{\partial}{\partial q}\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
+	p_{n+1} &\gets p - \frac{h}{2} \frac{\partial}{\partial q}\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \ .
+\end{align}
+Note the difference in the second line, where usually 
+\begin{equation}
+q_{n+1} \gets q + \frac{h}{2} \left(\frac{\partial}{\partial q}\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \frac{\partial}{\partial q}\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
+\end{equation}
+Whereas the modified scheme lost its symplecticity, it is explicit, time-reversible and shows sufficient stability.
 
+Here comes a little something on step 4.
 
+In the last step, the computability of $f$ strongly depends on the chosen loss.
+For losses like optimal recovery or ridge regression, we already saw in \cref{eq:ridge-regression-f,eq:optimal-recovery-f} how $f$ can be explicitly determined.
 
 
 
@@ -67,4 +90,5 @@ Tikhonov regularization was necessary!
 
 \subsection{Experimental Results}
 
+Here will be a figure comparing the flows with different parameters.
 

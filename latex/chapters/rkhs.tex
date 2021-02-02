@@ -19,7 +19,7 @@ Example: Gaussian/RBF-Kernel, Polynomial Kernel
 
 \begin{equation}
 	\label{eq:kernel-feature-map}
-	K(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)
+	K(x_1, x_2) = \psi^\T(x_1)\psi(x_2)
 \end{equation}
 
 \begin{theorem}
@@ -127,15 +127,15 @@ As $\mathcal{H}$ is a Hilbert Space, we can compute it using the scalar product:
 	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(x, X_i) Z_i, K(x, X_j) Z_j \right>_\mathcal{H}\\
 	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_i, X_j) Z_j \right>_\cY\\
 	&= \left< Z, \mathbf{K}(X, X) \cdot Z\right >_{\cY^N}\\
-	&= Z^\mathrm{T} \cdot \mathbf{K}(X, X) \cdot Z \\
-	&= (\mathbf{K}(X, X)^{-1} \cdot Y)^\mathrm{T} \cdot \mathbf{K}(X, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y\\
-	&= Y^\mathrm{T} \cdot (\mathbf{K}(X, X)^{-1})^\mathrm{T} \cdot Y\\
-	&=  Y^\mathrm{T} \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
+	&= Z^\T \cdot \mathbf{K}(X, X) \cdot Z \\
+	&= (\mathbf{K}(X, X)^{-1} \cdot Y)^\T \cdot \mathbf{K}(X, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y\\
+	&= Y^\T \cdot (\mathbf{K}(X, X)^{-1})^\T \cdot Y\\
+	&=  Y^\T \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
 \end{align}
 In the fourth line we used the reproducing property and in the second to last line the fact $\mathbf{K}$ that $K$ is Hermitian, that is, $K(x, y)^\T = K(y, x)$.
 All in all, this leaves us with an appealing and compact form for the optimal recovery loss:
 \begin{equation}
-	l(X, Y) = Y^\mathrm{T} \mathbf{K}(X, X)^{-1} Y \ .
+	l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y \ .
 \end{equation}
 \subsection{Ridge Regression}
 
@@ -145,4 +145,8 @@ All in all, this leaves us with an appealing and compact form for the optimal re
 	+ l_\cY (f(X), Y)
 \end{equation}
 
+\begin{equation}
+	\label{eq:ridge-regression-f}
+	f(x) = \mathbf{K}(x, X)^\T \left(\mathbf{K}(x, X) + \lambda I\right)^{-1}Y \ .
+\end{equation}
 Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery.
