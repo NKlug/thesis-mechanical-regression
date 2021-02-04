@@ -12,10 +12,7 @@
 				\STATE $p_0 \coloneqq$ \texttt{optimizer.minimize(v, $p_0$)}
 				\ENDWHILE
 			\end{ALC@g}
-			
 			\STATE \}
-			\STATE \
-
 		\end{algorithmic}
 	\end{minipage}
 	\hfill
@@ -26,10 +23,10 @@
 			\begin{ALC@g}
 				\STATE $p \coloneqq$ $p_0$
 				\STATE $q \coloneqq X$
-				\FOR{$i \coloneqq 1$ to  $\mathrm{int}(\frac{1}{step})$}
-				\STATE $p \coloneqq p - \frac{step}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
-				\STATE $q \coloneqq step \cdot \mathbf{\Gamma}(q,q) p$
-				\STATE $p \coloneqq p - \frac{step}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
+				\FOR{$i \coloneqq 1$ to  $\mathrm{int}(\frac{1}{h})$}
+				\STATE $p \coloneqq p - \frac{h}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
+				\STATE $q \coloneqq h \cdot \mathbf{\Gamma}(q,q) p$
+				\STATE $p \coloneqq p - \frac{h}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
 				\ENDFOR
 				\RETURN $q$
 			\end{ALC@g}
@@ -37,6 +34,6 @@
 			\STATE \}
 		\end{algorithmic}
 	\end{minipage}
-	\caption{Coarse summary of geodesic shooting algorithm.}
+	\caption{Pseudocode for the geodesic shooting algorithm. $\nu$ balances the deformation of the space with the chosen loss $l$. $h$ is the step size for the modified Leapfrog integrator.}
 	\label{fig:algo}
 \end{figure}
