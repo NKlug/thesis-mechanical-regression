@@ -6,7 +6,7 @@
 			\STATE \texttt{find\_optimal\_p0(initial\_$p_0$, X, Y)} \{
 			\begin{ALC@g}
 				\STATE $p_0 \coloneqq$ initial\_$p_0$
-				\WHILE{$p_0$ not converged}
+				\WHILE{$p_0$ not converged} \label{code:p0-convergence}
 				\STATE $q_1 \coloneqq$ \texttt{solve\_hamiltonian\_system($p_0$, X)}
 				\STATE $v \coloneqq \frac{\nu}{2} p_0^\T \mathbf{\Gamma}(X, X)p_0 + l(q_1, Y)$
 				\STATE $p_0 \coloneqq$ \texttt{optimizer.minimize(v, $p_0$)}
@@ -35,5 +35,6 @@
 		\end{algorithmic}
 	\end{minipage}
 	\caption{Pseudocode for the geodesic shooting algorithm. $\nu$ balances the deformation of the space with the chosen loss $l$. $h$ is the step size for the modified Leapfrog integrator.}
+	\Todo[inline]{Probably change environment to one of the newer ones \href{https://tex.stackexchange.com/questions/229355/algorithm-algorithmic-algorithmicx-algorithm2e-algpseudocode-confused}{here}}
 	\label{fig:algo}
 \end{figure}

@@ -68,6 +68,7 @@
 {\renewcommand{\abstractname}{#1}\begin{abstract}}
 	{\end{abstract}}
 
+% Define new environment for problem
 \newaliascnt{problem}{equation}
 \newenvironment{problem}%
 {\begin{equation*}\refstepcounter{problem}}
@@ -75,6 +76,7 @@
 
 \makeatother
 
+% Set custom cref names
 \crefname{problem}{Problem}{Problem}
 
 % Rename autorefnames

@@ -52,13 +52,13 @@ This means that it cannot be written as $\cH(q, p) = T(p) + U(q)$, which is ofte
 Non-separability of the Hamiltonian implies that the Störmer-Verlet scheme is implicit \cite{hairer06}, which makes it difficult to implement and computationally inefficient.
 Thus \citet{owhadi20} use a modified scheme, which is given by
 \begin{align}
-	p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \frac{\partial}{\partial q}\fH\left(q_n, p_n\right) \\
-	q_{n+1} &\gets q_n + h \frac{\partial}{\partial q}\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
-	p_{n+1} &\gets p_{n+\frac{1}{2}} - \frac{h}{2} \frac{\partial}{\partial q}\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \ .
+	p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \grad_q\fH\left(q_n, p_n\right) \\
+	q_{n+1} &\gets q_n + h \grad_q\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
+	p_{n+1} &\gets p_{n+\frac{1}{2}} - \frac{h}{2} \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \ .
 \end{align}
 Note the difference in the second line, where usually 
 \begin{equation}
-q_{n+1} \gets q + \frac{h}{2} \left(\frac{\partial}{\partial q}\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \frac{\partial}{\partial q}\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
+q_{n+1} \gets q + \frac{h}{2} \left(\grad_q\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
 \end{equation}
 Whereas the modified scheme lost its symplecticity, it is explicit, time-reversible and shows sufficient stability.
 
@@ -74,6 +74,8 @@ In other cases there might not exist closed form solutions.\Todo{Can we have an 
 As we are trying to approximate $q(1)$, the step size $h$ of the modified Leapfrog integration scheme explained above should ideally be chosen such that $\frac{1}{h} \in \mathbb{N}$.
 The call \texttt{optimizer.minimize()} performs one step of the utilized minimization algorithm.
 Among the viable choices for such an algorithm are variants of gradient descent, such as Stochastic Gradient Descent or Adam.
+Concerning the while-loop's condition: Of course, \Todo{Maybe fix this?}Line \ref{code:p0-convergence} cannot be implemented effectively as such.
+One alternative option would be to constantly monitor the target function's value $v$ and stop optimizing when it plateaus, in the hope of having found a minimum.
 
 \subsection{Experiments}
 
@@ -84,10 +86,10 @@ In this section some experimental results of \citet{owhadi20}'s algorithm are de
 For the experiments the two-dimensional \emph{Swiss Roll} dataset is used.
 This dataset is a common benchmark in machine learning.
 It consists of two interleaved spirals, one belonging to class $A$, the other to class $B$.
-The spirals were sampled equidistantly with 100 points each spanning a total of approximately two coils.
+The spirals were sampled equidistantly with $100$ points each spanning a total of approximately two coils.
 Class $A$ was assigned the value $1$ and $B$ the value $-1$.
 Additionally, some Gaussian noise was added to the sampled points in order to mimic imprecisions found in real world datasets.
-The result of this process are pairs $(X_i, Y_i)$, $i \in [200]$, with $X_i \in \R^2$ and $Y_i \in \R$; so using the nomenclature of the previous sections, we have $\cX = \R^2$ and $\cY = \R$.
+The result of this process are pairs $(X_i, Y_i)$, $i \in [200]$, with $X_i \in \R^2$ and $Y_i \in \R$; so continuing the nomenclature of the previous sections, we have $\cX = \R^2$ and $\cY = \R$.
 A depiction of the dataset can be seen in \cref{fig:dataset}. 
 \input{figures/figure_dataset}
 
@@ -100,11 +102,24 @@ Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 	\Gamma(x_1, x_2) &\coloneqq \left(e^{-\frac{\norm{x_1 - x_2}_\cX^2}{s^2}} + r\right) \cdot \mathbbm{1}_2\\
 	K(x_1, x_2) &\coloneqq e^{-\frac{\norm{x_1 - x_2}_\cX^2}{s^2}} + r \ .
 \end{align}
-$\mathbbm{1}_2$ is the $2\times2$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$ for both.
-Note that those kernels are well-defined in the sense that they are functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required of them in \cref{def:kernel} (which we will not proof here).
+$\mathbbm{1}_2$ is the $(2\times2)$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$ for both.
+Note that those kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required of them in \cref{def:kernel} (which we will not proof here).
 
 \subsubsection{Remarks on the Implementation}
 
+The pseudocode in \cref{fig:algo} can be implemented fairly straight forward.
+However, there are some tricks that make it easier, some of which are presented here.
+
+The first simplification lies in the implementation of the inner product on $\cX = \R^2$, which is just the standard scalar product.
+In order to fully make use of modern tensor-processing frameworks' parallel processing abilities, expressing the scalar product of $\cX^N$ (which is defined as $\sum_{i=1}^N \left<x_{1, i}, x_{2, i}\right>$ for $x_1, x_2 \in \cX^N$) in terms of matrix operations is highly desirable.
+\cref{cor:matrix-ring-equivalence} provides an option to do so.
+We simply (bijectivly) map vectors from $\cX^N$ to $\R^{2N}$.
+Then we can perform standard vector-vector multiplication efficiently using the frameworks capabilities and, if required, map the result back to $\cX^N$.
+The application of a block operator matrix to a vector can be performed similarly, employing \cref{cor:matrix-vector-equivalence}:
+Block operator matrices are mapped from $L(\cX^N, \cX^N)$ to $\R^{2N \times 2N}$ and subsequently standard matrix-vector multiplication can be carried out.
+It turns out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \times 2N}$ by default and switch to the isomorphic ones only when necessary.
+
+One such place is the gradient of $\cH$ with respect to $q$.
 The implementation of the algorithm used in the experiments is available at \url{https://github.com/NKlug/thesis-mechanical-regression}.
 
 Write:
