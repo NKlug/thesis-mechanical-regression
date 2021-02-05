@@ -24,10 +24,10 @@ This gives rise to a new idea for an algorithm which solves the mechanical regre
 Given the data points $X$ and $Y$, the basic idea is as follows:
 \begin{enumerate}[label=\arabic*.]
 	\item Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.
-	\item Choose an initial momentum $p(0)$.
+	\item Choose an initial momentum $p_0$.
 	\item Minimize $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ by iterating the following steps:
 	\begin{enumerate}[label=\arabic*.]
-		\item Solve the Hamiltonian system \ref{eq:hamiltonian-system} with initial conditions $q(0) = X$, $p(0) = p0$.
+		\item Solve the Hamiltonian system \ref{eq:hamiltonian-system} with initial conditions $q(0) = X$, $p(0) = p_0$.
 		\item Compute $q(1)$ and with that, the gradient of $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ with respect to $p(0)$.
 		\item Update $p(0)$ accordingly.
 	\end{enumerate}
@@ -52,13 +52,13 @@ This means that it cannot be written as $\cH(q, p) = T(p) + U(q)$, which is ofte
 Non-separability of the Hamiltonian implies that the Störmer-Verlet scheme is implicit \cite{hairer06}, which makes it difficult to implement and computationally inefficient.
 Thus \citet{owhadi20} use a modified scheme, which is given by
 \begin{align}
-	p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \grad_q\fH\left(q_n, p_n\right) \\
-	q_{n+1} &\gets q_n + h \grad_q\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
-	p_{n+1} &\gets p_{n+\frac{1}{2}} - \frac{h}{2} \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \ .
+	p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \grad_q\fH\left(q_n, p_n\right) \label{eq:leapfrog-p.5}\\
+	q_{n+1} &\gets q_n + h \grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
+	p_{n+1} &\gets p_{n+\frac{1}{2}} - \frac{h}{2} \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \label{eq:leapfrog-p1}\ .
 \end{align}
 Note the difference in the second line, where usually 
 \begin{equation}
-q_{n+1} \gets q + \frac{h}{2} \left(\grad_q\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
+q_{n+1} \gets q + \frac{h}{2} \left(\grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \grad_p\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
 \end{equation}
 Whereas the modified scheme lost its symplecticity, it is explicit, time-reversible and shows sufficient stability.
 
@@ -105,13 +105,18 @@ Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 $\mathbbm{1}_2$ is the $(2\times2)$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$ for both.
 Note that those kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required of them in \cref{def:kernel} (which we will not proof here).
 
+
+\subsubsection{Results}
+
+Here will be a figure comparing the flows with different parameters.
+
 \subsubsection{Remarks on the Implementation}
 
 The pseudocode in \cref{fig:algo} can be implemented fairly straight forward.
 However, there are some tricks that make it easier, some of which are presented here.
 
 The first simplification lies in the implementation of the inner product on $\cX = \R^2$, which is just the standard scalar product.
-In order to fully make use of modern tensor-processing frameworks' parallel processing abilities, expressing the scalar product of $\cX^N$ (which is defined as $\sum_{i=1}^N \left<x_{1, i}, x_{2, i}\right>$ for $x_1, x_2 \in \cX^N$) in terms of matrix operations is highly desirable.
+In order to fully make use of modern tensor-processing frameworks' parallel processing abilities, expressing the scalar product of $\cX^N$ (which is defined as $\sum_{i=1}^N \left<x_{1, i}, x_{2, i}\right>_\cX$ for $x_1, x_2 \in \cX^N$) in terms of matrix operations is highly desirable.
 \cref{cor:matrix-ring-equivalence} provides an option to do so.
 We simply (bijectivly) map vectors from $\cX^N$ to $\R^{2N}$.
 Then we can perform standard vector-vector multiplication efficiently using the frameworks capabilities and, if required, map the result back to $\cX^N$.
@@ -119,18 +124,23 @@ The application of a block operator matrix to a vector can be performed similarl
 Block operator matrices are mapped from $L(\cX^N, \cX^N)$ to $\R^{2N \times 2N}$ and subsequently standard matrix-vector multiplication can be carried out.
 It turns out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \times 2N}$ by default and switch to the isomorphic ones only when necessary.
 
-One such place is the gradient of $\cH$ with respect to $q$.
-The implementation of the algorithm used in the experiments is available at \url{https://github.com/NKlug/thesis-mechanical-regression}.
+Another potentially difficult step to implement is the gradient of $\fH$ with respect to $q$, especially in cases like \cref{eq:leapfrog-p.5,eq:leapfrog-p1} where no closed form formula is available.
+A solution for this would be to approximate the gradient using two-point methods such as the left/right sided or symmetric difference quotient.
+However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and Pytorch for Python) provide automatic forward and backward differentiating capabilities.
+Those are not only simpler to implement but also computationally more efficient, which strongly encourages their use.
 
-Write:
-\begin{itemize}
-	\item Tikhonov regularization was necessary.
-	\item BlockOperator notation -> we worked in the isomorphic matrix ring to simplify computations.
-\end{itemize}
-Tikhonov regularization was necessary!
+As the experiments showed, using the optimal recovery loss in its pure form showed to be impossible (at least for the Swiss Roll dataset).
+Recall \cref{eq:optimal-recovery-loss-closed-form} where we identified it as $l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y$.
+Note that it involves computing $\mathbf{K}(X, X)^{-1}$, or rather solving the linear system $\mathbf{K}(X, X)^{-1} Y$.
+That system, involving a $(200\times200)$ matrix, proved to be ill-conditioned, which gave rise to some numerical issues and compromised the minimization process.
+Hence, some matrix regularization was applied:
+Adding a small constant $\lambda$ to the diagonal elements (in the experiments $\lambda = 10^{-6}$ was used) alleviated this problem.
+This method is also known as Tikhonov regularization.
+However, this effectively changed the loss to the ridge regression loss employing the empirical squared error, which reads (\cref{eq:ridge-regression-loss-se-closed-form}):
+\begin{equation}
+	l(X, Y) = \lambda Y^\T (\mathbf{K}(X, X) + \lambda \mathbbm{1}_N)^{-1} Y \ ,
+\end{equation}
+the only difference being the initial scaling by $\lambda$.
 
-
-\subsubsection{Results}
-
-Here will be a figure comparing the flows with different parameters.
-
+The Python implementation used in the experiments is available at \url{https://github.com/NKlug/thesis-mechanical-regression}.
+The use of Google's Tensorflow framework \cite{tensorflow15} made it particularly easy to leverage GPU acceleration, automated gradients and pre-implemented optimization algorithms.
