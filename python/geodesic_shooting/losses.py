@@ -13,3 +13,18 @@ def optimal_recovery_loss(x, y, k, regularizer):
     kernel_mat = k(x, x)
     d = tf.linalg.solve(kernel_mat + regularizer * tf.eye(kernel_mat.shape[0], dtype=tf.float64), y[:, None])[:, 0]
     return tf.tensordot(y, d, axes=1)
+
+
+def ridge_regression_loss(x, y, k, regularizer):
+    """
+    Ridge regression loss as in (2.21) in [Owhadi2020]
+    :param x: training data
+    :param y: training labels
+    :param k: kernel
+    :param regularizer: regularizing constant
+    :return: the loss
+    """
+    # solve d = k(x, x) @ y rather than computing the inverse because of numerical stability
+    kernel_mat = k(x, x)
+    d = tf.linalg.solve(kernel_mat + regularizer * tf.eye(kernel_mat.shape[0], dtype=tf.float64), y[:, None])[:, 0]
+    return regularizer * tf.tensordot(y, d, axes=1)

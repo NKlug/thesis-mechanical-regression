@@ -1,11 +1,17 @@
 from os import path
 
+from geodesic_shooting.losses import optimal_recovery_loss, ridge_regression_loss
 from geodesic_shooting.swiss_roll_dataset import generate_swiss_roll_dataset
+
+losses = {
+    'optimal_recovery': optimal_recovery_loss,
+    'ridge_regression': ridge_regression_loss
+}
 
 
 class TrainingParameters(object):
     def __init__(self, dataset, mu, h, s, r, ls_regularizer, checkpoint_base_dir, log_base_dir, name=None,
-                 user_dir_override=None,
+                 user_dir_override=None, loss=None,
                  *args, **kwargs):
         """
         Hyper parameters for the model.
@@ -25,6 +31,11 @@ class TrainingParameters(object):
         self.s = s
         self.r = r
         self.ls_regularizer = ls_regularizer
+
+        if loss is None:
+            loss = 'optimal_recovery'
+        self.loss = losses[loss]
+
         if name is None:
             raise Exception('Experiment name must not be None!')
         self.experiment = name
