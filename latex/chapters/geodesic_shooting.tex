@@ -95,7 +95,7 @@ A depiction of the dataset can be seen in \cref{fig:dataset}.
 
 Recall the RKHSs $\cV \subseteq \{\cX \rightarrow \cX\}$ and $\cH \subseteq \{\cX \rightarrow \cY\}$ with the respective kernels $\Gamma$ and $K$.
 In order to implement the algorithm, we have to choose those kernels.
-For both $K$ and $\Gamma$ we choose variants of a a Gaussian kernel (also known as Gaussian Radial Basis Function kernel).
+For both $K$ and $\Gamma$ variants of a Gaussian kernel (also known as Gaussian Radial Basis Function kernel) were used.
 These kinds of kernels have proven to be well-suited for a multitude of applications in machine learning and are especially popular choices for SVMs.\Todo{Ref for applications!} 
 Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 \begin{align}
@@ -122,7 +122,7 @@ We simply (bijectivly) map vectors from $\cX^N$ to $\R^{2N}$.
 Then we can perform standard vector-vector multiplication efficiently using the frameworks capabilities and, if required, map the result back to $\cX^N$.
 The application of a block operator matrix to a vector can be performed similarly, employing \cref{cor:matrix-vector-equivalence}:
 Block operator matrices are mapped from $L(\cX^N, \cX^N)$ to $\R^{2N \times 2N}$ and subsequently standard matrix-vector multiplication can be carried out.
-It turns out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \times 2N}$ by default and switch to the isomorphic ones only when necessary.
+It turned out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \times 2N}$ by default and switch to the isomorphic ones only when necessary.
 
 Another potentially difficult step to implement is the gradient of $\fH$ with respect to $q$, especially in cases like \cref{eq:leapfrog-p.5,eq:leapfrog-p1} where no closed form formula is available.
 A solution for this would be to approximate the gradient using two-point methods such as the left/right sided or symmetric difference quotient.

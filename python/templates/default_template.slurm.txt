@@ -1,7 +1,8 @@
 #!/bin/bash
+#SBATCH --partition=math
 #SBATCH --job-name={job_name}
 #SBATCH --output=out/{job_name}.out
-#SBATCH --error=out/{job_name}.out
+#SBATCH --error=out/{job_name}.err
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user={user_mail}
 

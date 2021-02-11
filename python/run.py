@@ -4,8 +4,8 @@ from pprint import pprint
 
 import tensorflow as tf
 
+from config.parse_config_json import get_params_from_config, from_json
 from geodesic_shooting.model import Model
-from parse_config_json import get_params_from_config, from_json
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
