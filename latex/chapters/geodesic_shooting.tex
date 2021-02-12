@@ -119,7 +119,7 @@ The first simplification lies in the implementation of the inner product on $\cX
 In order to fully make use of modern tensor-processing frameworks' parallel processing abilities, expressing the scalar product of $\cX^N$ (which is defined as $\sum_{i=1}^N \left<x_{1, i}, x_{2, i}\right>_\cX$ for $x_1, x_2 \in \cX^N$) in terms of matrix operations is highly desirable.
 \cref{cor:matrix-ring-equivalence} provides an option to do so.
 We simply (bijectivly) map vectors from $\cX^N$ to $\R^{2N}$.
-Then we can perform standard vector-vector multiplication efficiently using the frameworks capabilities and, if required, map the result back to $\cX^N$.
+Then we can perform standard vector-vector multiplication efficiently using the framework's capabilities and, if required, map the result back to $\cX^N$.
 The application of a block operator matrix to a vector can be performed similarly, employing \cref{cor:matrix-vector-equivalence}:
 Block operator matrices are mapped from $L(\cX^N, \cX^N)$ to $\R^{2N \times 2N}$ and subsequently standard matrix-vector multiplication can be carried out.
 It turned out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \times 2N}$ by default and switch to the isomorphic ones only when necessary.
@@ -129,8 +129,8 @@ A solution for this would be to approximate the gradient using two-point methods
 However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and Pytorch for Python) provide automatic forward and backward differentiating capabilities.
 Those are not only simpler to implement but also computationally more efficient, which strongly encourages their use.
 
-As the experiments showed, using the optimal recovery loss in its pure form showed to be impossible (at least for the Swiss Roll dataset).
-Recall \cref{eq:optimal-recovery-loss-closed-form} where we identified it as $l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y$.
+As the experiments showed, using the optimal recovery loss in its pure form does not seem to be possible (at least for the Swiss Roll dataset).
+Recall \cref{eq:optimal-recovery-loss-closed-form} where we identified the loss as $l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y$.
 Note that it involves computing $\mathbf{K}(X, X)^{-1}$, or rather solving the linear system $\mathbf{K}(X, X)^{-1} Y$.
 That system, involving a $(200\times200)$ matrix, proved to be ill-conditioned, which gave rise to some numerical issues and compromised the minimization process.
 Hence, some matrix regularization was applied:

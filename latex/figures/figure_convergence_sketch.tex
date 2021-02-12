@@ -1,5 +1,35 @@
 \begin{figure}
-	This will be a figure similar to Fig. 3 in \cite{owhadi20}, only that it will outline the proofs of this section.
-	\caption{This figure will outline the proof chain}
+	\makebox[\textwidth][c]{
+		\centering
+		\begin{tikzpicture}[font=\scriptsize, align=center]
+				\node[draw, above left, align=center] (a) {
+					\cref{prob:min-v-f}\\
+					$\begin{cases}
+						\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+						+ l_R(\Phi_L(X), Y) \\
+						\text{such that~} & v_1, \ldots, v_L \in \cV, \Phi_L = (I + v_L) \circ \ldots \circ (I + v_1)
+					\end{cases}$};
+				\node[right=of a, align=center] (z1) {\large$\stackrel{asdf}{\Longleftrightarrow}$};
+				\node[draw, right= of z1, align=center] (b) {
+					\cref{prob:cont-least-action}\\
+					$\begin{cases}
+					\text{Minimize~} & \frac{\nu}{2} \int_{0}^{1} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1}  \dot{q}(t) \mathrm{d}t + l(q(1), Y)\\
+					\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+					\end{cases}$};
+				\node[draw, below= of a, align=center] (c) {
+					\cref{prob:cont-least-action}\\
+					$\begin{cases}
+					\text{Minimize~} & \frac{\nu}{2} \int_{0}^{1} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1}  \dot{q}(t) \mathrm{d}t + l(q(1), Y)\\
+					\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+					\end{cases}$};
+				\node[draw, below= of b, align=center] (d) {
+					\cref{prob:cont-least-action}\\
+					$\begin{cases}
+					\text{Minimize~} & \frac{\nu}{2} \int_{0}^{1} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1}  \dot{q}(t) \mathrm{d}t + l(q(1), Y)\\
+					\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+					\end{cases}$};
+		\end{tikzpicture}
+	}
+	\caption{Summary of problems, theorems and limits.}
 	\label{fig:convergence}
 \end{figure}

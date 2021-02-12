@@ -78,6 +78,7 @@ Regard the following minimization problem:
 We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min-v-f} and, assuming we know the solution to the latter problem, provides us with an explicit solution for the $v_k$s.
 
 \begin{theorem}
+	\label{theo:v-q-problem-equivalence}
 	$v_1, \ldots, v_L \in \cV$ minimize \cref{prob:min-v-f} 
 	$\Leftrightarrow$
 	$q_1, \ldots, q_{L+1} \in \cX^N$ minimize \cref{prob:min-q} and
@@ -125,7 +126,6 @@ We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min
 		\norm{v_k}_\cH^2 &= (q_{k+1} - q_k)^\mathrm{T} \bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k)
 	\end{align}
 	Here, $\bGamma$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\bGamma(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
-	++
 	Having now computed optimal $v_k$ -- or rather their squared $\cH$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
 	Define $\Delta t \coloneqq \frac{1}{L}$.
 	We get:
@@ -378,7 +378,7 @@ TODO: Why geodesic shooting?
 		\nu \cH(0, q, p) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \bGamma(q(0), q(0))p(0) + l(q(1), Y)\\
 		&= \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ .
 	\end{align}
-	Vice versa, if $p(0)$ minimizes $\mathfrak{V}$ and $(q, p)$ follow the Hamilton's equations with the same argument $q$ minimizes \cref{prob:cont-least-action}.
+	Vice versa, if $p(0)$ minimizes $\mathfrak{V}$ and $(q, p)$ follow the Hamilton's equations, with the same argument, $q$ minimizes \cref{prob:cont-least-action}.
 \end{proof}
 
 \subsection{Continuous Limit and Adherence Values}
