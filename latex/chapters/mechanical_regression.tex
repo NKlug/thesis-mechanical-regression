@@ -70,7 +70,7 @@ Regard the following minimization problem:
 \begin{problem}
 	\label{prob:min-q}
 	\begin{cases}
-		\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L} \frac{(q_{k+1} - q_k)^\mathrm{T}}{\Delta t} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
+		\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
 		\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 	\end{cases}
 \end{problem}
@@ -190,9 +190,9 @@ The next theorem describes the correspondence between Lagrangian and Hamiltonian
 	\begin{equation}
 	\label{eq:hamiltonian-system}
 		\begin{split}
-			\dot{q} &= \frac{\partial \fH(q, p)}{\partial p} = \bGamma(q, q) p\\
-			\dot{p} &= -\frac{\partial \fH(q, p)}{\partial q} 
-			= -\frac{\partial \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)}{\partial q}
+			\dot{q} &= \grad_p \fH(q, p) = \bGamma(q, q) p\\
+			\dot{p} &= -\grad_q \fH(q, p)
+			= -\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)
 		\end{split}
 	\end{equation}
 	with $q(0) = X$.
