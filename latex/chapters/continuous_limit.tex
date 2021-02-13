@@ -34,9 +34,10 @@ The proof of this theorem is similar to that of \cref{theo:v-q-problem-equivalen
 
 \subsubsection{Existence of Minimizers}
 
-We already saw the equivalence of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit}, in the sense that their minimizers bijectively correspond to each other -- if they exist.
+We already saw the equivalence of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit}, in the sense that their minimizers bijectively correspond to each other -- that is, if they exist.
 Now we will show that there do indeed exist such minimizers and also that the problems' minimal values are identical.
 \begin{theorem}[Existence for the continuous problems]
+	\label{theo:continuous-solutions-existence}
 		There exist minimal points for \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} and their minimal values are identical.
 \end{theorem}
 
@@ -45,21 +46,31 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	\label{eq:discrete-hamiltonian-system}
 	\begin{split}
 		q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
-		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_q{k} \left(p_k^\T \bGamma(q_k, q_k) p_k\right)\ .
+		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_k} \left(p_k^\T \bGamma(q_k, q_k) p_k\right)\ .
 	\end{split}
 \end{equation}
 
 \begin{problem}
-	\label{prob:discrete-least-action}
+\label{prob:discrete-geodesic-shooting}
 	\begin{cases}
 		\text{Minimize~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
 		\text{such that~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X \\
 		&\text{~and~} (q_k, p_k) \text{~follow the discrete Hamiltonian equations \ref{eq:discrete-hamiltonian-system}}\ .
 	\end{cases}
 \end{problem}
+Again, for later reference we explicitly define the target function again as
+\begin{equation}
+	\fV_L(p_1, X, Y) \coloneqq \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y) \ .
+\end{equation}
+
+\begin{theorem}
+	\label{theo:discrete-shooting-min-q-equivalence}
+	\cref{prob:discrete-geodesic-shooting} and \cref{prob:min-q} are equivalent.
+\end{theorem}
 
 \begin{theorem}[Existence of solutions to the discrete problems]
-	There exist minimal points for \cref{prob:discrete-least-action,prob:min-v-f,prob:min-q} and their minimal values are identical.
+	\label{theo:discrete-solutions-existence}
+	There exist minimal points for \cref{prob:discrete-geodesic-shooting,prob:min-v-f,prob:min-q} and their minimal values are identical.
 \end{theorem}
 
 
@@ -67,7 +78,25 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 
 The following theorem is quite a big one.
 It states convergence results for all three discrete problems we have dealt with so far.
+Let $M_L(X, Y)$ be the set of minimizers of \cref{prob:discrete-geodesic-shooting}.
+Respectively, let $M(X, Y)$ be the set of minimizers of \cref{prob:geodesic-shooting}.
+\cref{theo:continuous-solutions-existence,theo:discrete-solutions-existence} imply that both sets are non-empty.
 \begin{theorem}[Convergence theorem]
 	\label{theo:problem-convergence}
-	content...
+	The minimal value of \cref{prob:discrete-geodesic-shooting,prob:min-q,prob:min-v-f} converges towards the minimal value of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} as $L \rightarrow \infty$.
+	Furthermore,
+	\begin{equation}
+	\label{eq:limit-adherence}
+		\bigcap_{L' \in \mathbb{N}} \closure\bigcup_{L' \geq L} M_L(X, Y) = M(X, Y) \ .
+	\end{equation}
 \end{theorem}
+Here, $\closure A$ is the closure of the set $A$.
+Note that \cref{eq:limit-adherence} means that the adherence values of $M_L(X, Y)$ converge towards $M(X, Y)$ as $L \rightarrow \infty$.
+The proof we will now conduct is the climax of this section:
+It involves everything we have done thus far.
+\begin{proof}
+	Sketch (for now).
+	
+	We know by \dots that we can parametrize the minimal values and points by the initial momentum $p_1$ and $p(0)$ for the discrete and continuous geodesic shooting problem, respectively.
+	This means if suffices to show the convergence of $\fV_L(p_1, X, Y)$ towards $\fV(p(0), X, Y)$
+\end{proof}

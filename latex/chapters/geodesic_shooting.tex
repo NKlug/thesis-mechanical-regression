@@ -42,7 +42,7 @@ The kernels can be chosen arbitrarily, in theory every function satisfying the d
 In classical machine learning, popular kernel choices (e.g. for Support Vector Machines (SVM)) include linear, polynomial, Gaussian/Radial Basis Function (RBF), sigmoid and ANOVA kernels.
 
 The first difficulties arise when implementing step 3.1, which involves solving the Hamiltonian system \ref{eq:hamiltonian-system}.
-This system cannot be solved exactly and thus has to be approximated.
+This system cannot be solved analytically and thus has to be approximated.
 For solving (systems of) differential equations, many integration schemes exist, some of them preserving different invariants.
 The Hamiltonian system we are dealing with has many invariants:
 We have already seen that the energy is preserved, other invariants are the canonical symplectic 2-form \cite{marsden10} and the area/volume in the so called phase space (the space in which $(q(t), p(t))$ lies) \cite{hairer06}.
