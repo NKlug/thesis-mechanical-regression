@@ -34,12 +34,32 @@ The proof of this theorem is similar to that of \cref{theo:v-q-problem-equivalen
 
 \subsubsection{Existence of Minimizers}
 
+We already saw the equivalence of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit}, in the sense that their minimizers bijectively correspond to each other -- if they exist.
+Now we will show that there do indeed exist such minimizers and also that the problems' minimal values are identical.
 \begin{theorem}[Existence for the continuous problems]
-	content...
+		There exist minimal points for \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} and their minimal values are identical.
 \end{theorem}
 
-\begin{theorem}[Existence for the discrete problems]
-	content...
+\Todo{Check with paper again. In the paper the equation for p might be wrong...}
+\begin{equation}
+	\label{eq:discrete-hamiltonian-system}
+	\begin{split}
+		q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
+		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_q{k} \left(p_k^\T \bGamma(q_k, q_k) p_k\right)\ .
+	\end{split}
+\end{equation}
+
+\begin{problem}
+	\label{prob:discrete-least-action}
+	\begin{cases}
+		\text{Minimize~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
+		\text{such that~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X \\
+		&\text{~and~} (q_k, p_k) \text{~follow the discrete Hamiltonian equations \ref{eq:discrete-hamiltonian-system}}\ .
+	\end{cases}
+\end{problem}
+
+\begin{theorem}[Existence of solutions to the discrete problems]
+	There exist minimal points for \cref{prob:discrete-least-action,prob:min-v-f,prob:min-q} and their minimal values are identical.
 \end{theorem}
 
 

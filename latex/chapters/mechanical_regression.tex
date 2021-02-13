@@ -353,13 +353,17 @@ See Allansonnière for Theorem 3.7 of paper
 Using the Hamiltonian representation, we can now formulate another equivalent problem.
 TODO: Why geodesic shooting?
 
+\begin{problem}
+	\label{prob:geodesic-shooting}
+	\begin{cases}
+		\text{Minimize~} &\mathfrak{V}(p(0), X, Y) \coloneqq  \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
+		\text{such that~} & p = \bGamma(q, q)^{-1}\dot{q},\ q(0) = X \text{~and~} (q,p) \text{~follow Hamilton's equations \ref{eq:hamiltonian-system}}
+	\end{cases}
+\end{problem}
+
 \begin{theorem}
 \label{theo:geodesic-shooting}
-	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $(q, p)$ satisfy Hamilton's equations \ref{eq:hamiltonian-system}, $q(0) = X$ and $p(0)$ minimizes
-\begin{equation}
-	\label{eq:p0-min-function}
-	\mathfrak{V}(p(0), X, Y) \coloneqq  \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)
-\end{equation}
+	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $p$ minimizes \cref{prob:geodesic-shooting}.
 \end{theorem}
 \begin{proof}
 	Sketch (for now):

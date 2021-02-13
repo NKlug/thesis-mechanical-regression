@@ -5,14 +5,14 @@
 				\node[draw, above left, align=center] (a) {
 					ResNet \ref{prob:min-v-f}\\
 					$\begin{cases}
-						\text{Min~} & \frac{nu \cdot L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+						\text{Min~} & \frac{\nu \cdot L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
 						+ l_R(\Phi_L(X), Y) \\
 						\text{s.t.~} & v_1, \ldots, v_L \in \cV,\ \Phi_L = (I + v_L) \circ \ldots \circ (I + v_1)
 					\end{cases}$};
-				\node[right=of a, align=center] (z1) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
+				\node[right=of a, align=center,outer sep=-2em] (z1) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
 				\scriptsize\cref{theo:problem-convergence}};
 				\node[draw, right= of z1, align=center] (b) {
-					Continuous Limit of ResNet \ref{prob:resnet-limit}\\
+					Limit of ResNet \ref{prob:resnet-limit}\\
 					$\begin{cases}
 						\text{Min~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
 						+ l(\phi_v(X, 1), Y)\\
@@ -23,12 +23,13 @@
 				\node[draw, below= of z2, align=center] (c) {
 					Discrete Least Action \ref{prob:min-q}\\
 					$\begin{cases}
-						\text{Min~} & \frac{\nu}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
+						\text{Min~} & \frac{\nu}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t\\
+						&+ l(q_{L+1}, Y) \\
 						\text{s.t.~} & q_1 = X,\ q_2, \ldots, q_{L+1} \in \cX^N,\ t = \frac{1}{L}\\
 						& v_k(x) = \bGamma(x, q_k)^\mathrm{T}\bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k)
 					\end{cases}$};
 				\node[below= of b,outer sep=-2em] (z3) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:v-q-continuous-problem-equivalence}};
-				\node[right=of c, align=center] (z4) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
+				\node[right=of c, align=center,outer sep=-2em] (z4) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
 				\scriptsize\cref{theo:problem-convergence}};
 				\node[draw, below= of z3, right=of z4, align=center] (d) {
 					Least Action \ref{prob:cont-least-action}\\
