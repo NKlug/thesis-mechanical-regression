@@ -171,3 +171,14 @@ Aka Tikhonov regularization aka $L_2$ parameter regularization.
 	l(X, Y) = \lambda Y^\T (\mathbf{K}(X, X) + \lambda \mathbbm{1}_N)^{-1} Y \ .
 \end{equation}
 Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery.
+
+\subsection{Equivalence of Optimization Problems}
+
+\begin{definition}
+	\label{def:equivalent-problems}
+	Let $f: X \rightarrow \R$ and $g: Y \rightarrow \R$ be the target functions of two optimization problems $A$ and $B$.
+	Then $A$ and $B$ are \emph{equivalent} if there exists a bijection $\varphi: X \rightarrow Y$ such that
+	\begin{equation}
+		x \in X \text{~is optimal for A~} \Leftrightarrow \phi(x) \in Y \text{~is optimal for A~}\ .
+	\end{equation}
+\end{definition}

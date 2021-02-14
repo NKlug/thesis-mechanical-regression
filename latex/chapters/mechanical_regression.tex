@@ -62,8 +62,8 @@ Utilizing the Ridge Regression Loss $l_R$ (\cref{eq:ridge-regression-loss}), we 
 		\text{such that~} & v_1, \ldots, v_L \in \cV\ .
 	\end{cases}
 \end{problem}
-By hiding the regularity of $f$ in the loss we can, for now, focus on the functions $v_k$.
-For our calculations we will therefore only assume that $l$ is a positive, continuous loss function.
+By hiding the regularity of $f$ in the loss we can, for now, focus exclusively on the functions $v_k$.
+For our calculations we will only assume that $l$ is a positive, continuous loss function.
 If desired we can later balance the $v_k$ with the regularity of $f$ by choosing the loss appropriately.
 
 In the calculations, we will work under the following conditions.
@@ -89,88 +89,12 @@ Furthermore, we have the following equivalence.
 	A contradiction.
 	Conversely, if there exists a $0 \neq z \in \cX^N$ such that $z^\T \bGamma(X, X) z < \epsilon z^\T z$ for all $\epsilon > 0$, then $\bGamma(X, X) z = 0$.
 \end{proof}
+Ideally, we would not need additional conditions like those introduced above.
+They are, however, automatically satisfied in most real world examples and ease calculations and proofs considerably.
 
-Our main goal will now be to show that the minimization problem in \cref{prob:min-v-f} can in fact be considered as a discrete solver of a mechanical system.
-In order to do that, we first reformulate the problem by introducing additional variables $q_{i,j}$ with $2 \leq i \leq L+1$, $1 \leq j \leq N$:
-\begin{align}
-	q_{1, j} &\coloneqq X_j \, \\
-	q_{i, j} &\coloneqq (\phi_{i-1} \circ \ldots \circ \phi_1) (X_j) \ .
-\end{align}
-Write $q_i$ for the vector with entries $q_{i,j}$ and hence we get $q_1 = X$ and $q_i = \phi_i(q_{i-1})$.
-Regard the following minimization problem:
-\begin{problem}
-	\label{prob:min-q}
-	\begin{cases}
-		\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
-		\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
-	\end{cases}
-\end{problem}
-\Todo{Explain what it means for problems to be equivalent! We probably want bijection between minimizers and same optimal values.}
-We will now prove that \cref{prob:min-q} is in fact equivalent to \cref{prob:min-v-f} and, assuming we know the solution to the latter problem, provides us with an explicit solution for the $v_k$s.
+\subsection{Discrete Stationary Action Principle}
 
-\begin{theorem}
-	\label{theo:v-q-problem-equivalence}
-	$v_1, \ldots, v_L \in \cV$ minimize \cref{prob:min-v-f} 
-	$\Leftrightarrow$
-	$q_1, \ldots, q_{L+1} \in \cX^N$ minimize \cref{prob:min-q} and
-	$v_k(x) = \bGamma(x, q_k)^\mathrm{T}\bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k)$.
-\end{theorem}
-\begin{proof}
-	Using the above defined $q_k$ we have $v_k(q_k) = q_{k+1} - q_k$ for all $k \in [L]$.
-	With that we can rewrite \cref{prob:min-v-f} as
-	\begin{problem}
-		\label{prob:min-q-v}
-		\begin{cases}
-			\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
-			+ l(q_{L+1}, Y) \\
-			\text{such that~} & v_1, \ldots, v_L \in \cV,\ \forall k \in [L]: v_k(q_k) = q_{k+1} - q_k, \\
-			& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
-		\end{cases}
-	\end{problem}
-	Here we just added the $q_k$ as additional variables but then bound them to certain values, concretely $q_{k+1} = q_k + v_k(q_k) = \phi_k(q_k)$, with $q_1 = X$.
-	Recursively we get $q_{L+1} = \Phi_L(X)$ which means the target function remains the same as in \cref{prob:min-v-f}.
-	Note that even though we seemingly added restraints to the domains of the $v_k$ they are still the same: We just have to choose $q_{k+1}$ accordingly (which we can, as it is unconstrained).
-	
-	We will now derive closed form expressions for the $v_k$ as a function of the $q_k$.
-	For that, let $q_k \in \cX^N$, $2 \leq k \leq N$ be arbitrary but fixed .
-	This means $l(q^{L+1}, Y)$ is constant and $v_k \in V_{k, q} \coloneqq \{v \in \cV~|~ v_k(q_k) = q_{k+1} - q_k\}$.
-%	These sets remain convex: Let $\lambda \in [0, 1]$ and $v_{k, 1}, v_{k, 2} \in V_{k, q}$, then we get
-%	\begin{align}
-%		(\lambda v_{k, 1} + (1 - \lambda) v_{k, 2})(q_k) &= (\lambda v_{k, 1})(q_k) + ((1 - \lambda) v_{k, 2})(q_k)\\
-%		&=\lambda(q_{k+1} - q_k) + (1 - \lambda)(q_{k+1} - q_k)\\
-%		&= q_{k+1} - q_k \ .
-%	\end{align}
-	We end up with a problem of the following form:
-	\begin{problem}
-		\begin{cases}
-			\text{Minimize} &\sum_{i=1}^n f_i(x_i)\\
-			\text{such that} & \forall i \in [n]: x_i \in A_i \ ,
-		\end{cases}
-	\end{problem}
-	with bounded $f_i: A_i \rightarrow \R$.
-	One can easily verify that minimization problems of this type have a global minimum at $x_i^\ast = \argmin\{f_i(x_i)~|~ x_i \in A_i\}$, the boundedness ensuring that at least one such minimum exists.
-
-	Thus, we have to find the minima of $\min\{\norm{v_k}_\cV^2~|~ v_k \in \cV, v_k(q_k) = q_{k+1} - q_k\} = l_{\text{OR}}(q_k, q_{k+1} - q_k)$, $l_{\text{OR}}$ being the optimal recovery loss from \cref{sec:optimal-recovery}.
-	From that section we conveniently get the following representations for the minimal $v_k$ and the target value:
-	\begin{align}
-		v_k & = \bGamma(x, q_k)^\mathrm{T}\bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k)\\
-		\norm{v_k}_\cH^2 &= (q_{k+1} - q_k)^\mathrm{T} \bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k)
-	\end{align}
-	Here, $\bGamma$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\bGamma(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
-	Having now computed optimal $v_k$ -- or rather their squared $\cH$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
-	Define $\Delta t \coloneqq \frac{1}{L}$.
-	We get:
-	\begin{problem}
-		\begin{cases}
-			\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L}  
-			\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)
-			\left(\frac{q_{k+1} - q_k}{\Delta t}\right) \cdot \Delta t
-			+ l(q_{L+1}, Y) \\
-			\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
-		\end{cases}
-	\end{problem}
-	As all steps and transformations hold true in both ways, this concludes the proof.
-\end{proof}
+\input{chapters/discrete_least_action_principle}
 
 \subsection{Stationary Action Principle}
 
