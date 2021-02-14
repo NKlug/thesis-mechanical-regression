@@ -1,54 +1,65 @@
-Take a closer look at the first term of the objective function in \cref{prob:min-q} (the parameter $\nu$ has been deliberately omitted here):
+In order to show that similarity of \cref{prob:min-q} to a mechanical system, consider the first term of its objective function (the balancing parameter $\nu$ has been deliberately omitted):
 \begin{equation}
 	\label{eq:discrete-lagrangian}
 	\frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} \Delta t \ .
 \end{equation}
-With some imagination this very much looks like an approximation of the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
+With some imagination this very much looks like an approximation to the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
 This would require the sequence $q_k$ to be a discrete equidistant sampling of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
-Without loss of generality we choose $A = [0, 1]$ and write $q_k = q(k \Delta t)$.
-\Todo{Nice wording: The dot signifying the time derivative d dt	}
-This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative $\dot{q}$ on at the point $k \Delta t = \frac{k}{L}$ and we get the approximation
+Without loss of generality we choose $A = [0, 1]$ and let $q$ be such that $q_k = q(k \Delta t)$.
+This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative of $q$ on at the point $k \Delta t = \frac{k}{L}$.
+Using physical nomenclature we call the domain of $q$ \emph{time} and write $\dot{q}$ for the (time-)derivative $\frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
+We get the approximation
 \begin{equation}
 	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} 
-	\approx \dot{q}\left(\frac{k}{L}\right)^\mathrm{T} \mathbf{\Gamma}\left(q\left(\frac{k}{L}\right), q\left(\frac{k}{L}\right)\right)^{-1}\dot{q}\left(\frac{k}{L}\right)
+	\approx \dot{q}\left(\frac{k}{L}\right)^\mathrm{T} \mathbf{\Gamma}\left(q\left(\frac{k}{L}\right), q\left(\frac{k}{L}\right)\right)^{-1}\dot{q}\left(\frac{k}{L}\right) \ .
 \end{equation}
-This leads us to the obvious question if the solutions of the problem in \cref{prob:min-q} are also approximating the solutions of a similar continuous problem.
+This leads us to the obvious question if the solutions of \cref{prob:min-q} are also approximating the solutions of a similar continuous problem.
 As it turns out, they do.
-Consider 
+This "convergence" will be the main result of this section and is presented at the end in \cref{theo:problem-convergence}.
+For now, we will work under the assumption that it holds true and continue evolving the theory, being cautious not to introduce proof cycles.
+
+Consider the \emph{action}
 \begin{equation}
 \label{eq:action}
-	\mathcal{A}(q) \coloneqq \int_{0}^{1} \fL(q, \dot{q}, t) \mathrm{d}t \ ,
+	\cA(q) \coloneqq \int_{0}^{1} \fL(t, q(t), \dot{q}(t)) \mathrm{d}t \ ,
 \end{equation}
-with
-
+with the \emph{Lagrangian}
 \begin{equation}
 \label{eq:lagrangian}
-	\fL(q, \dot{q}, t) \coloneqq \frac{1}{2} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t) \ .
+	\begin{split}
+		\fL(t, x_1, x_2): [0, 1] \times \cX^N \times \cX^N \rightarrow \R\\ \fL(t, x, y) \coloneqq \frac{1}{2}  x_2^\mathrm{T} \mathbf{\Gamma}(x_1, x_1)^{-1} x_2 \ .
+	\end{split}
 \end{equation}
-\Todo{Mention difference and similarity between physical and mathematical approach in definition of Lagrangian}
-Here, the Lagrangian is a quadratic form.
-In a physical interpretation, the Lagrangian above resembles that of a system of free moving particles who don't interact with each other.
-It usually represents the kinetic energy $T$ of the system.
-This interpretation would imply that in our case, the potential energy $U$ of the system is $0$.
+These expressions have their origins in Lagrangian mechanics (from a physical point of view) and calculus of variations (the mathematical approach) and have a strong physical interpretation.
+But first, a caveat concerning the Lagrangian:
+It is not exclusively defined when the third argument is the time derivative of the second, but more generally.
+Using this general definition, we can then construct a function $(t, q) \rightarrow \fL(t, q(t), \dot{q}(t))$, where $\dot{q} = \frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
+This was done in the definition of the action.
 
-As a result, we get the following theorem.
-\begin{theorem}
-	The minimal value of \cref{prob:min-q} converges towards the minimal value of             
-	\info{Theorem 3.11 from paper} 
-	\begin{problem}
-	\label{prob:cont-least-action}
-		\begin{cases}
-			\text{Minimize~} & \nu \mathcal{A}(q) + l(q(1), Y)\\
-			\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
-		\end{cases}
-	\end{problem}
-\end{theorem}
+In a physical scenario, the Lagrangian is often the difference between the kinetic and the potential energy of (the particles of) the system, that is $L = T - V$.
+Usually $T$ does not depend on the second and $V$ not on the third argument of the function, which correspond to the velocities and the locations of the particles.
+This theory is especially helpful in problems where constraining forces act.
+
+In our case, the Lagrangian is a quadratic form.
+In a physical interpretation it most closely resembles that of a system of free moving particles that don't interact with each other (which also is a quadratic form, though not dependent on the location).
+Here, the particles are coupled by a location dependent matrix, which can be regarded as a mass matrix \cite{marsden10}.
+However, these "masses" would be location dependent.
+
+The definition of the action enable us to write continuous version of \cref{prob:min-q} as
+\begin{problem}
+\label{prob:cont-least-action}
+	\begin{cases}
+		\text{Minimize~} & \nu \cA(q) + l(q(1), Y)\\
+		\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+	\end{cases}
+\end{problem}
 As usual, $C^1([0,1], \cX^N)$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
-We will save the proof for later.
 
+
+----------------Hier gehts weiter :)
 \Todo{Link between mathematical approach, i.e. variational calculus, and physical approach: Physical "interpretation" can be derived from mathematical approach + some axioms}
 Equations \ref{eq:action} and \ref{eq:lagrangian} closely resemble characteristic equations from the framework of Lagrangian and Hamiltonian mechanics.
-Within that framework, $q$ is the trajectory of the particle, $\fL$ the \emph{Lagrangian function} and $\mathcal{A}$ the \emph{Action}.
+Within that framework, $q$ is the trajectory of the particle, $\fL$ the \emph{Lagrangian function} and $\cA$ the \emph{Action}.
 In our case, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles.
 We will now explore if the rich theory of Lagrangian physics can help us analyze our problem.
 
@@ -57,7 +68,7 @@ Here, we chose $t_1 = 0$ and $t_2 = 1$.
 One core principle in Lagrangian Mechanics is \emph{Hamilton's Principle}, also called the \emph{Principle of Least Action}.
 It states that
 \Todo{Citation needed!}
-the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times $t_1$ and $t_2$ is a stationary point of the action $\mathcal{A}$.
+the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times $t_1$ and $t_2$ is a stationary point of the action $\cA$.
 We do not have the time to dive deeper into the underlying theory, but the interested reader is referred to \Todo{References, one of them could be Feynman lectures 2 chapter 19}.
 Note that "Principle of Least Action" is a misnomer and should rather be "Principle of Stationary Action".
 
@@ -70,7 +81,7 @@ The path of least action need not always be the path for which the action become
 However, if we can show that there exists a minimum of \cref{prob:cont-least-action}, this will, \Todo{Why exactly -- do we have some similar theorem like "partial derivative zero implies extremum?"}by ..., be a point of stationary action
 
 Let $q(1)$ be arbitrary but fixed.
-Then a minimizer $q^\ast$ of \cref{prob:cont-least-action} with $q^\ast(1) = q(1)$ is a minimizer of $\mathcal{A}(q)$.
+Then a minimizer $q^\ast$ of \cref{prob:cont-least-action} with $q^\ast(1) = q(1)$ is a minimizer of $\cA(q)$.
 By [Kielhöfer - Variationsrechnung, Satz 1.4.2] it follows that $q^\ast$ fulfills the Euler-Lagrange equation:
 \begin{equation}
 	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}} - \frac{\partial \fL}{\partial q} = 0 \ .
