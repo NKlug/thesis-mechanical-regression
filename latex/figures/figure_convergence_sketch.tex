@@ -10,14 +10,14 @@
 						\text{s.t.~} & v_1, \ldots, v_L \in \cV,\ \Phi_L = (I + v_L) \circ \ldots \circ (I + v_1)
 					\end{cases}$};
 				\node[right=of a, align=center,outer sep=-2em] (z1) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
-				\scriptsize\cref{theo:problem-convergence}};
+					\scriptsize\cref{theo:problem-convergence}};
 				\node[draw, right= of z1, align=center] (b) {
 					Limit of ResNet \ref{prob:resnet-limit}\\
 					$\begin{cases}
 						\text{Min~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
 						+ l(\phi_v(X, 1), Y)\\
 						\text{s.t.~}& v \in C([0, 1], \mathcal{V}),\ \Phi(x, 0) = x,\\
-						&\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q_t) \bGamma(q_t, q_t)^{-1} \dot{q}_t
+						&\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
 					\end{cases}$};
 				\node[below= of a,outer sep=-2em] (z2) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:v-q-problem-equivalence}};
 				\node[draw, below= of z2, align=center] (c) {
@@ -30,7 +30,7 @@
 					\end{cases}$};
 				\node[below= of b,outer sep=-2em] (z3) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:v-q-continuous-problem-equivalence}};
 				\node[right=of c, align=center,outer sep=-2em] (z4) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
-				\scriptsize\cref{theo:problem-convergence}};
+					\scriptsize\cref{theo:problem-convergence}};
 				\node[draw, below= of z3, right=of z4, align=center] (d) {
 					Least Action \ref{prob:cont-least-action}\\
 					$\begin{cases}
@@ -55,7 +55,7 @@
 					& p_{k+1} = p_k + \frac{\Delta t}{2} \grad_{q_k} \left(p_k^\T \bGamma(q_k, q_k) p_k\right)
 					\end{cases}$};
 				\node[right=of f, align=center,outer sep=-2em] (z7) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
-				\scriptsize\cref{theo:problem-convergence}};
+					\scriptsize\cref{theo:problem-convergence}};
 		\end{tikzpicture}
 	}
 	\caption{Summary of problems, their correspondence, their continuous limits and the respective theorems. Discrete problems are on the left, continuous on the right.}

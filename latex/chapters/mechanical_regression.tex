@@ -1,19 +1,42 @@
 \section{Mechanical Regression}
 
-\Todo{Include figure of typical ResNet Layout}
-Artificial Neural Networks are a popular method to solve the Supervised Learning problem described in Section X.
-Especially Residual Neural Networks have shown great success in enabling very deep models.
-As described earlier, ResNets usually consist of several Residual Blocks followed by dense mapping to the target space $Y$.
-This section essentially follows Chapter 3 in \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ANNs, concretely ResNets.
+In \cref{sec:neural-networks} we have seen that Neural Networks are a prominent way of approximating a solution to the Supervised Learning problem.
+ResNets in particular enabled the use of very deep architectures.
+In this section, we take a closer look at ResNets and derive their continuous limit as the number of residual blocks tends towards infinity.
+On the way of doing so, we show that the ResNet regression approach can be regarded as a discrete mechanical system following Hamilton's stationary action principle -- thus the term \emph{Mechanical Regression}
+In the limit, this system converges to a continuous version of the same principle, which proves to be equivalent to what in image registration is known as geodesic shooting \cite{allassonniere05}.
 
-\begin{condition}
-	\label{cond:feature-condition}
-	\begin{enumerate}
-		\item There exist a finite dimensional feature space and map $\cF$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded
-	\end{enumerate}
-\end{condition}
+\citet{owhadi20} compares these results to the problem formulations used in image shape analysis, computational anatomy and image registration \cite{bibid}.
+He views the continuous solution as a generalization of image registration and calls it \emph{idea registration}, arguing that just as in the former, data points are aligned through various transformations in their respective feature spaces.
+The difference lies in the fact that in idea registration the data points can be arbitrary rather than mere landmarks and the spaces can be high dimensional (compared to the two or three dimensional spaces images lie in).
+
+This section essentially follows Chapter 3 of \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ResNets.
 
 \subsection{Modeling Residual Neural Networks}
+
+\begin{condition}
+	\label{cond:feature-condition}\mbox{}
+	\vspace*{-\parsep}
+	\vspace*{-\baselineskip}
+	\begin{enumerate}
+		\item There exist a finite dimensional feature space and map $\cF$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded.
+		\item There exists an $r > 0$ such that $\forall z \in \cX^N:~z^\T \bGamma(X, X) z \geq r z^\T z$.
+		\item $\cX$ and $\cY$ are finite-dimensional.
+	\end{enumerate}
+\end{condition}
+Note that the first condition implies that the function $(x_1, x_2) \rightarrow \Gamma(x_1, x_2)$ and its first and second order partial derivatives are continuous and uniformly bounded.
+This follows immediately from the fact that we can write $\Gamma(x_1, x_2) = \psi^\T(x_1)\psi(x_2)$.
+\begin{lemma}
+	\cref{cond:feature-condition} (2) is equivalent to the non-singularity of $\bGamma(X, X)$.
+\end{lemma}
+\begin{proof}
+	If $\bGamma(X, X)$ was singular, there would exist a vector $z \in \cX^N$ with $\norm{z}_{\cX^N} > 0$ and $\bGamma(X, X) z = 0$, implying $z^\T \bGamma(X, X)z = 0$. 
+	A contradiction.
+	Conversely, if there exists a $0 \neq z \in \cX^N$ such that $z^\T \bGamma(X, X) z < \epsilon z^\T z$ for all $\epsilon > 0$, then $\bGamma(X, X) z = 0$.
+\end{proof}
+
+
+
 We will now take a similar approach and try to approximate the target function $f^\dagger$ by a function
 \begin{equation}
 	f^\ast \coloneqq f \circ \Phi_L \ ,
