@@ -8,6 +8,7 @@ This would require the sequence $q_k$ to be a discrete equidistant sampling of a
 Without loss of generality we choose $A = [0, 1]$ and let $q$ be such that $q_k = q(k \Delta t)$.
 This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative of $q$ on at the point $k \Delta t = \frac{k}{L}$.
 Using physical nomenclature we call the domain of $q$ \emph{time} and write $\dot{q}$ for the (time-)derivative $\frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
+In mechanical applications, $q$ is the trajectory of particles and $\dot{q}$ their velocities.
 We get the approximation
 \begin{equation}
 	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} 
@@ -45,7 +46,7 @@ In a physical interpretation it most closely resembles that of a system of free 
 Here, the particles are coupled by a location dependent matrix, which can be regarded as a mass matrix \cite{marsden10}.
 However, these "masses" would be location dependent.
 
-The definition of the action enable us to write continuous version of \cref{prob:min-q} as
+With the definition of the action, we can write a continuous version of \cref{prob:min-q}:
 \begin{problem}
 \label{prob:cont-least-action}
 	\begin{cases}
@@ -55,46 +56,59 @@ The definition of the action enable us to write continuous version of \cref{prob
 \end{problem}
 As usual, $C^1([0,1], \cX^N)$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
 
+Usually, $q$ describes the trajectory of particles.
+In our case, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles.rich 
+Now within the framework of theoretical physics, we can explore if the theory of Lagrangian mechanics can help us in the analysis the problem.
 
-----------------Hier gehts weiter :)
-\Todo{Link between mathematical approach, i.e. variational calculus, and physical approach: Physical "interpretation" can be derived from mathematical approach + some axioms}
-Equations \ref{eq:action} and \ref{eq:lagrangian} closely resemble characteristic equations from the framework of Lagrangian and Hamiltonian mechanics.
-Within that framework, $q$ is the trajectory of the particle, $\fL$ the \emph{Lagrangian function} and $\cA$ the \emph{Action}.
-In our case, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles.
-We will now explore if the rich theory of Lagrangian physics can help us analyze our problem.
+One core principle in Lagrangian Mechanics is \emph{Hamilton's Stationary Action Principle}, also referred to as \emph{the Principle of Least Action} or just Hamilton's Principle.
+It postulates that\vspace{.5em}
+\newline
+\noindent{\emph{"The motion of the system from time $t_1$ to time $t_2$ is such that the [action] has a stationary value for the actual path of the motion." \cite{goldstein01}}}
 
-The action is the integral over the Lagrangian between two points in time $t_1, t_2$.
-Here, we chose $t_1 = 0$ and $t_2 = 1$.
-One core principle in Lagrangian Mechanics is \emph{Hamilton's Principle}, also called the \emph{Principle of Least Action}.
-It states that
-\Todo{Citation needed!}
-the evolution of $q$ over time between two states $q(t_1)$ and $q(t_2)$ at times $t_1$ and $t_2$ is a stationary point of the action $\cA$.
-We do not have the time to dive deeper into the underlying theory, but the interested reader is referred to \Todo{References, one of them could be Feynman lectures 2 chapter 19}.
-Note that "Principle of Least Action" is a misnomer and should rather be "Principle of Stationary Action".
+This means that in the real world, the trajectories particles follow are a stationary point of the action.
+A stationary point is one for which the \emph{variation} of the action is $0$.
+Note that "Principle of Least Action" is therefore a misnomer and should rather be "Principle of Stationary Action", as the action does not necessarily have to be minimal (although this is often the case).
+An introduction to the theory derived from the postulate can be found in various books on theoretical mechanics \cite{goldstein01, marsden10, feynman63} and in calculus of variations \cite{kielhofer18}.
 
-
-Hamilton's principle has a strong physical background:
-The true evolution of a system $q$ between two states $q(t_1)$ and $q(t_2)$ is a stationary point of the action.
-\Todo{Why doesn't the endpoint have to be fixed? This is e.g. mentioned in Classical Mechanics by Goldstein p45}
-
-The path of least action need not always be the path for which the action becomes minimal, but rather stationary.
-However, if we can show that there exists a minimum of \cref{prob:cont-least-action}, this will, \Todo{Why exactly -- do we have some similar theorem like "partial derivative zero implies extremum?"}by ..., be a point of stationary action
-
-Let $q(1)$ be arbitrary but fixed.
-Then a minimizer $q^\ast$ of \cref{prob:cont-least-action} with $q^\ast(1) = q(1)$ is a minimizer of $\cA(q)$.
-By [Kielhöfer - Variationsrechnung, Satz 1.4.2] it follows that $q^\ast$ fulfills the Euler-Lagrange equation:
+A core result in calculus of variations are the Euler-Lagrange equations.
+It can be shown that every extremal point $q$ of the actions satisfies them.
+The Euler-Lagrange equations (EL) are given by
 \begin{equation}
-	\frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}} - \frac{\partial \fL}{\partial q} = 0 \ .
+\frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}_{i, j}} - \frac{\partial \fL}{\partial q_{i, j}} = 0
 \end{equation}
-Bear in mind that $q$ is a vector.
-So to be precise, we would have to write $N$ Euler-Lagrange equations, one for each $q_i$ (just imagine $q_i$ and $\dot{q}_i$ in the equation above).
-Nonetheless, in the following we can always treat all $q_i$ the same.
-So for the sake of readability and convenience we will stick to the vector notation, which together with block operator matrices allows concise formulation.
-The Euler-Lagrange equation with the Lagrangian from \cref{eq:lagrangian} reads
+and hold true for each component $q_{i, j}$ of the vector $q$ and its time-derivative $\dot{q}$.
+The partial derivatives with respect to $q$ and $\dot{q}$ are to be read as the partial derivatives of the Lagrangian $\fL$ with respect to the second and third argument at the point $x_1 = q(t)$ and $x_2 = \dot{q}(t)$.
+
+Now we will try to apply this theory to \cref{prob:cont-least-action}.
+Here, we also seek to minimize the action, but in combination with the loss term which depends on the endpoint of the trajectory, $q(1)$.
+This can be solved easily, as we will see in the following lemma.
+\begin{lemma}
+	A minimizer $q$ of \cref{prob:cont-least-action} follows the Euler-Lagrange equations.
+\end{lemma}
+\begin{proof}
+	Let $q(1) \coloneqq a \in \cX^N$ be arbitrary but fixed.
+	Then $l(q(1), Y)$ is constant and the problem is reduced to the minimization of the first term -- the action.
+	By \cite[~Proposition 1.4.1]{kielhofer18} it follows that $q$ satisfied the EL equations.
+	As this holds true for all endpoints $a$, it especially hold true for optimal $q$'s endpoint.
+\end{proof}
+
+Within the scope of \cref{prob:cont-least-action} we do not rely on the Stationary Action Principle to be postulated.
+By the problem's definition it is \emph{required} that the actual trajectory $q$ minimizes the action.
+
+The vector $q$ describes the trajectories of $N$ particles.
+Setting $m \coloneqq \mathrm{dim}(\cX)$, this would result in $mN$ EL equations, one for each $q_{i, j}$, $i \in [N], j \in [m]$.
+For simplicity we will combine them into one and write $\grad_{\dot{q}} \fL$ for the vector of partial derivatives with respect to $\dot{q}_{i, j}$.
+$\grad_q \fL$ is to be interpreted similarly.
+Together with the block operator notation we can write the EL equations in a concise formulation.
+Because of $\grad_{\dot{q}} \fL = \bGamma(q(t), q(t))^{-1} \dot{q}(t)$. It reads
 \begin{equation}
 \label{eq:concrete-lagrangian}
-	\frac{\mathrm{d}}{\mathrm{d}t} \left(\mathbf{\Gamma}(q, q)^{-1} \dot{q} \right)
-	= \frac{\partial}{\partial q} \left(\frac{1}{2} \dot{q}^\mathrm{T} \mathbf{\Gamma}(q, q)^{-1} \dot{q}\right) \ .
+	\frac{\mathrm{d}}{\mathrm{d}t} \left(\mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t) \right)
+	= \grad_q \left(\frac{1}{2} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t)\right) \ .
 \end{equation}
 
-As this is true for all endpoints $q(1)$, it especially holds true for the value for which the whole expression is minimal.
+$q(t)$ is an $(N\times1)$ vector in $\cX^N$.
+Each of its elements can be written as a $(m\times1)$ vector.
+So technically speaking $q$ is $(N \times m)$, or equivalently (\cref{cor:matrix-ring-equivalence}) a a $(mN \times 1)$ vector.
+For the notation $\grad_q \fL$, the interpretation as $(mN \times 1)$ would be more appropriate.
+However, for more flexibility we will not strictly define it like that and interpret such expression generously.
