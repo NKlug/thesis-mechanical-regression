@@ -1,0 +1,243 @@
+An alternative formulation of Lagrangian mechanics is the Hamiltonian formalism.
+In its own, it does not add anything particularly new but rather gives us a more powerful framework to work with the already established theory.
+In essence, a change of variables from $(q, \dot{q}, t)$ to $(q, p, t)$ is applied through a certain kind of transformation called \emph{Legendre transformation}.
+The obtained $(q, p)$ are known as the \emph{canonical variables}, concretely canonical coordinate and canonical momentum.
+We will briefly derive the Hamiltonian formulation for our application, but not cover all the theoretical details.
+For a complete formal derivation from a physical point of view, see \cite[Chapter~8]{goldstein01}.
+For a more mathematical approach, see \cite[Chapter~2]{marsden10}.
+
+First, define the canonical momentum
+\begin{equation}
+\label{eq:canonical-momentum}
+	p(t) \coloneqq \frac{\partial \fL(q, \dot{q}, t)}{\partial \dot{q}} = \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
+\end{equation}
+Note that just as we actually had $N$ Euler-Lagrange Equations above, we now also have $N$ canonical momenta, each defined as $p_i = \frac{\partial \fL}{\partial \dot{q}_i}$.
+Again, we use vector notation, and call $p$ \emph{the} canonical momentum.
+Next, we define the \emph{Hamiltonian function}, often also called \emph{energy function} \cite{marsden10}:
+\begin{equation}
+	\fH(q, p, t) \coloneqq p(t)^\mathrm{T}\dot{q}(t) - \fL(q, \dot{q}, t) \ .
+\end{equation}
+In physical context, $\fH$ can often be expressed as the sum of the system's kinetic and potential energies.
+Hence $\fH$ is a measure of the total energy of the system.
+Here, we get
+\Todo{Add one more step at the beginning, starting from the above eq.}
+\begin{align}
+	\fH(q, p, t) &= \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q(t)} \\
+	&= \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \bGamma(q(t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)\\
+	&= \frac{1}{2}  \left(\bGamma(q(t), q(t))^{-1} \dot{q}(t)\right)^\T \bGamma(q(t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)\\
+	&= \frac{1}{2} p(t)^\T \bGamma(q(t), q(t)) p(t) \ .
+\end{align}
+
+As you can see, the equations already become quite cluttered.
+\Todo{Even if some confusion might arise...}
+Thus, in the following we will, for simplicity, often omit the time dependence of $p$ and $q$.
+For example, we write $\Gamma(q, q)$ instead of $\Gamma(q(t), q(t))$.
+
+The next theorem describes the correspondence between Lagrangian and Hamiltonian mechanics:
+\Todo{Important: Explain meaning of partial symbol (is to be read as a gradient) or write differently}
+\begin{theorem}
+	\label{theo:hamiltonian-dynamic}
+	If $q$ minimizes \cref{prob:cont-least-action}, $(q, p)$ follow Hamilton's equations
+	\begin{equation}
+	\label{eq:hamiltonian-system}
+		\begin{split}
+			\dot{q} &= \grad_p \fH(q, p) = \bGamma(q, q) p\\
+			\dot{p} &= -\grad_q \fH(q, p)
+			= -\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)
+		\end{split}
+	\end{equation}
+	with $q(0) = X$.
+\end{theorem}
+\begin{proof}
+	Let $q$ be a minimizer of \cref{prob:cont-least-action}.
+	Then $q(0) = X$ and, as we have seen, $q$ fulfills the Euler-Lagrange equations.
+	The claim immediately follows from the equivalence of the Euler-Lagrange equations and Hamilton's equations under the diffeomorphism defined in \cref{eq:canonical-momentum}, as can be seen in e.g. \cite{marsden10, goldstein01}.
+\end{proof}
+
+\Todo{Elaborate!}
+Just as before, $q(1)$ was unknown, now, $p(0)$ is to be determined.
+This means we our problem now reduces to the search for the initial momentum $p(0)$.
+
+
+From $\frac{\partial \fL}{\partial t} = 0$ it follows that:
+\Todo{Think about whether to keep this. Seems kind of irrelevant}
+\begin{corollary}
+	\label{cor:energy-preservation}
+	Along $q$ the energy is preserved.
+\end{corollary}
+\begin{proof}
+	The Lagrangian is not explicitly time dependent, that is $\frac{\partial \fL}{\partial t} = 0$.
+	Therefore the Euler-Lagrange equations imply
+	\begin{equation}
+		\frac{\mathrm{d}}{\mathrm{d} t} \fL = \sum_{i=1}^{N}\left(\frac{\partial \fL}{\partial q_i} \dot{q_i} + \frac{\partial \fL}{\partial \dot{q_i}} \ddot{q_i} \right )
+		=\sum_{i=1}^{N}\left( \left( \frac{\mathrm{d}}{\mathrm{d} t} \frac{\partial \fL}{\partial \dot{q_i}} 
+		\right)\dot{q_i}+ \frac{\partial \fL}{\partial \dot{q_i}} \ddot{q_i}\right )
+		= \frac{\mathrm{d}}{\mathrm{d} t} \left(\sum_{i=1}^{N} \frac{\partial \fL}{\partial \dot{q_i}} \dot{q_i}\right) \ .
+	\end{equation}
+	It follows that
+	\begin{equation}
+		0 = \frac{\mathrm{d}}{\mathrm{d} t} \left( \left(\sum_{i=1}^{N} \frac{\partial \fL}{\partial \dot{q_i}} \dot{q_i} \right) -  \fL \right) 
+		= \frac{\mathrm{d}}{\mathrm{d} t} \left( \left(\sum_{i=1}^{N} p_i \dot{q_i} \right ) - \fL \right)
+		= \frac{\mathrm{d}}{\mathrm{d} t} \fH \ ,
+	\end{equation}
+	which means that the energy function does not change over time and hence is constant.
+\end{proof}
+
+Our next task will be to show that there exists a unique solution to the system in \cref{eq:hamiltonian-system}.
+If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}:
+A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and if that system has a unique solution, this must be it.
+Of course, we can only identify the flow once we have determined the optimal $q(1)$ as otherwise we would be lacking an initial value.
+
+\begin{theorem}
+	There exists a unique solution $(q, p)$ for the Hamiltonian system in \cref{eq:hamiltonian-system} with $q \in C^2([0, 1], \cX^N)$ and $p \in C^1([0, 1], \cX^N)$.
+\end{theorem}
+
+\begin{proof}
+	Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
+	Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
+	\begin{equation}
+	\label{eq:feature-hamiltonian}
+		\begin{split}
+			\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
+			\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
+		\end{split}
+	\end{equation}
+	with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
+	From \cref{cor:feature-space-norm} we get:
+	\begin{align}
+		\norm{\alpha}_\cF^2 &= \norm{\psi^\T(x) \alpha}_\cV^2\\
+		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
+		&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
+		&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
+		&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
+		&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
+		&= p^\T \bGamma(q, q) p \ .
+	\end{align}
+	In the second to last step we again used the reproducing property of the kernel $\Gamma$.
+	This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
+	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).
+	Our goal is to use a global version of the Picard-Lindelöf theorem \cite[~Theorem 1.2.3]{arino06} to prove that the Hamiltonian system does have a unique solution.
+	From this it immediately follows that $q$ and $p$ are $C^1$.
+	The right side of the first line in \cref{eq:feature-hamiltonian} is also differentiable by $t$.
+	Thus $q$ is $C^2$.
+	
+	For being able to apply Picard-Lindelöf we need the vector field $(q, p)$ to be globally Lipschitz continuous.
+	Showing component-wise Lipschitz continuity suffices because we can choose the global constant $L$ as the maximum of the components'.
+	We will show the Lipschitz property by proofing that $\dot{q}$ and $\dot{p}$ are bounded.
+	\Todo{Is this bogus math? This looks like a system of PDEs, is Picard-Lindelöf even applicable? Not and yes!
+	The derivative wrt time of (q, p) is the componentwise derivative!}
+	This will do:
+	Let $\dot{q}$ and $\dot{p}$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$ and
+	\begin{equation}
+	\label{eq:hamiltonian-time-derivative}
+		\begin{pmatrix}
+			\dot{q}\\\dot{p}
+		\end{pmatrix}
+		= \frac{\mathrm{d}}{\mathrm{d} t}\begin{pmatrix}q\\p\end{pmatrix}
+		= f\left(t, \begin{pmatrix}q\\p\end{pmatrix}\right) 
+		\coloneqq 			
+		\begin{pmatrix}\bGamma(q, q)p\\ 
+		-\frac{\partial \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)}{\partial q}
+		\end{pmatrix} 
+	\end{equation}
+	Then by the mean value theorem there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX$ such that
+	\begin{align}
+		\norm{f\left(t, x\right) - f\left(t, y\right) }
+		= \norm{
+			\frac{\mathrm{d}}{\mathrm{d} t}f\left(t, z \right)}
+		\cdot \norm{x-y} \ .
+	\end{align}
+	Because of the equality in \cref{eq:hamiltonian-time-derivative} we immediately arrive at the desired result:
+	$\norm{f\left(t, x\right) - f\left(t, y\right) } \leq L \norm{x - y}$.
+	For the detailed requirements of the Picard-Lindelöf theorem the reader is referred to \cite{arino06, tenenbaum85}.
+	
+	All that is left to show now is the boundedness of $\dot{q}$ and $\dot{p}$.
+	That of of $\dot{q}$ is easy to see from \cref{eq:feature-hamiltonian}:
+	\begin{equation}
+		\norm{\dot{q}_i}_\cX \leq \norm{\psi^T(q_i)}_O \norm{\alpha}_\cF 
+		\leq \sup_{x \in \cX}\norm{\psi^T(x)}_O \norm{\alpha}_\cF\ .
+	\end{equation}
+	Here, $\norm{\cdot}_O$ is the operator norm \cite{conway07}.
+	Because of the assuption in \cref{cond:feature-condition}, $\psi$ is bounded.
+	This implies that the adjoint $\psi^\T$ is, too.
+	We already saw that $\alpha$ is constant.
+	It remains to show the boundedness of $\dot{p_i}$.
+	First consider each entry $\dot{p}_{i, j}$ of $\dot{p}_i$.
+	By common differentiation rules and Cauchy-Schwarz we get
+	\begin{align}
+		\abs{p_{i,j}} &= \abs{\frac{\partial}{\partial q_{i, j}}\left<p_i, \psi^\T(q_i) \alpha \right> }\\
+		&= \abs{\left<p_i, \frac{\partial}{\partial q_{i, j}} \psi^\T(q_i) \alpha \right> }\\
+		&\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) }_\cX \ .
+	\end{align}
+	Observe the second factor, $\psi^\T(q_i) \alpha$. $\psi^\T$ is a matrix (actually a bounded linear operator in $L(\cF, \cX)$, but we are finite-dimensional), and $\alpha \in \cF$.
+	The matrix-vector product is a continuous, bilinear operator and thus we can apply the product rule for partial derivatives.
+	$\alpha$ does not depend on $q_{i, j}$, thus the equality $\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) = \left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha$ holds true. The partial derivative of $\psi^\T$ is again a bounded linear operator.
+	\begin{equation}
+		\norm{\left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha}_\cX \leq \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \norm{\alpha}_\cF \ .
+	\end{equation}
+	Together with the already established inequality we get
+	\begin{align}
+		\abs{\dot{p}_{i,j}} &\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i)\right) \alpha }_\cX\\
+		&\leq  \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \cdot \norm{\alpha }_\cF \ .
+	\end{align}
+	In total, this gives
+	\begin{align}
+		\norm{\dot{p}_i}^2 &= \sum_{i=1}^N \dot{p}_{i,j}^2\\
+		&\leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sum_{i=1}^N  \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O^2\\
+		& = \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \norm{\grad \psi^T(q_i)}^2 \\
+		& \leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)}^2 \ ,
+	\end{align}
+	which is, of course, equivalent to 
+	\begin{equation}
+	\label{eq:norm-p-inequality}
+		\norm{\dot{p}_i}\leq \norm{p_i}_\cX \cdot \norm{\alpha }_\cF \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)} \ .
+	\end{equation}
+	All factors on the right side are bounded: $p_i$ is a continuous function defined on a compact interval, $\alpha$ is constant, as we have seen, and the last term by \cref{cond:feature-condition}.
+	This means $\dot{p_i}$ and therefore $\dot{p}$ are bounded, too.
+	This concludes the proof.
+\end{proof}
+
+See Allansonnière for Theorem 3.7 of paper
+
+\subsection{Geodesic Shooting}
+
+Using the Hamiltonian representation, we can now formulate another equivalent problem.
+TODO: Why geodesic shooting?
+
+\begin{problem}
+	\label{prob:geodesic-shooting}
+	\begin{cases}
+		\text{Minimize~}& \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
+		\text{such that~} & p = \bGamma(q, q)^{-1}\dot{q},\ q(0) = X \text{~and~} (q,p) \text{~follow Hamilton's equations \ref{eq:hamiltonian-system}} \ .
+	\end{cases}
+\end{problem}
+
+For later use, we explicitly define the objective function of this problem:
+\begin{equation}
+	\label{eq:geodesic-shooting-objective}
+	\fV(p(0), X, Y) \coloneqq \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ .
+\end{equation}
+
+\begin{theorem}
+\label{theo:geodesic-shooting}
+	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $p$ minimizes \cref{prob:geodesic-shooting}.
+\end{theorem}
+\begin{proof}
+	Sketch (for now):
+	\Todo{The argumentation with Lagrangian = Hamiltonian feels too simple but might be plausible}
+	Let $q$ minimize \cref{prob:cont-least-action} and define $p$ as above.
+	Then $q(0) = X$ and by \cref{theo:hamiltonian-dynamic} $(q, p)$ satisfy Hamilton's equations.
+	We have $\cL(t, q, \dot{q}) = \cH(t, q, p)$ and know from \cref{cor:energy-preservation} that $\cH$ is constant across time.
+	This implies that
+	\begin{equation}
+		\mathcal{A}(q) = \int_{0}^{1} \cL(t, q, \dot{q}) \mathrm{d}t 
+		= \int_{0}^{1} \cH(t, q, p) \mathrm{d}t = \cH(\beta, q, p)
+	\end{equation}
+	for $\beta \in [0, 1]$.
+	Therefore $(q, p)$ minimize $\nu \cH(\beta, q, p) + l(q(1), Y)$ and for $\beta = 0$ we get
+	\begin{align}
+		\nu \cH(0, q, p) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \bGamma(q(0), q(0))p(0) + l(q(1), Y)\\
+		&= \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ .
+	\end{align}
+	Vice versa, if $p(0)$ minimizes $\fV$ and $(q, p)$ follow the Hamilton's equations, with the same argument, $q$ minimizes \cref{prob:cont-least-action}.
+\end{proof}
