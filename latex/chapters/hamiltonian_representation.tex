@@ -1,43 +1,45 @@
 An alternative formulation of Lagrangian mechanics is the Hamiltonian formalism.
-In its own, it does not add anything particularly new but rather gives us a more powerful framework to work with the already established theory.
+In its own, it does not add anything particularly new to the Lagrangian theory but rather gives a more powerful framework to work with the already established theory.
 In essence, a change of variables from $(q, \dot{q}, t)$ to $(q, p, t)$ is applied through a certain kind of transformation called \emph{Legendre transformation}.
 The obtained $(q, p)$ are known as the \emph{canonical variables}, concretely canonical coordinate and canonical momentum.
-We will briefly derive the Hamiltonian formulation for our application, but not cover all the theoretical details.
+We will briefly cover the derivation of the Hamiltonian formulation within the scope of our application, but exclude most of the theoretical details.
 For a complete formal derivation from a physical point of view, see \cite[Chapter~8]{goldstein01}.
-For a more mathematical approach, see \cite[Chapter~2]{marsden10}.
+For a more mathematical approach, consult \cite[Chapter~2]{marsden10}.
 
-First, define the canonical momentum
+First, we define the \emph{canonical momentum}
 \begin{equation}
 \label{eq:canonical-momentum}
-	p(t) \coloneqq \frac{\partial \fL(q, \dot{q}, t)}{\partial \dot{q}} = \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
+	p(t) \coloneqq \grad_{\dot{q}} \fL(t, q, \dot{q}) = \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
 \end{equation}
-Note that just as we actually had $N$ Euler-Lagrange Equations above, we now also have $N$ canonical momenta, each defined as $p_i = \frac{\partial \fL}{\partial \dot{q}_i}$.
-Again, we use vector notation, and call $p$ \emph{the} canonical momentum.
-Next, we define the \emph{Hamiltonian function}, often also called \emph{energy function} \cite{marsden10}:
+\sloppy{
+Note that just as above, this equation is actually defined element-wise: 
+$p_{i, j} = \frac{\partial}{\partial \dot{q}_{i,j}} \fL(t, q(t),\dot{q}(t))$.
+}
+Next, we define the \emph{Hamiltonian} function, often also called \emph{energy function} \cite{marsden10}:
 \begin{equation}
-	\fH(q, p, t) \coloneqq p(t)^\mathrm{T}\dot{q}(t) - \fL(q, \dot{q}, t) \ .
+	\fH(t, q, p) \coloneqq p(t)^\mathrm{T}\dot{q}(t) - \fL(t, q(t), \dot{q}(t)) \ .
 \end{equation}
-In physical context, $\fH$ can often be expressed as the sum of the system's kinetic and potential energies.
-Hence $\fH$ is a measure of the total energy of the system.
-Here, we get
-\Todo{Add one more step at the beginning, starting from the above eq.}
+Formally the Hamiltonian is defined as a function $\fH(t, x_1, x_2): [0,1] \times \R \times \R \rightarrow \R$; \emph{without} the connection between $p$ and $q$ defined in \cref{eq:canonical-momentum}.
+This means that we mostly treat the $p, q$ as independent variables unless mentioned otherwise.
+In a physical context, the Hamiltonian can often be expressed as the sum of the system's kinetic and potential energies and represents the total energy of the system, hence the name "energy function".
+For our application, we can calculate the Hamiltonian explicitly.
+We get
 \begin{align}
-	\fH(q, p, t) &= \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q(t)} \\
+	\fH(q, p, t) &=p(t)^\mathrm{T}\dot{q}(t) - \fL(t, q(t), \dot{q}(t))\\
+	&= \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q}(t) \\
 	&= \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \bGamma(q(t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)\\
 	&= \frac{1}{2}  \left(\bGamma(q(t), q(t))^{-1} \dot{q}(t)\right)^\T \bGamma(q(t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)\\
 	&= \frac{1}{2} p(t)^\T \bGamma(q(t), q(t)) p(t) \ .
 \end{align}
 
 As you can see, the equations already become quite cluttered.
-\Todo{Even if some confusion might arise...}
-Thus, in the following we will, for simplicity, often omit the time dependence of $p$ and $q$.
-For example, we write $\Gamma(q, q)$ instead of $\Gamma(q(t), q(t))$.
+Thus, despite the risk of confusion, we will often omit the time dependence of $p$ and $q$ in the following.
+For example, we write $\Gamma(q, q)$ instead of $\Gamma(q(t), q(t))$, but mean the same.
 
-The next theorem describes the correspondence between Lagrangian and Hamiltonian mechanics:
-\Todo{Important: Explain meaning of partial symbol (is to be read as a gradient) or write differently}
+The next theorem describes the classical correspondence between Lagrangian and Hamiltonian mechanics:
 \begin{theorem}
 	\label{theo:hamiltonian-dynamic}
-	If $q$ minimizes \cref{prob:cont-least-action}, $(q, p)$ follow Hamilton's equations
+	If $q$ minimizes \cref{prob:cont-least-action} and $p = \grad_{\dot{q}} \fL(t, q, \dot{q})$, $(q, p)$ follow Hamilton's equations
 	\begin{equation}
 	\label{eq:hamiltonian-system}
 		\begin{split}
@@ -54,27 +56,22 @@ The next theorem describes the correspondence between Lagrangian and Hamiltonian
 	The claim immediately follows from the equivalence of the Euler-Lagrange equations and Hamilton's equations under the diffeomorphism defined in \cref{eq:canonical-momentum}, as can be seen in e.g. \cite{marsden10, goldstein01}.
 \end{proof}
 
-\Todo{Elaborate!}
-Just as before, $q(1)$ was unknown, now, $p(0)$ is to be determined.
-This means we our problem now reduces to the search for the initial momentum $p(0)$.
-
-
-From $\frac{\partial \fL}{\partial t} = 0$ it follows that:
-\Todo{Think about whether to keep this. Seems kind of irrelevant}
+From the fact that $\frac{\partial \fL}{\partial t} = 0$ it follows that:
 \begin{corollary}
 	\label{cor:energy-preservation}
-	Along $q$ the energy is preserved.
+	Along the trajectory $q$ the energy is preserved.
 \end{corollary}
 \begin{proof}
 	The Lagrangian is not explicitly time dependent, that is $\frac{\partial \fL}{\partial t} = 0$.
-	Therefore the Euler-Lagrange equations imply
+	Write $\fL = \fL(t, q(t), \dot{q}(t))$.
+	The Euler-Lagrange equations imply:
 	\begin{equation}
 		\frac{\mathrm{d}}{\mathrm{d} t} \fL = \sum_{i=1}^{N}\left(\frac{\partial \fL}{\partial q_i} \dot{q_i} + \frac{\partial \fL}{\partial \dot{q_i}} \ddot{q_i} \right )
 		=\sum_{i=1}^{N}\left( \left( \frac{\mathrm{d}}{\mathrm{d} t} \frac{\partial \fL}{\partial \dot{q_i}} 
 		\right)\dot{q_i}+ \frac{\partial \fL}{\partial \dot{q_i}} \ddot{q_i}\right )
 		= \frac{\mathrm{d}}{\mathrm{d} t} \left(\sum_{i=1}^{N} \frac{\partial \fL}{\partial \dot{q_i}} \dot{q_i}\right) \ .
 	\end{equation}
-	It follows that
+	From the definition of $p$ it follows that
 	\begin{equation}
 		0 = \frac{\mathrm{d}}{\mathrm{d} t} \left( \left(\sum_{i=1}^{N} \frac{\partial \fL}{\partial \dot{q_i}} \dot{q_i} \right) -  \fL \right) 
 		= \frac{\mathrm{d}}{\mathrm{d} t} \left( \left(\sum_{i=1}^{N} p_i \dot{q_i} \right ) - \fL \right)
@@ -83,10 +80,10 @@ From $\frac{\partial \fL}{\partial t} = 0$ it follows that:
 	which means that the energy function does not change over time and hence is constant.
 \end{proof}
 
-Our next task will be to show that there exists a unique solution to the system in \cref{eq:hamiltonian-system}.
+Our next task will be to show that there exists a unique solution to the Hamiltonian system in \cref{eq:hamiltonian-system}.
 If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}:
-A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and if that system has a unique solution, this must be it.
-Of course, we can only identify the flow once we have determined the optimal $q(1)$ as otherwise we would be lacking an initial value.
+A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and if that system has a unique solution given suitable initial conditions, this must be it.
+Of course, we can only identify the flow once we have determined the value of $p(0)$ as otherwise we would be lacking an initial value.
 
 \begin{theorem}
 	There exists a unique solution $(q, p)$ for the Hamiltonian system in \cref{eq:hamiltonian-system} with $q \in C^2([0, 1], \cX^N)$ and $p \in C^1([0, 1], \cX^N)$.
@@ -124,8 +121,6 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 	For being able to apply Picard-Lindelöf we need the vector field $(q, p)$ to be globally Lipschitz continuous.
 	Showing component-wise Lipschitz continuity suffices because we can choose the global constant $L$ as the maximum of the components'.
 	We will show the Lipschitz property by proofing that $\dot{q}$ and $\dot{p}$ are bounded.
-	\Todo{Is this bogus math? This looks like a system of PDEs, is Picard-Lindelöf even applicable? Not and yes!
-	The derivative wrt time of (q, p) is the componentwise derivative!}
 	This will do:
 	Let $\dot{q}$ and $\dot{p}$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$ and
 	\begin{equation}
@@ -158,7 +153,7 @@ Of course, we can only identify the flow once we have determined the optimal $q(
 		\leq \sup_{x \in \cX}\norm{\psi^T(x)}_O \norm{\alpha}_\cF\ .
 	\end{equation}
 	Here, $\norm{\cdot}_O$ is the operator norm \cite{conway07}.
-	Because of the assuption in \cref{cond:feature-condition}, $\psi$ is bounded.
+	Because of the assumption in \cref{cond:feature-condition}, $\psi$ is bounded.
 	This implies that the adjoint $\psi^\T$ is, too.
 	We already saw that $\alpha$ is constant.
 	It remains to show the boundedness of $\dot{p_i}$.
