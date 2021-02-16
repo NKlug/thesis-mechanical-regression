@@ -104,6 +104,50 @@ They are, however, automatically satisfied in most real world examples and ease 
 
 \input{chapters/hamiltonian_representation}
 
+\subsection{Geodesic Shooting}
+
+Using the Hamiltonian formulation, we can now formulate another problem equivalent to \cref{prob:cont-least-action}.
+The search for the optimal trajectory $q$ is reduced to the search for the optimal initial momentum $p(0)$.
+A similar method, called \emph{Geodesic Shooting} has been introduced by \citet{allassonniere05} in the field of image registration.
+In this method, an optimal control problem is also reduced to finding optimal initial momenta for a Hamiltonian system.
+For mechanical regression, the equivalent problem is given as follows.
+\begin{problem}
+	\label{prob:geodesic-shooting}
+	\begin{cases}
+		\text{Minimize~}& \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
+		\text{such that~} & p = \bGamma(q, q)^{-1}\dot{q},\ q(0) = X \\
+		&\text{and~} (q,p) \text{~follow Hamilton's equations \ref{eq:hamiltonian-system}} \ .
+	\end{cases}
+\end{problem}
+For later use, we explicitly define the objective function of this problem:
+\begin{equation}
+\label{eq:geodesic-shooting-objective}
+\fV(p(0), X, Y) \coloneqq \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ .
+\end{equation}
+
+The following theorem states the equivalence between \cref{prob:cont-least-action} and \cref{prob:geodesic-shooting}, which means that the Least Action formulation can be solved by Geodesic Shooting.
+\begin{theorem}
+	\label{theo:geodesic-shooting}
+	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $p$ minimizes \cref{prob:geodesic-shooting}.
+\end{theorem}
+\begin{proof}
+	Let $q$ minimize \cref{prob:cont-least-action} and define $p = \bGamma(q, q)^{-1}\dot{q}$.
+	Then $q(0) = X$ and by \cref{theo:hamiltonian-dynamic} $(q, p)$ satisfy Hamilton's equations \ref{eq:hamiltonian-system}.
+	We have $\cL(t, q(t), \dot{q}(t)) = \cH(t, q(t), p(t))$ and know from \cref{cor:energy-preservation} that $\cH$ is constant across time, that is for $t_1, t_2 \in [0, 1]$ $\cH(t_1, q(t_1), p(t_1)) = \cH(t_2, q(t_2), p(t_2))$.
+	This implies that
+	\begin{equation}
+	\mathcal{A}(q) = \int_{0}^{1} \cL(t, q(t), \dot{q}(t)) \mathrm{d}t 
+	= \int_{0}^{1} \cH(t, q(t), p(t)) \mathrm{d}t = \cH(t_1, q, p) \ .
+	\end{equation}
+	Therefore $(q, p)$ minimize $\nu \cH(t_1, q(t_1), p(t_1) + l(q(1), Y)$ and for $t_1 = 0$ we get
+	\begin{align}
+	\nu \cH(0, q(0), p(0)) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \bGamma(q(0), q(0))p(0) + l(q(1), Y)\\
+	&= \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ ,
+	\end{align}
+	which is the target function $\fV$ defined in \cref{prob:geodesic-shooting}.
+	Vice versa, if $p(0)$ minimizes $\fV$ and $(q, p)$ follow Hamilton's equations, with the same argument, $q$ minimizes \cref{prob:cont-least-action}.
+\end{proof}
+
 \subsection{Continuous Limit and Adherence Values}
 
 \input{chapters/continuous_limit}
