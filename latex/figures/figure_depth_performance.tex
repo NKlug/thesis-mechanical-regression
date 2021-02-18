@@ -1,5 +1,12 @@
 \begin{figure}
-	This is will be figure 1 from deep residual learning for image recognition.
-	\caption{text}
+	\makebox[\textwidth][c]{
+		\centering
+		\includegraphics[scale=0.4]{figures/image_net_error_by_kaiming_he.png}
+	}
+	\caption{
+		Training (thin) and validation errors (bold) for a 18- and 34-layer plain network (left) and ResNet (right).
+		The plain 34 layer network shows worse results than the 18 layer equivalent, whereas the deeper ResNet performs better than the 18 layer one.
+		This is not the case for the plain network.
+		This figure originates from the paper "Deep Residual Learning for Image Recognition" by \citet{he16}. \copyright~2016 IEEE.}
 	\label{fig:depth-performance-decline}
 \end{figure}
