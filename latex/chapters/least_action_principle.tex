@@ -89,8 +89,8 @@ This can be solved easily, as we will see in the following lemma.
 \begin{proof}
 	Let $q(1) \coloneqq a \in \cX^N$ be arbitrary but fixed.
 	Then $l(q(1), Y)$ is constant and the problem is reduced to the minimization of the first term -- the action.
-	By \cite[~Proposition 1.4.1]{kielhofer18} it follows that $q$ satisfied the EL equations.
-	As this holds true for all endpoints $a$, it especially hold true for optimal $q$'s endpoint.
+	By \cite[~Proposition 1.4.1]{kielhofer18} it follows that $q$ satisfies the EL equations.
+	As this holds true for all endpoints $a$, it especially hold true for the endpoint of the optimal $q$.
 \end{proof}
 
 Within the scope of \cref{prob:cont-least-action} we do not rely on the Stationary Action Principle to be postulated.
@@ -98,7 +98,7 @@ By the problem's definition it is \emph{required} that the actual trajectory $q$
 
 The vector $q$ describes the trajectories of $N$ particles.
 Setting $m \coloneqq \mathrm{dim}(\cX)$, this would result in $mN$ EL equations, one for each $q_{i, j}$, $i \in [N], j \in [m]$.
-For simplicity we will combine them into one and write $\grad_{\dot{q}} \fL$ for the vector of partial derivatives with respect to $\dot{q}_{i, j}$.
+For simplicity we will combine them into one and write $\grad_{\dot{q}} \fL$ for the vector of partial derivatives with respect to $\dot{q}_{i, j}$ (the gradient).
 $\grad_q \fL$ is to be interpreted similarly.
 Together with the block operator notation we can write the EL equations in a concise formulation.
 Because of $\grad_{\dot{q}} \fL = \bGamma(q(t), q(t))^{-1} \dot{q}(t)$. It reads
