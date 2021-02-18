@@ -1,5 +1,7 @@
-\section{Reproducing Kernel Hilbert Spaces}
+\section{Mathematical Foundations}
+\Todo{Find better title!}
 
+\subsection{Reproducing Kernel Hilbert Spaces}
 \begin{definition}[RKHS]
 	\label{def:rkhs}
 	content...
@@ -20,6 +22,8 @@
 Example: Gaussian/RBF-Kernel, Polynomial Kernel
 
 \subsection{Features Space and Feature Maps}
+
+\Todo[inline]{Hier brauchen wir auf jeden Fall noch eine tiefere Erklärung/Verständnis warum man sowas wirklich braucht!}
 
 \begin{equation}
 	\label{eq:kernel-feature-map}
@@ -45,7 +49,7 @@ As in later parts we will almost exclusively rely on this notation, we first hav
 In the following we will define the product space of $\cY$, some useful notation and assure that all future calculations involving that new notation are mathematically sound.
 
 Let $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$ be the $N$-fold product space and $A, B \in \cY^N$.
-Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert Space itself.
+Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert space itself.
 
 
 \begin{definition}[Block Operator Matrix]

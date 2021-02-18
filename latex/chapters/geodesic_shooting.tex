@@ -134,7 +134,7 @@ Recall \cref{eq:optimal-recovery-loss-closed-form} where we identified the loss 
 Note that it involves computing $\mathbf{K}(X, X)^{-1}$, or rather solving the linear system $\mathbf{K}(X, X)^{-1} Y$.
 That system, involving a $(200\times200)$ matrix, proved to be ill-conditioned, which gave rise to some numerical issues and compromised the minimization process.
 Hence, some matrix regularization was applied:
-Adding a small constant $\lambda$ to the diagonal elements (in the experiments $\lambda = 10^{-6}$ was used) alleviated this problem.
+Adding a small perturbation $\lambda$ to the diagonal elements (in the experiments $\lambda = 10^{-6}$ was used) alleviated this problem.
 This method is also known as Tikhonov regularization.
 However, this effectively changed the loss to the ridge regression loss employing the empirical squared error, which reads (\cref{eq:ridge-regression-loss-se-closed-form}):
 \begin{equation}
