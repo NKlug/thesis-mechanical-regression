@@ -1,15 +1,39 @@
-\section{Mathematical Foundations}
-\Todo{Find better title!}
+\section{Mathematical Preliminaries}
+
+This section provides brief introductions to some of the theories involved in \cref{sec:mechanical-regression}.
+Those involve some functional analysis, in particular Reproducing Kernel Hilbert Spaces, features spaces and feature maps, some notation for product spaces and specific loss functions.
 
 \subsection{Reproducing Kernel Hilbert Spaces}
-\begin{definition}[RKHS]
-	\label{def:rkhs}
-	content...
+
+In this section we define Reproducing Kernel Hilbert Spaces and show some of their basic properties.
+There are multiple possibilities for the definition which are equivalent and lead to the same results.
+
+A quick reminder: A \emph{Hilbert space} is a Banach space with an inner product.
+
+Definition of RKHS of functions $X \rightarrow \R$ in \cite{sejdinovic12}, where $X$ is a set.
+Now we want to define RKHS functions $\cX \rightarrow \cY$ where both $\cX$ and $\cY$ are Hilbert spaces
+
+Let $L(\cX, \cY)$ be the space of bounded linear functions $\cX \rightarrow \cY$.
+
+\begin{definition}
+	\label{def:kernel}
+	A \emph{Kernel} $K: \cX \times \cX \rightarrow L(Y, Y)$
 \end{definition}
 
-\begin{definition}[Kernel]
-	\label{def:kernel}
+The definitions follow \cite{kadri16}.
+\begin{definition}
+	\label{def:rkhs}
+	A \emph{Reproducing Kernel Hilbert Space} (RKHS) is a Hilbert Space $(\cH, \left<\cdot, \cdot\right>_\cH)$ of functions $f: \cX \rightarrow \cY$ together with a non-negative Kernel $K: \cX \times \cX \rightarrow L(Y, Y)$, such that:
+	\begin{enumerate}
+		\item For all $x\in \cX, y \in \cY$ the function $K(x, \cdot) y: \cX \rightarrow \cY$ lies in $\cH$.
+		\item $\cF$ and $K$ fulfill the \emph{Reproducing Property}: For all $f \in \cF, x \in \cX, y \in \cY$
+		\begin{equation}
+			\label{eq:reproducing-property}
+			\left< f, K(\cdot, x) y \right>_\cH = \left< f(x), y\right>_\cY \ .
+		\end{equation}
+	\end{enumerate}
 \end{definition}
+
 
 \begin{theorem}
 	\label{theo:kernel-for-rkhs}

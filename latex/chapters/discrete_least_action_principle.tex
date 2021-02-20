@@ -33,7 +33,7 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 	\end{problem}
 	Here we just added the $q_k$ as additional variables but then bound them to certain values, concretely $q_{k+1} = q_k + v_k(q_k) = \phi_k(q_k)$, with $q_1 = X$.
 	Recursively we get $q_{L+1} = \Phi_L(X)$ which means the target function remains the same as in \cref{prob:min-v-f}.
-	Note that even though we seemingly added restraints to the domains of the $v_k$ they are still the same: We just have to choose $q_{k+1}$ accordingly (which we can, as they are unconstrained).
+	Note that even though we seemingly added constraints to the domains of the $v_k$ they are still the same: We just have to choose $q_{k+1}$ accordingly (which we can, as they are unconstrained).
 	
 	We will now derive closed form expressions for the $v_k$ as a function of the $q_k$.
 	For that, let $q_k \in \cX^N$, $2 \leq k \leq N$ be arbitrary but fixed .

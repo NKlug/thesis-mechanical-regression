@@ -1,6 +1,11 @@
 \section{Residual Neural Networks}
 \label{sec:neural-networks}
 
+In \cite{owhadi20}, the author models a special class of neural networks, called Residual Neural Networks (ResNets), and proves their convergence to a known problem, as the number of layers increases towards infinity.
+ResNets were first introduced by \citet{he16} in 2016 and have their origins in practical application rather than theory.
+This section provides a short introduction to ResNets and what problem they solve.
+Some basic knowledge of neural networks is presumed.
+
 In the early 2010s, when neural networks started to become increasingly popular it was still difficult to train models with many layers.
 Neural network architectures with many layers ("deep" networks) have led to many breakthroughs in supervised learning tasks.
 There is evidence that the number of layers (the depth) is of high importance:
@@ -19,14 +24,14 @@ This indicates that in general, a deeper network should not produce worse result
 Yet in practice one can observe deteriorating performance after a certain depth has been reached.
 An example for this can be seen in \cref{fig:depth-performance-decline} on the left.
 If the decline was measurable only for the test error it could have been attribute to overfitting, which can happen if the chosen architectures are too complex.
-However, here the adverse effects are also present for the training error.
-It seems that contemporary optimizers are not able to effectively learn the solution constructed above.
+However, in this case the adverse effects are also present for the training error.
+It seems that contemporary optimizers are not able to effectively learn the constructed solution from above.
 Thus, \citet{he16} conjecture that it is hard to learn the identity mapping through non-linear layers and suggest that it is easier to learn the zero function instead.
 This leads to their proposed network architecture: Residual Neural Networks (ResNets).
 
-The characteristic feature of ResNets is that instead of unreferenced mappings, they learn residual mappings.
+The characteristic feature of ResNets is that they learn residual mappings instead of unreferenced mappings.
 Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (non-linear) layers and $x \in \cX$.
-\citet{he16} suggest that instead of learning $f$, to learn the \emph{residual} given by
+\citet{he16} suggest that instead of learning $f$, to learn the \emph{residual}; given by
 \begin{equation}
 	\begin{split}
 		g: \cX \rightarrow \cX \\
@@ -34,11 +39,9 @@ Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (no
 	\end{split}
 \end{equation}
 This is implemented by creating shortcut connections that skip one or more layers and add the input to the layers' output, resulting in $g(x) + x = f(x)$.
-Examples of typical residual blocks are shown in \cref{fig:residual-block}.
+An example of typical residual block is shown in \cref{fig:residual-block}.
 This residual network layout was able to circumvent the decrease in performance that came with an increased number of layers and even showed better results, as one would expect with a greater number of parameters.
 
 \input{figures/figure_residual_block_example}
 
-\Todo{More refs}
-Nowadays, ResNets have a multitude of applications in various areas of machine learning.
-They include image classification and object detection \cite{he16}, 3D human pose estimation \cite{drover18}, semantic segmentation and natural language processing \cite{conneau16}; just to name a few.
+Nowadays, ResNets are used in virtually all areas of machine learning, including image classification and object detection \cite{he16}, semantic segmentation \cite{chen17}, 3D human pose estimation \cite{drover18} and natural language processing \cite{keskar19,conneau16}.

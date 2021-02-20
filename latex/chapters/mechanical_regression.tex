@@ -1,4 +1,5 @@
 \section{Mechanical Regression}
+\label{sec:mechanical-regression}
 
 In \cref{sec:neural-networks} we have seen that Neural Networks are a prominent way of approximating a solution to the Supervised Learning problem.
 ResNets in particular enabled the use of very deep architectures.
@@ -80,9 +81,9 @@ In the calculations, we will work under the following conditions.
 \end{condition}
 Note that the first condition implies that the function $(x_1, x_2) \rightarrow \Gamma(x_1, x_2)$ and its first and second order partial derivatives are continuous and uniformly bounded.
 This follows immediately from the fact that we can write $\Gamma(x_1, x_2) = \psi^\T(x_1)\psi(x_2)$.
-Furthermore, we have the following equivalence.
+Furthermore, we have the following equivalence for \cref{cond:feature-condition} (2).
 \begin{lemma}
-	\cref{cond:feature-condition} (2) is equivalent to the non-singularity of $\bGamma(X, X)$.
+	There exists $r > 0$ such that $\forall z \in \cX^N:~z^\T \bGamma(X, X) z \geq r z^\T z$ if and only if $\bGamma(X, X)$ is non-singular.
 \end{lemma}
 \begin{proof}
 	If $\bGamma(X, X)$ was singular, there would exist a vector $z \in \cX^N$ with $\norm{z}_{\cX^N} > 0$ and $\bGamma(X, X) z = 0$, implying $z^\T \bGamma(X, X)z = 0$. 

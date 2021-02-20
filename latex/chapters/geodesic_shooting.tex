@@ -43,7 +43,7 @@ In classical machine learning, popular kernel choices (e.g. for Support Vector M
 
 The first difficulties arise when implementing step 3.1, which involves solving the Hamiltonian system \ref{eq:hamiltonian-system}.
 This system cannot be solved analytically and thus has to be approximated.
-For solving (systems of) differential equations, many integration schemes exist, some of them preserving different invariants.
+For solving (systems of) differential equations, many numerical integration schemes exist, some of them preserving different invariants.
 The Hamiltonian system we are dealing with has many invariants:
 We have already seen that the energy is preserved, other invariants are the canonical symplectic 2-form \cite{marsden10} and the area/volume in the so called phase space (the space in which $(q(t), p(t))$ lies) \cite{hairer06}.
 In their implementation, \citet{owhadi20} use a slightly modified version of the classical Störmer-Verlet method (also known as leapfrog method)\footnote{This method even was used by Newton in his \emph{Principia Mathematica} to prove Kepler's second law \cite{hairer03}.}.
