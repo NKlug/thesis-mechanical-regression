@@ -1,0 +1,191 @@
+\section{Mathematical Preliminaries}
+
+This section provides brief introductions to some of the theories involved in \cref{sec:mechanical-regression}.
+Those involve some functional analysis, in particular Reproducing Kernel Hilbert Spaces, features spaces and feature maps, some notation for product spaces and specific loss functions.
+
+\subsection{Reproducing Kernel Hilbert Spaces}
+
+\input{chapters/rkhs}
+
+\subsection{Features Space and Feature Maps}
+
+Next, we define feature spaces and feature maps.
+They are of special interest in machine learning and are especially relevant for Support Vector Machines (SVMs) \cite{steinwart08}, where they enable learning non-linear decision functions.
+\citet{steinwart08} give an extended introduction to kernels, feature maps and feature space for the scalar case.
+Here, we will define these terms for the more general case of operator-valued kernels and present the results that are relevant for later sections.
+
+\begin{definition}
+	\label{def:feature-map-space}
+	A Hilbert space $\cF$ and a function $\psi: \cX \rightarrow L(\cY, \cF)$ are \emph{feature space} and \emph{feature map} for the Kernel $K$ if for all $x_1, x_2 \in \cX, y_1, y_2 \in \cY$:
+	\begin{equation}
+		\left< y_1, K(x_1, x_2) y_2\right>_\cY = \left< \psi(x_1) y_1, \psi(x_2) y_2\right>_\cF \ .
+	\end{equation}
+\end{definition}
+
+Let $\psi^\T: \cX \rightarrow L(\cF, \cY)$ be the adjoint of $\psi$ in the sense that for all $x \in \cX, y\in \cY, f \in \cF$
+\begin{equation}
+ \left< \psi(x)y, f\right>_\cF = \left<y, \psi^\T(x) \alpha \right>_\cY \ .
+\end{equation}
+With the adjoint we can derive a concise equation for the kernel $K$.
+
+\begin{equation}
+	\label{eq:kernel-feature-map}
+	K(x_1, x_2) = \psi^\T(x_1)\psi(x_2)
+\end{equation}
+
+\begin{theorem}
+	\begin{equation}
+		\left< \psi^\T(\cdot) \alpha, \psi^\T(\cdot) \beta\right>_\mathcal{H} = \left< \alpha, \beta\right>_\mathcal{F} \ .
+	\end{equation}
+\end{theorem}
+\begin{corollary}
+	\label{cor:feature-space-norm}
+	\begin{equation}
+		\norm{\psi^\T(\cdot)\alpha}_\mathcal{H}^2 = \norm{\alpha}_\mathcal{F}^2 \ .
+	\end{equation}
+\end{corollary}
+
+\subsection{Product Space and Block Operator Notation}
+Later on, it would be quite cumbersome to always treat the $X_i$ separately.
+Hence we will now introduce block operator syntax which will enable us to write equations more concisely.
+As in later parts we will almost exclusively rely on this notation, we first have to make sure that all used syntax is mathematically correct.
+In the following we will define the product space of $\cY$, some useful notation and assure that all future calculations involving that new notation are mathematically sound.
+
+Let $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$ be the $N$-fold product space and $A, B \in \cY^N$.
+Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert space itself.
+
+
+\begin{definition}[Block Operator Matrix]
+	A \emph{Block Operator Matrix} $\mathbf{A}$ is an $(N \times N)$-Matrix with Elements in $\cL(Y, Y)$.
+\end{definition}
+
+\begin{definition}[$\cY^N$]
+	content... 
+\end{definition}
+Explain: We can express the corresponding inner product as matrix multiplication.
+
+\begin{theorem}
+	$(\cL(\cY^N, \cY^N), +, \circ)$ is a  ring.
+\end{theorem}
+\begin{proof}
+	We conduct the proof by showing that $\cL(\cY^N, \cY^N) \cong \R^{nN \times nN}$.
+\end{proof}
+
+As a consequence of the proof, we get the following corollary.
+\begin{corollary}
+	\label{cor:matrix-ring-equivalence}
+	$\cL(\cY^N, \cY^N) \cong \R^{nN \times nN}$.
+\end{corollary}
+
+\begin{corollary}
+	\label{cor:matrix-vector-equivalence}
+	Block-Operator Matrix times vector is isomorphic to standard matrix times vector.
+\end{corollary}
+
+\input{figures/figure_block_operator_example}
+
+\begin{example}
+	Let $\cY = \R^n$.
+	\Todo{Discard Example, make it lemma/theorem.
+		Replace $\R$ by general field, as Hilbert Spaces are vector spaces,
+		make first isomorphism monoid homomorphism, maybe even ring homomorphism.
+		This means we can work with $\mathbf{K}$ just like a regular matrix.
+		Check if $\mathbf{K}$ really is symmetric or not just hermitian.
+		Also prove that there is an inverse under certain circumstances.}
+	Then we have $\cL(\cY) \cong \R^{n\times n}$, which means applying a (bounded) linear operator to a $y \in \cY$ can be expressed as matrix-vector multiplication.
+	We now claim that in this case $\cL(\cY^N) \cong \R^{nN \times nN}$ and that the computation of $\mathbf{A}\cdot \mathbf{y}$ can be expressed as a standard matrix-vector product.
+	For the first part, let $\mathbf{A} \in \cL(\cY^N)$ and $\mathbf{y} \in \cY^N$. 
+	Write $\mathbf{A} = (\mathbf{A}_{i, j})$ with $\mathbf{A}_{i,j} \in \cL(\cY)$. 
+	We obtain the corresponding $(nN \times nN)$-matrix by first applying the canonical isomorphism $\cL(\cY) \cong \R^{n\times n}$ to each $\mathbf{A}_{i,j}$ and then "flattening" the result.
+	For the second part, we first have to consider another isomorphism $\cY^N \cong \R^{nN}$ which is given by consecutively pasting the elements of $\cY^N$ into one vector of size $nN$.
+	\cref{fig:block-operator-example} illustrates both isomorphisms.
+	
+	These new representations of $\mathbf{A}$ and $\mathbf{y}$ make it particularly easy to compute $\mathbf{A}\cdot \mathbf{y} = \mathbf{x}$:
+	Simply map $\mathbf{A}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y}$ to $y \in \R^{nN}$, calculate $A \cdot y = x$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in\cY^N$.	
+	\Todo{Image: Block Operator Matrix -> "flattened" Matrix}
+\end{example}
+
+With $K$ being the Kernel associated with the RKHS $\mathcal{H}$ and $A, B \in \cY^N$ we will write $\mathbf{K}(A, B)$ for the matrix with the entries $K(A_i, B_j)$ at position $(i, j)$.
+
+
+\subsection{Optimal Recovery}
+\label{sec:optimal-recovery}
+
+\begin{theorem}[Representer Theorem]
+	\label{theo:representer}
+\end{theorem}
+
+The optimal recovery loss is defined as
+\begin{equation}
+	\label{eq:optimal-recovery-loss}
+	l(X, Y) \coloneqq \min\{\norm{f}_\mathcal{H}^2 ~|~ f\in \mathcal{H} \text{~and~} f(X) = Y\}
+\end{equation}
+
+By \cref{theo:representer}, the $f \in \mathcal{H}$ which minimizes \cref{eq:optimal-recovery-loss} admits a representation as 
+\begin{equation}
+	\label{eq:optimal-recovery-f}
+	f(x) = \sum_{i=1}^N K(x, X_i) Z_i \ ,
+\end{equation}
+where the $Z_i$ are the solutions to the following linear system ($1 \leq j \leq N$):
+\begin{equation}
+	\sum_{i=1}^{N} K(X_j, X_i) Z_i = Y_j
+\end{equation}
+For better readability we translate this expression into block operator notation:
+Introduce the block operator matrix $\mathbf{K}(X, X)$ with entries $K(X_i, X_j)$ and $Z = (Z_i)_{i \in [N]} \in \cY^N$.
+Using block operator notation, we can write the linear system more concisely as $\mathbf{K}(X, X) \cdot Z = Y$.
+Assuming the kernel $K$ is non-degenerate and the $X_i$ are pairwise distinct, we can, by \Todo{ref!}Lemma ??, find an inverse of $\mathbf{K}(X, X)$ and write $Z = \mathbf{K}(X, X)^{-1} \cdot Y$.
+
+Let $x \in X$ and $\mathbf{K}(x, X)$ be the vector with elements $K(x, X_i)$.
+Using this notation, we can rewrite \cref{eq:optimal-recovery-f} as
+\begin{equation}
+	f(x) = \mathbf{K}(x, X) \cdot \mathbf{K}(X, X) \cdot Y \ .
+\end{equation}
+The value of the loss function is the $\mathcal{H}$-norm of this $f$.
+As $\mathcal{H}$ is a Hilbert Space, we can compute it using the scalar product:
+\begin{align}
+	\norm{f}_\mathcal{H}^2 &= \left< f, f\right>_\mathcal{H}\\
+	&= \left< \sum_{i=1}^N K(x, X_i) Z_i, \sum_{i=1}^N K(x, X_j) Z_j \right>_\mathcal{H}\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(x, X_i) Z_i, K(x, X_j) Z_j \right>_\mathcal{H}\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_i, X_j) Z_j \right>_\cY\\
+	&= \left< Z, \mathbf{K}(X, X) \cdot Z\right >_{\cY^N}\\
+	&= Z^\T \cdot \mathbf{K}(X, X) \cdot Z \\
+	&= (\mathbf{K}(X, X)^{-1} \cdot Y)^\T \cdot \mathbf{K}(X, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y\\
+	&= Y^\T \cdot (\mathbf{K}(X, X)^{-1})^\T \cdot Y\\
+	&=  Y^\T \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
+\end{align}
+In the fourth line we used the reproducing property and in the second to last line the fact $\mathbf{K}$ that $K$ is Hermitian, that is, $K(x, y)^\T = K(y, x)$.
+All in all, this leaves us with an appealing and compact form for the optimal recovery loss:
+\begin{equation}
+	\label{eq:optimal-recovery-loss-closed-form}
+	l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y \ .
+\end{equation}
+\subsection{Ridge Regression}
+
+Aka Tikhonov regularization aka $L_2$ parameter regularization.
+\begin{equation}
+	\label{eq:ridge-regression-loss}
+	l(X, Y) \coloneqq \inf_{f \in \mathcal{H}} \lambda \norm{f}_\mathcal{H}^2 
+	+ l_\cY (f(X), Y)
+\end{equation}
+
+\begin{equation}
+	\label{eq:ridge-regression-f}
+	f(x) = \mathbf{K}(x, X)^\T \left(\mathbf{K}(x, X) + \lambda I\right)^{-1}Y \ .
+\end{equation}
+
+\begin{equation}
+	\label{eq:ridge-regression-loss-se-closed-form}
+	l(X, Y) = \lambda Y^\T (\mathbf{K}(X, X) + \lambda \mathbbm{1}_N)^{-1} Y \ .
+\end{equation}
+Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery.
+
+\subsection{Equivalence of Optimization Problems}
+
+\begin{definition}
+	\label{def:equivalent-problems}
+	Let $f: X \rightarrow \R$ and $g: Y \rightarrow \R$ be the target functions of two optimization problems $A$ and $B$.
+	Then $A$ and $B$ are \emph{equivalent} if there exists a bijection $\varphi: X \rightarrow Y$ such that
+	\begin{equation}
+		x \in X \text{~is optimal for A~} \Leftrightarrow \phi(x) \in Y \text{~is optimal for A~}\ .
+	\end{equation}
+\end{definition}
