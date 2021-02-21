@@ -31,7 +31,7 @@ This leads to their proposed network architecture: Residual Neural Networks (Res
 
 The characteristic feature of ResNets is that they learn residual mappings instead of unreferenced mappings.
 Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (non-linear) layers and $x \in \cX$.
-\citet{he16} suggest that instead of learning $f$, to learn the \emph{residual}; given by
+\citet{he16} suggest that instead of learning $f$ directly, to learn the \emph{residual}; given by
 \begin{equation}
 	\begin{split}
 		g: \cX \rightarrow \cX \\
@@ -39,7 +39,7 @@ Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (no
 	\end{split}
 \end{equation}
 This is implemented by creating shortcut connections that skip one or more layers and add the input to the layers' output, resulting in $g(x) + x = f(x)$.
-An example of typical residual block is shown in \cref{fig:residual-block}.
+An illustration of a typical residual block is shown in \cref{fig:residual-block}.
 This residual network layout was able to circumvent the decrease in performance that came with an increased number of layers and even showed better results, as one would expect with a greater number of parameters.
 
 \input{figures/figure_residual_block_example}
