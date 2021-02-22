@@ -1,26 +1,13 @@
 #!/bin/bash
-#SBATCH --partition=math
+#SBATCH --partition=gpu
 #SBATCH --job-name={job_name}
 #SBATCH --output=out/{job_name}.out
 #SBATCH --error=out/{job_name}.err
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user={user_mail}
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:1
+#SBATCH --mem={mem}GB
 
-#---- Begin: JFYI, not required to submit a job and can be safely deleted
-SLURM_NODEFILE=my_slurm_nodes.$$
-srun hostname | sort > $SLURM_NODEFILE
-NCPU=`wc -l < $SLURM_NODEFILE`
-echo ------------------------------------------------------
-echo working directory is $SLURM_SUBMIT_DIR
-echo job identifier is $SLURM_JOBID
-echo ------------------------------------------------------
-echo ' This job is allocated on '${{NCPU}}' core(s)'
-echo 'Job is running on node(s): '
-cat $SLURM_NODEFILE 
-rm -f $SLURM_NODEFILE
-echo ------------------------------------------------------
-#---- End
-
-#---- submitting a job
 PYTHON_PATH={script_dir}
-python3 {script} {options}
+{scripts}

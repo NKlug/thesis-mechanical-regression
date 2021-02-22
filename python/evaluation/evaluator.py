@@ -1,5 +1,7 @@
 import re
 from os import path, listdir
+import numpy as np
+from tqdm import tqdm
 
 from geodesic_shooting.leapfrog import simulate_flow
 
@@ -25,3 +27,13 @@ class Evaluator(object):
             all_flows[checkpoint] = q
 
         return all_flows
+
+    def find_best_checkpoint(self, all_flows):
+        best_checkpoint = None
+        best_loss = np.infty
+        for checkpoint, flow in tqdm(all_flows.items()):
+            loss = self.model.regression_loss(flow[-1].reshape(-1), self.model.Y, self.model.K).numpy()
+            if loss < best_loss:
+                best_loss = loss
+                best_checkpoint = checkpoint
+        return best_checkpoint, best_loss

@@ -1,6 +1,7 @@
 latex/out/
 latex/bibliography_resources/
 python/playground*
+python/temp*
 training/
 
 
