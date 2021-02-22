@@ -39,12 +39,12 @@
 			\node [right= of f3] (f4) {\includegraphics[scale=\imagescale]{figures/results/best_ckpt_2021_02_16_s_5_r_0.1_h_0.2_mu_0.5_reg_1e-06_step_0.8.pdf}};
 			\node [right= of f4] (f5) {\includegraphics[scale=\imagescale]{figures/results/best_ckpt_2021_02_16_s_5_r_0.1_h_0.2_mu_0.5_reg_1e-06_step_1.0.pdf}};
 			%
-			\node[left= -0.35cm of a1] (a0) {$\mu=0.1$};
-			\node[left= -0.35cm of b1] (b0) {$\mu=0.01$};
-			\node[left= -0.35cm of c1] (c0) {$\mu=0.02$};
-			\node[left= -0.35cm of d1] (d0) {$\mu=0.03$};
-			\node[left= -0.35cm of e1] (e0) {$\mu=0.05$};
-			\node[left= -0.35cm of f1] (f0) {$\mu=0.5$};
+			\node[left= -0.5cm of a1] (a0) {$\mu=0.1$};
+			\node[left= -0.5cm of b1] (b0) {$\mu=0.01$};
+			\node[left= -0.5cm of c1] (c0) {$\mu=0.02$};
+			\node[left= -0.5cm of d1] (d0) {$\mu=0.03$};
+			\node[left= -0.5cm of e1] (e0) {$\mu=0.05$};
+			\node[left= -0.5cm of f1] (f0) {$\mu=0.5$};
 			%
 			\node[above= -0.1cm of b1] (z1) {$t=0.2$};
 			\node[above= -0.1cm of b2] (z2) {$t=0.4$};
@@ -53,6 +53,9 @@
 			\node[above= -0.1cm of b5] (z5) {$t=1.0$};
 		\end{tikzpicture}
 	}
-	\caption{Here will be the results of the experiments.}
+	\caption{Results for the Swiss Roll dataset for different balancing parameters $\mu$ (vertical).
+	The horizontal dimension depicts the (discrete) time evolution of $X$ from $t=0$ (not depicted) to $t=1$.
+	As $\mu$ increases, space deformation is increasingly penalized, resulting in less deformation.
+	Notice $(\mu=0.03, t=1)$ in comparison to other values of $\mu$.}
 	\label{fig:results-swiss-roll}
 \end{figure}
