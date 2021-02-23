@@ -15,8 +15,8 @@ We will mainly present results which are relevant for later sections.
 The Kernel $K$ does in itself induce a feature map and space.
 The following example is an extension of \cite[Lemma~4.19]{steinwart08}, where the canonical feature map of $K$ is defined for the scalar case.
 \begin{example}[Canonical feature map for operator-valued kernel]
-	Let $a \in \cX$ be arbitrary but fixed and define $\psi(x) = \left(y \rightarrow K(\cdot, x)y\right)$.
-	Then $\psi$ is a function $\cX \rightarrow \left(\cY \rightarrow \cH\right)$, as $K(\cdot, x) y \in \cH$ by definition.
+	Define $\psi(x) \coloneqq \left(y \rightarrow K(\cdot, x)y\right)$.
+	Then $\psi$ is a function $\cX \rightarrow L(\cY,\cH)$ because $K(\cdot, x) y \in \cH$ by definition.
 	Furthermore we have for all $x_1, x_2 \in \cX$ and $y_1, y_2 \in \cY$:
 	\begin{align}
 		\left<\psi(x_1) y_1, \psi(x_2)y_2 \right>_\cH &= 
@@ -64,25 +64,27 @@ Restricting $\cF$ like this has the advantage that $\cH$ is then equal to the cl
 From this result we obtain the following theorem.
 \begin{theorem}
 	\label{theo:f-h-correspondence-equation}
-	For all $\alpha, \beta \in \cF$ it holds true that
+	If $\cF = \mathrm{im}(\varphi)$ it holds true that for all $\alpha, \beta \in \cF$ 
 	\begin{equation}
 		\left< \psi^\T(\cdot) \alpha, \psi^\T(\cdot) \beta\right>_\cH = \left< \alpha, \beta\right>_\cF \ .
 	\end{equation}
 \end{theorem}
 \begin{proof}
-	
+	Using the reproducing property we first have for $\alpha \in \cF, x \in \cX$ and $y \in \cY$ that
+	\begin{align}
+		\left<\psi^\T(\cdot) \alpha, \psi^T(\cdot)\psi(x)y\right>_\cH
+		&= \left<\psi^\T(\cdot) \alpha, K(\cdot, x) y \right>_\cH \\
+		&= \left<\psi^\T(x)\alpha, y\right>_\cY\\
+		&= \left<\alpha, \psi(x)y\right>_\cF \ .
+	\end{align}
+	Let $\beta \in \cF$.
+	Then $\beta \in \mathrm{im}(\varphi)$, implying there exist $x \in \cX, y \in \cY$ such that $\varphi(x, y) = \beta$.
+	Substituting $\psi(x)y = \beta$ in the first and last line of the equation above proves the claim.
 \end{proof}
+We conclude this section with the following result, which is an immediate consequence of \cref{theo:f-h-correspondence-equation}.
 \begin{corollary}
 	\label{cor:feature-space-norm}
 	\begin{equation}
 		\norm{\psi^\T(\cdot)\alpha}_\cH^2 = \norm{\alpha}_\cF^2 \ .
 	\end{equation}
 \end{corollary}
-\begin{proof}
-	This is an immediate consequence of \cref{theo:f-h-correspondence-equation}.
-	Let $\alpha \in \cF$, then
-	\begin{equation}
-		\norm{\psi^\T(\cdot)\alpha}_\cH^2 = \left< \psi^\T(\cdot)\alpha, \psi^\T(\cdot)\alpha \right>_\cH
-		= \left< \alpha, \alpha \right>_\cF = \norm{\alpha}_\cF^2 \ .
-	\end{equation}
-\end{proof}

@@ -9,70 +9,11 @@ Those involve some functional analysis, in particular Reproducing Kernel Hilbert
 
 \subsection{Feature Space and Feature Maps}
 
-\input{chapters/feature_space_map.tex}
+\input{chapters/feature_space_map}
 
 \subsection{Product Space and Block Operator Notation}
-Later on, it would be quite cumbersome to always treat the $X_i$ separately.
-Hence we will now introduce block operator syntax which will enable us to write equations more concisely.
-As in later parts we will almost exclusively rely on this notation, we first have to make sure that all used syntax is mathematically correct.
-In the following we will define the product space of $\cY$, some useful notation and assure that all future calculations involving that new notation are mathematically sound.
 
-Let $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$ be the $N$-fold product space and $A, B \in \cY^N$.
-Defining $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert space itself.
-
-
-\begin{definition}[Block Operator Matrix]
-	A \emph{Block Operator Matrix} $\mathbf{A}$ is an $(N \times N)$-Matrix with Elements in $\cL(Y, Y)$.
-\end{definition}
-
-\begin{definition}[$\cY^N$]
-	content... 
-\end{definition}
-Explain: We can express the corresponding inner product as matrix multiplication.
-
-\begin{theorem}
-	$(\cL(\cY^N, \cY^N), +, \circ)$ is a  ring.
-\end{theorem}
-\begin{proof}
-	We conduct the proof by showing that $\cL(\cY^N, \cY^N) \cong \R^{nN \times nN}$.
-\end{proof}
-
-As a consequence of the proof, we get the following corollary.
-\begin{corollary}
-	\label{cor:matrix-ring-equivalence}
-	$\cL(\cY^N, \cY^N) \cong \R^{nN \times nN}$.
-\end{corollary}
-
-\begin{corollary}
-	\label{cor:matrix-vector-equivalence}
-	Block-Operator Matrix times vector is isomorphic to standard matrix times vector.
-\end{corollary}
-
-\input{figures/figure_block_operator_example}
-
-\begin{example}
-	Let $\cY = \R^n$.
-	\Todo{Discard Example, make it lemma/theorem.
-		Replace $\R$ by general field, as Hilbert Spaces are vector spaces,
-		make first isomorphism monoid homomorphism, maybe even ring homomorphism.
-		This means we can work with $\mathbf{K}$ just like a regular matrix.
-		Check if $\mathbf{K}$ really is symmetric or not just hermitian.
-		Also prove that there is an inverse under certain circumstances.}
-	Then we have $\cL(\cY) \cong \R^{n\times n}$, which means applying a (bounded) linear operator to a $y \in \cY$ can be expressed as matrix-vector multiplication.
-	We now claim that in this case $\cL(\cY^N) \cong \R^{nN \times nN}$ and that the computation of $\mathbf{A}\cdot \mathbf{y}$ can be expressed as a standard matrix-vector product.
-	For the first part, let $\mathbf{A} \in \cL(\cY^N)$ and $\mathbf{y} \in \cY^N$. 
-	Write $\mathbf{A} = (\mathbf{A}_{i, j})$ with $\mathbf{A}_{i,j} \in \cL(\cY)$. 
-	We obtain the corresponding $(nN \times nN)$-matrix by first applying the canonical isomorphism $\cL(\cY) \cong \R^{n\times n}$ to each $\mathbf{A}_{i,j}$ and then "flattening" the result.
-	For the second part, we first have to consider another isomorphism $\cY^N \cong \R^{nN}$ which is given by consecutively pasting the elements of $\cY^N$ into one vector of size $nN$.
-	\cref{fig:block-operator-example} illustrates both isomorphisms.
-	
-	These new representations of $\mathbf{A}$ and $\mathbf{y}$ make it particularly easy to compute $\mathbf{A}\cdot \mathbf{y} = \mathbf{x}$:
-	Simply map $\mathbf{A}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y}$ to $y \in \R^{nN}$, calculate $A \cdot y = x$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in\cY^N$.	
-	\Todo{Image: Block Operator Matrix -> "flattened" Matrix}
-\end{example}
-
-With $K$ being the Kernel associated with the RKHS $\mathcal{H}$ and $A, B \in \cY^N$ we will write $\mathbf{K}(A, B)$ for the matrix with the entries $K(A_i, B_j)$ at position $(i, j)$.
-
+\input{chapters/block_operator_notation}
 
 \subsection{Optimal Recovery}
 \label{sec:optimal-recovery}
