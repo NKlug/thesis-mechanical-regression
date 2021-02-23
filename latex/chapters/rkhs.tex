@@ -4,9 +4,9 @@ There are multiple possibilities for the definition which are equivalent and lea
 A quick reminder: A \emph{Hilbert space} is a Banach space with an inner product.
 
 Definition of RKHS of functions $\cX \rightarrow \R$ in \cite{sejdinovic12}, where $\cX$ is a set.
-Now we want to define RKHS functions $\cX \rightarrow \cY$ where both $\cX$ and $\cY$ are Hilbert spaces
+Now we want to define RKHS functions $\cX \rightarrow \cY$ where both $\cX$ and $\cY$ are Hilbert spaces \Todo{Actually we only require Y to be Hilbert}
 
-Let $L(\cX, \cY)$ be the space of bounded linear functions $\cX \rightarrow \cY$.
+Let $L(\cX, \cY)$ be the space of bounded linear functions $\cX \rightarrow \cY$ and $\cH$ be a Hilbert space of functions $\cX \rightarrow \cY$.
 
 \begin{definition}
 	\label{def:kernel}
@@ -32,7 +32,7 @@ However, their definition also applies to more general case where $\cY$ is an ar
 	\label{def:rkhs}
 	A \emph{Reproducing Kernel Hilbert Space} (RKHS) is a Hilbert Space $(\cH, \left<\cdot, \cdot\right>_\cH)$ of functions $f: \cX \rightarrow \cY$ together with a non-negative Kernel $K: \cX \times \cX \rightarrow L(\cY, \cY)$, such that:
 	\begin{enumerate}
-		\item For all $x\in \cX, y \in \cY$ the function $K(x, \cdot) y: \cX \rightarrow \cY$ lies in $\cH$.
+		\item For all $x\in \cX, y \in \cY$ the function $K(\cdot, x) y: \cX \rightarrow \cY$ lies in $\cH$.
 		\item $\cH$ and $K$ fulfill the \emph{Reproducing Property}: For all $f \in \cH, x \in \cX, y \in \cY$
 		\begin{equation}
 			\label{eq:reproducing-property}

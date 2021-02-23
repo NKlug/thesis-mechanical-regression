@@ -1,0 +1,88 @@
+Next, we define feature spaces and feature maps.
+They are of special interest in machine learning and are especially relevant for Support Vector Machines (SVMs) \cite{steinwart08}, where they enable learning non-linear decision functions.
+\citet{steinwart08} give an extended introduction to kernels, feature maps and feature space for the scalar case.
+Here, we will follow \cite{owhadi20} and define these terms for the more general case of operator-valued kernels.
+We will mainly present results which are relevant for later sections.
+
+\begin{definition}
+	\label{def:feature-map-space}
+	A Hilbert space $\cF$ and a function $\psi: \cX \rightarrow L(\cY, \cF)$ are \emph{feature space} and \emph{feature map} for the Kernel $K$ if for all $x_1, x_2 \in \cX, y_1, y_2 \in \cY$:
+	\begin{equation}
+		\left< y_1, K(x_1, x_2) y_2\right>_\cY = \left< \psi(x_1) y_1, \psi(x_2) y_2\right>_\cF \ .
+	\end{equation}
+\end{definition}
+
+The Kernel $K$ does in itself induce a feature map and space.
+The following example is an extension of \cite[Lemma~4.19]{steinwart08}, where the canonical feature map of $K$ is defined for the scalar case.
+\begin{example}[Canonical feature map for operator-valued kernel]
+	Let $a \in \cX$ be arbitrary but fixed and define $\psi(x) = \left(y \rightarrow K(\cdot, x)y\right)$.
+	Then $\psi$ is a function $\cX \rightarrow \left(\cY \rightarrow \cH\right)$, as $K(\cdot, x) y \in \cH$ by definition.
+	Furthermore we have for all $x_1, x_2 \in \cX$ and $y_1, y_2 \in \cY$:
+	\begin{align}
+		\left<\psi(x_1) y_1, \psi(x_2)y_2 \right>_\cH &= 
+		\left< K(\cdot, x_1) y_1, K(\cdot, x_2) y_2\right>_\cH\\
+		& = \left< K(x_2, x_1) y_1, y_2 \right>_\cY \\
+		& = \left< y_1, K(x_2, x_1)^\T y_2 \right>_\cY\\
+		& = \left< y_1, K(x_1, x_2) y_2\right>_\cY \ .		
+	\end{align}
+	This makes $\psi$ a feature map and $\cH$ a feature space for $K$. \qed
+\end{example}
+
+Let $\psi^\T: \cX \rightarrow L(\cF, \cY)$ be the adjoint of $\psi$ in the sense that for all $x \in \cX, y\in \cY, \alpha \in \cF$
+\begin{equation}
+ \left< \psi(x)y, \alpha\right>_\cF = \left<y, \psi^\T(x) \alpha \right>_\cY \ .
+\end{equation}
+With the adjoint we can derive a concise equation for the kernel $K$:
+\begin{align}
+	\left< y_1, K(x_1, x_2) y_2\right>_\cY = \left< \psi(x_1) y_1, \psi(x_2) y_2\right>_\cF = \left<y_1, \psi^\T(x_1)\psi(x_2) y_2\right>_\cY \ .
+\end{align}
+As this holds true for all $x_1, x_2 \in \cX, y_1, y_2 \in \cY$, we conclude
+\begin{equation}
+\label{eq:kernel-feature-map}
+K(x_1, x_2) = \psi^\T(x_1) \psi(x_2) \ .
+\end{equation}
+Note that composing $\psi^T(x) \circ \psi(x)$ does indeed result in a function $\cY \rightarrow \cY$, which matches the target type of $K$.
+
+Using $\psi^\T$ and $\alpha \in \cF$, we can also define functions $\cX \rightarrow \cY$:
+\begin{align}
+		\psi^\T\alpha: ~&\cX \rightarrow \cY \\
+		(\psi^\T\alpha)(x) &\coloneqq \psi^\T(x)\alpha \ .
+\end{align}
+Without loss of generality we can restrict $\cF$ to the image of the function
+\begin{align}
+	\varphi: ~&\cX \times \cY \rightarrow \cF\\
+	\varphi(x, y) &\coloneqq \psi(x)y\ .
+\end{align}
+We will not detail why this is possible.
+\Todo{Maybe it is straightforward to see that cF is still Banach in this case.It is clear that the inner product still works.}
+It especially requires $\mathrm{im}(\varphi)$ to be a Hilbert space.
+The intuition behind this ...
+\Todo{Intuition: Move from X to some weird high dimensional space which allows learning non linearities.
+But it doesnt really matter what this feature space cF looks like as we dont have to care about it.
+Therefore we can restrict F to whatever we want - as long as it makes sense.}
+Restricting $\cF$ like this has the advantage that $\cH$ is then equal to the closure of the span of $\{\psi^\T\alpha\ |\ \alpha \in \cF\}$.
+From this result we obtain the following theorem.
+\begin{theorem}
+	\label{theo:f-h-correspondence-equation}
+	For all $\alpha, \beta \in \cF$ it holds true that
+	\begin{equation}
+		\left< \psi^\T(\cdot) \alpha, \psi^\T(\cdot) \beta\right>_\cH = \left< \alpha, \beta\right>_\cF \ .
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	
+\end{proof}
+\begin{corollary}
+	\label{cor:feature-space-norm}
+	\begin{equation}
+		\norm{\psi^\T(\cdot)\alpha}_\cH^2 = \norm{\alpha}_\cF^2 \ .
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	This is an immediate consequence of \cref{theo:f-h-correspondence-equation}.
+	Let $\alpha \in \cF$, then
+	\begin{equation}
+		\norm{\psi^\T(\cdot)\alpha}_\cH^2 = \left< \psi^\T(\cdot)\alpha, \psi^\T(\cdot)\alpha \right>_\cH
+		= \left< \alpha, \alpha \right>_\cF = \norm{\alpha}_\cF^2 \ .
+	\end{equation}
+\end{proof}

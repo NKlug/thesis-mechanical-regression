@@ -40,8 +40,8 @@ Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (no
 \end{equation}
 This is implemented by creating shortcut connections that skip one or more layers and add the input to the layers' output, resulting in $g(x) + x = f(x)$.
 An illustration of a typical residual block is shown in \cref{fig:residual-block}.
-This residual network layout was able to circumvent the decrease in performance that came with an increased number of layers and even showed better results, as one would expect with a greater number of parameters.
 
 \input{figures/figure_residual_block_example}
 
+This residual network layout was able to circumvent the decrease in performance that came with an increased number of layers and even showed better results, as one would expect from a model with a greater number of parameters.
 Nowadays, ResNets are used in virtually all areas of machine learning, including image classification and object detection \cite{he16}, semantic segmentation \cite{chen17}, 3D human pose estimation \cite{drover18} and natural language processing \cite{keskar19,conneau16}.
