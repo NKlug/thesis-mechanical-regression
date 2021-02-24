@@ -101,6 +101,15 @@
 \renewcommand{\baselinestretch}{1.1} % line distance
 \allowdisplaybreaks % Make big equations breakable
 
+% add possibility to increase verticle spacings in matrices
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+	\edef\arraystretch{#1}%
+	\hskip -\arraycolsep
+	\let\@ifnextchar\new@ifnextchar
+	\array{*\c@MaxMatrixCols c}}
+\makeatother
+
 \newcommand{\cX}{\mathcal{X}}
 \newcommand{\cY}{\mathcal{Y}}
 \newcommand{\cL}{\mathcal{L}}
@@ -113,6 +122,8 @@
 \newcommand{\fL}{\mathfrak{L}}
 \newcommand{\fH}{\mathfrak{H}}
 \newcommand{\fV}{\mathfrak{V}}
+
+\newcommand{\dK}{\mathbb{K}}
 
 \newcommand{\closure}{\mathrm{\mathbf{cl}}}
 

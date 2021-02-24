@@ -18,6 +18,8 @@ Those involve some functional analysis, in particular Reproducing Kernel Hilbert
 \subsection{Optimal Recovery}
 \label{sec:optimal-recovery}
 
+With $K$ being the Kernel associated with the RKHS $\mathcal{H}$ and $A, B \in \cY^N$ we will write $\mathbf{K}(A, B)$ for the matrix with the entries $K(A_i, B_j)$ at position $(i, j)$.
+
 \begin{theorem}[Representer Theorem]
 	\label{theo:representer}
 \end{theorem}
@@ -87,7 +89,7 @@ Aka Tikhonov regularization aka $L_2$ parameter regularization.
 Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery.
 
 \subsection{Equivalence of Optimization Problems}
-
+\Todo[inline]{Probably remove this section.}
 \begin{definition}
 	\label{def:equivalent-problems}
 	Let $f: X \rightarrow \R$ and $g: Y \rightarrow \R$ be the target functions of two optimization problems $A$ and $B$.

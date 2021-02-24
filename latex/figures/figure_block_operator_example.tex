@@ -1,5 +1,31 @@
 \begin{figure}
-	This will be an illustration of isomorphisms in the block operator matrix example.
-	\caption{And this will be the supercool caption.}
+	\begin{equation*}
+		\begin{pmatrix}[1.2]
+			\begin{pmatrix}
+				x_{1, 1, 1} & x_{1, 1, 2}\\
+				x_{1, 2, 1} & x_{1, 2, 2}
+			\end{pmatrix}
+			& \begin{pmatrix}
+				x_{2, 1, 1} & x_{2, 1, 2}\\
+				x_{2, 2, 1} & x_{2, 2, 2}
+			\end{pmatrix}\\
+			\begin{pmatrix}
+			x_{3, 1, 1} & x_{3, 1, 2}\\
+			x_{3, 2, 1} & x_{3, 2, 2}
+			\end{pmatrix} 
+			& \begin{pmatrix}
+			x_{4, 1, 1} & x_{4, 1, 2}\\
+			x_{4, 2, 1} & x_{4, 2, 2}
+			\end{pmatrix}
+		\end{pmatrix}
+		\stackrel{\xi}{\longleftrightarrow}
+		\begin{pmatrix}
+			x_{1, 1, 1} & x_{1, 1, 2} & x_{3, 1, 1} & x_{3, 1, 2} \\
+			x_{1, 2, 1} & x_{1, 2, 2} & x_{3, 2, 1} & x_{3, 2, 2} \\
+			x_{2, 1, 1} & x_{2, 1, 2} & x_{4, 1, 1} & x_{4, 1, 2} \\
+			x_{2, 2, 1} & x_{2, 2, 2} & x_{4, 2, 1} & x_{4, 2, 2} \\
+		\end{pmatrix}
+	\end{equation*}
+	\caption{Example of matrix "flattening" for the case $\mathrm{dim}(\cY) = 2$ and $N = 2$.}
 	\label{fig:block-operator-example}
 \end{figure}
