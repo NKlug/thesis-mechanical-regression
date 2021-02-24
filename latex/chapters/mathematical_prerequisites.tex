@@ -12,89 +12,21 @@ Those involve some functional analysis, in particular Reproducing Kernel Hilbert
 \input{chapters/feature_space_map}
 
 \subsection{Product Space and Block Operator Notation}
+\label{sec:block-operator-notation}
 
 \input{chapters/block_operator_notation}
 
-\subsection{Optimal Recovery}
-\label{sec:optimal-recovery}
+\subsection{Special Loss Functions}
 
-With $K$ being the Kernel associated with the RKHS $\mathcal{H}$ and $A, B \in \cY^N$ we will write $\mathbf{K}(A, B)$ for the matrix with the entries $K(A_i, B_j)$ at position $(i, j)$.
-
-\begin{theorem}[Representer Theorem]
-	\label{theo:representer}
-\end{theorem}
-
-The optimal recovery loss is defined as
-\begin{equation}
-	\label{eq:optimal-recovery-loss}
-	l(X, Y) \coloneqq \min\{\norm{f}_\mathcal{H}^2 ~|~ f\in \mathcal{H} \text{~and~} f(X) = Y\}
-\end{equation}
-
-By \cref{theo:representer}, the $f \in \mathcal{H}$ which minimizes \cref{eq:optimal-recovery-loss} admits a representation as 
-\begin{equation}
-	\label{eq:optimal-recovery-f}
-	f(x) = \sum_{i=1}^N K(x, X_i) Z_i \ ,
-\end{equation}
-where the $Z_i$ are the solutions to the following linear system ($1 \leq j \leq N$):
-\begin{equation}
-	\sum_{i=1}^{N} K(X_j, X_i) Z_i = Y_j
-\end{equation}
-For better readability we translate this expression into block operator notation:
-Introduce the block operator matrix $\mathbf{K}(X, X)$ with entries $K(X_i, X_j)$ and $Z = (Z_i)_{i \in [N]} \in \cY^N$.
-Using block operator notation, we can write the linear system more concisely as $\mathbf{K}(X, X) \cdot Z = Y$.
-Assuming the kernel $K$ is non-degenerate and the $X_i$ are pairwise distinct, we can, by \Todo{ref!}Lemma ??, find an inverse of $\mathbf{K}(X, X)$ and write $Z = \mathbf{K}(X, X)^{-1} \cdot Y$.
-
-Let $x \in X$ and $\mathbf{K}(x, X)$ be the vector with elements $K(x, X_i)$.
-Using this notation, we can rewrite \cref{eq:optimal-recovery-f} as
-\begin{equation}
-	f(x) = \mathbf{K}(x, X) \cdot \mathbf{K}(X, X) \cdot Y \ .
-\end{equation}
-The value of the loss function is the $\mathcal{H}$-norm of this $f$.
-As $\mathcal{H}$ is a Hilbert Space, we can compute it using the scalar product:
-\begin{align}
-	\norm{f}_\mathcal{H}^2 &= \left< f, f\right>_\mathcal{H}\\
-	&= \left< \sum_{i=1}^N K(x, X_i) Z_i, \sum_{i=1}^N K(x, X_j) Z_j \right>_\mathcal{H}\\
-	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(x, X_i) Z_i, K(x, X_j) Z_j \right>_\mathcal{H}\\
-	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_i, X_j) Z_j \right>_\cY\\
-	&= \left< Z, \mathbf{K}(X, X) \cdot Z\right >_{\cY^N}\\
-	&= Z^\T \cdot \mathbf{K}(X, X) \cdot Z \\
-	&= (\mathbf{K}(X, X)^{-1} \cdot Y)^\T \cdot \mathbf{K}(X, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y\\
-	&= Y^\T \cdot (\mathbf{K}(X, X)^{-1})^\T \cdot Y\\
-	&=  Y^\T \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
-\end{align}
-In the fourth line we used the reproducing property and in the second to last line the fact $\mathbf{K}$ that $K$ is Hermitian, that is, $K(x, y)^\T = K(y, x)$.
-All in all, this leaves us with an appealing and compact form for the optimal recovery loss:
-\begin{equation}
-	\label{eq:optimal-recovery-loss-closed-form}
-	l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y \ .
-\end{equation}
-\subsection{Ridge Regression}
-
-Aka Tikhonov regularization aka $L_2$ parameter regularization.
-\begin{equation}
-	\label{eq:ridge-regression-loss}
-	l(X, Y) \coloneqq \inf_{f \in \mathcal{H}} \lambda \norm{f}_\mathcal{H}^2 
-	+ l_\cY (f(X), Y)
-\end{equation}
-
-\begin{equation}
-	\label{eq:ridge-regression-f}
-	f(x) = \mathbf{K}(x, X)^\T \left(\mathbf{K}(x, X) + \lambda I\right)^{-1}Y \ .
-\end{equation}
-
-\begin{equation}
-	\label{eq:ridge-regression-loss-se-closed-form}
-	l(X, Y) = \lambda Y^\T (\mathbf{K}(X, X) + \lambda \mathbbm{1}_N)^{-1} Y \ .
-\end{equation}
-Ridge regression can be seen as a Tikhonov-regularized variant of optimal recovery.
-
-\subsection{Equivalence of Optimization Problems}
-\Todo[inline]{Probably remove this section.}
-\begin{definition}
-	\label{def:equivalent-problems}
-	Let $f: X \rightarrow \R$ and $g: Y \rightarrow \R$ be the target functions of two optimization problems $A$ and $B$.
-	Then $A$ and $B$ are \emph{equivalent} if there exists a bijection $\varphi: X \rightarrow Y$ such that
-	\begin{equation}
-		x \in X \text{~is optimal for A~} \Leftrightarrow \phi(x) \in Y \text{~is optimal for A~}\ .
-	\end{equation}
-\end{definition}
+\input{chapters/special_losses}
+%
+%\subsection{Equivalence of Optimization Problems}
+%\Todo[inline]{Probably remove this section.}
+%\begin{definition}
+%	\label{def:equivalent-problems}
+%	Let $f: X \rightarrow \R$ and $g: Y \rightarrow \R$ be the target functions of two optimization problems $A$ and $B$.
+%	Then $A$ and $B$ are \emph{equivalent} if there exists a bijection $\varphi: X \rightarrow Y$ such that
+%	\begin{equation}
+%		x \in X \text{~is optimal for A~} \Leftrightarrow \phi(x) \in Y \text{~is optimal for A~}\ .
+%	\end{equation}
+%\end{definition}

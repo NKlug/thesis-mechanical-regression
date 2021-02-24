@@ -30,11 +30,12 @@ It already seems like block operator matrices can be treated as regular matrices
 We will show two important properties: That block operator matrices form a ring and that we can treat $\sigma$ like the standard matrix-vector product.
 
 \begin{theorem}
+	\label{theo:product-space-ring}
 	$(L(\cY, \cY)^{N\times N}, +, \circ)$ is a  ring.
 \end{theorem}
 \begin{proof}
 	We conduct the proof by showing that $\cL(\cY^N, \cY^N) \cong \dK^{nN \times nN}$, where $\dK = \R$ or $\dK = \mathbb{C}$ is the underlying field.
-	Let $\mathbf{A} \in L(\cY^N, \cY^N)$ $n \coloneqq \mathbf{dim}(\cY) < \infty$ (we required $\cY$ to be finite).
+	Let $\mathbf{A} \in L(\cY^N, \cY^N)$ $n \coloneqq \mathrm{dim}(\cY) < \infty$ (we required $\cY$ to be finite).
 	First, we have $\cL(\cY) \stackrel{\phi}{\cong}\R^{n\times n}$ by mapping an operator to its transformation matrix with respect to a fixed choice of basis.
 	Thus we can regard $\mathbf{A}$ as a big $(N \times N)$ matrix of $(n \times n)$ matrices.
 	Actually, $\phi$ induces an isomorphism $L(\cY^N, \cY^N) \cong \left(\dK^{nxn}\right)^{N \times N}$.
@@ -57,5 +58,12 @@ This is summed up in the following diagram
 
 \begin{corollary}
 	\label{cor:matrix-vector-equivalence}
-	super cool commuting diagram.
+	\begin{equation}
+		\begin{tikzcd}
+		 	L(\cY^N, \cY^N) \arrow{r}{\delta_U} \arrow[swap, leftrightarrow]{d}{\cong} & \cY^N \arrow[leftrightarrow]{d}{\cong} \\%
+			\R^{nN \times nN} \arrow{r}{\partial_V}& \R^{nN}
+		\end{tikzcd}
+	\end{equation}
 \end{corollary}
+
+\Todo{These facts make implementation easier, as we will see in section ?}
