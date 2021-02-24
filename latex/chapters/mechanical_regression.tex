@@ -12,7 +12,8 @@ He views the continuous solution as a generalization of image registration and c
 The difference lies in the fact that in idea registration the data points can be arbitrary rather than mere landmarks and the spaces can be high dimensional (compared to the two or three dimensional spaces images lie in).
 
 This section essentially follows Chapter 3 of \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ResNets.
-\Todo{Hint: Figure XY gives an overview of all problems}
+\Todo{Hint: Figure XY gives an overview of all problems.
+Also: Simplified Model of ResNet, as real architectures map different spaces}
 \subsection{Modeling Residual Neural Networks}
 
 Recall the Supervised Learning problem: Given training data $X$ and $Y$ consisting of $X_i \in \cX$, $Y_i \in \cY$ and $f^\dagger(X) = Y$, approximate $f^\dagger$.
@@ -68,6 +69,7 @@ For our calculations we will only assume that $l$ is a positive, continuous loss
 If desired we can later balance the $v_k$ with the regularity of $f$ by choosing the loss appropriately.
 
 In the calculations, we will work under the following conditions.
+\Todo{bGamma(X, X) is the block operator matrix with entries Gamma(Xi, Xj)}
 \begin{condition}
 	\label{cond:feature-condition}\mbox{}
 	\vspace*{-\parsep}

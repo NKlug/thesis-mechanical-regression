@@ -4,13 +4,13 @@ There are multiple possibilities for the definition which are equivalent and lea
 A quick reminder: A \emph{Hilbert space} is a Banach space with an inner product.
 
 Definition of RKHS of functions $\cX \rightarrow \R$ in \cite{sejdinovic12}, where $\cX$ is a set.
-Now we want to define RKHS functions $\cX \rightarrow \cY$ where both $\cX$ and $\cY$ are Hilbert spaces \Todo{Actually we only require Y to be Hilbert}
+Now we want to define RKHS functions $\cX \rightarrow \cY$ where both $\cX$ and $\cY$ are finite Hilbert spaces \Todo{Actually we only require Y to be Hilbert}
 
 Let $L(\cX, \cY)$ be the space of bounded linear functions $\cX \rightarrow \cY$ and $\cH$ be a Hilbert space of functions $\cX \rightarrow \cY$.
 
 \begin{definition}
 	\label{def:kernel}
-	A function $K: \cX \times \cX \rightarrow L(\cY, \cY)$ is a \emph{Kernel} if
+	A function $K: \cX \times \cX \rightarrow L(\cY, \cY)$ is a \emph{kernel} if
 	\begin{enumerate}
 		\item $K$ is Hermitian, that is $K(x_1, x_2) = K(x_2, x_1)^\T$ for all $x_1, x_2 \in \cX$. 
 		$K(x_2, x_1)^\T$ is the adjoint of $K(x_1, x_2)$ with respect to $\left<\cdot, \cdot\right>$.
@@ -25,6 +25,24 @@ Such kernels are also called \emph{operator-valued Kernels} as their target spac
 This generalizes the definition of scalar-valued kernels, which are functions $k: \cX \times \cX \rightarrow \R$.
 In some cases a kernel is just a function $K: \cX \times \cX \rightarrow L(\cY, \cY)$ without the requirement of it being Hermitian and non-negative \cite{sejdinovic12}.
 As we will not require kernels without those properties, we include them in the definition.
+
+\begin{definition}
+	Call a kernel $K: \cX \times \cX \rightarrow L(\cY, \cY)$ \emph{non-degenerate} if for each $n \in \mathbb{N}$ and pairwise distinct $x_i \in \cX, y_i \in \cY, i \in [n]$
+	\begin{equation}
+		\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0 \Leftrightarrow \forall i \in [n]:~ y_i = 0
+	\end{equation}
+\end{definition}
+
+\begin{lemma}
+	\label{lem:kernel-non-singular}
+	If the kernel $K$ is non-degenerate, for all $n \in \mathbb{N}$ and pairwise distinct $x_i \in \cX, i \in [n]$ the matrix with entries $(K(x_i, x_j))_{i, j \in [n]}$ is non-singular.
+\end{lemma}
+\begin{proof}
+	If the kernel of $(K(x_i, x_j))_{i, j \in [n]}$ contained a non-zero element $Y \in cY^n$, it would follow that $\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0$.
+	A contradiction.
+\end{proof}
+In \cref{sec:block-operator-notation} we will further explore matrices made of operators.
+
 \Todo[inline]{Maybe equivalent that block operator matrix is positive semidef for all n}
 The definition follows \citet{kadri16}, which examine Reproducing Kernel Hilbert Spaces in the setting where $\cY$ is a Hilbert space of functions.
 However, their definition also applies to more general case where $\cY$ is an arbitrary Hilbert space.
@@ -44,7 +62,7 @@ However, their definition also applies to more general case where $\cY$ is an ar
 In an RKHS, the kernel is also called the \emph{reproducing kernel}.
 This definition of an RKHS is in accord with earlier definitions \cite{berlinet04, sejdinovic12} which were stricter:
 Only $\cY = \R$ was permitted.
-However, as $\R$ together with the standard scalar product is a Hilbert space itself, it is easy to see that the definition above includes this as a special case.
+However, as $\R$ together with the standard scalar product is a Hilbert space itself, it is easy to see that the definition above includes this case, which we will refer to as the scalar case.
 
 Throughout this work, the scalar product $\left< x_1, x_2 \right>_\cH$ of a Hilbert Space $\cH$ will often be abbreviated with the common notation $x_1^\T x_2$ whenever appropriate.
 
