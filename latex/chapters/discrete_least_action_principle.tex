@@ -1,4 +1,4 @@
-Our main goal will now be to show that the minimization problem in \cref{prob:min-v-f} can in fact be considered as a discrete solver of a mechanical system.
+Our main goal will now be to show that the minimization problem \ref{prob:min-v-f} can in fact be considered as a discrete solver of a mechanical system.
 In order to do that, we first reformulate the problem by introducing additional variables $q_{i,j}$ with $2 \leq i \leq L+1$, $1 \leq j \leq N$:
 \begin{align}
 	q_{1, j} &\coloneqq X_j \, \\
@@ -31,13 +31,13 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 			& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 		\end{cases}
 	\end{problem}
-	Here we just added the $q_k$ as additional variables but then bound them to certain values, concretely $q_{k+1} = q_k + v_k(q_k) = \phi_k(q_k)$, with $q_1 = X$.
+	Here we just added the $q_k$ as additional variables but then constrained them to certain values, concretely $q_{k+1} = q_k + v_k(q_k) = \phi_k(q_k)$, with $q_1 = X$.
 	Recursively we get $q_{L+1} = \Phi_L(X)$ which means the target function remains the same as in \cref{prob:min-v-f}.
 	Note that even though we seemingly added constraints to the domains of the $v_k$ they are still the same: We just have to choose $q_{k+1}$ accordingly (which we can, as they are unconstrained).
 	
-	We will now derive closed form expressions for the $v_k$ as a function of the $q_k$.
+	We will now derive closed form expressions for the $v_k$ as as functions of the $q_k$.
 	For that, let $q_k \in \cX^N$, $2 \leq k \leq N$ be arbitrary but fixed .
-	This means $l(q^{L+1}, Y)$ is constant and $v_k \in V_q(k) \coloneqq \{v \in \cV~|~ v_k(q_k) = q_{k+1} - q_k\}$.
+	This means $l(q_{L+1}, Y)$ is constant and $v_k \in V_q(k) \coloneqq \{v \in \cV~|~ v_k(q_k) = q_{k+1} - q_k\}$.
 %	These sets remain convex: Let $\lambda \in [0, 1]$ and $v_{k, 1}, v_{k, 2} \in V_{k, q}$, then we get
 %	\begin{align}
 %		(\lambda v_{k, 1} + (1 - \lambda) v_{k, 2})(q_k) &= (\lambda v_{k, 1})(q_k) + ((1 - \lambda) v_{k, 2})(q_k)\\
@@ -52,7 +52,7 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 		\end{cases}
 	\end{problem}
 	where each summand is bounded below by $0$.
-	One can easily verify that minimization problems of this type have a global minimum at a point where each of the summands are minimal.
+	One can easily verify that minimization problems of this type have a global minimum at any point where each of the summands is minimal.
 	The boundedness ensures that at least one such minimum exists.
 
 	Thus, we have to find the minima of $\min\{\norm{v_k}_\cV^2\ |\ v_k \in \cV,\ v_k(q_k) = q_{k+1} - q_k\} = l_{\text{OR}}(q_k, q_{k+1} - q_k)$.
@@ -62,7 +62,7 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 		v_k & = \bGamma(x, q_k)^\mathrm{T}\bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k) \ ,\\
 		\norm{v_k}_\cH^2 &= (q_{k+1} - q_k)^\mathrm{T} \bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k) \ .
 	\end{align}
-	In these expressions $\bGamma$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\bGamma(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
+	In these expressions $\bGamma(q_k, q_k)$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\bGamma(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
 	Having now computed optimal $v_k$ -- or rather their squared $\cH$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
 	Define $\Delta t \coloneqq \frac{1}{L}$.
 	We get:
@@ -78,5 +78,5 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 	As all steps and transformations hold true in both ways, this concludes the proof.
 \end{proof}
 
-Comparing the target function of \cref{prob:min-q} with the results found in discrete mechanics literature \cite[~Chapter VI.6.2]{hairer06}, in particular those for the discretized stationary action principle, it turns out that there are strong similarities.
-We will not explore these in depth for the discrete case but rather take a closer look at the continuous counterpart in the next section.
+When comparing the target function of \cref{prob:min-q} with the results found in discrete mechanics literature \cite[~Chapter VI.6.2]{hairer06}, in particular with those for the discretized stationary action principle, it turns out that there are strong similarities.
+We will not explore these similarities in depth for the discrete case but rather take a closer look at the continuous counterpart in the next section.

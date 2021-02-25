@@ -1,24 +1,24 @@
 \section{Mechanical Regression}
 \label{sec:mechanical-regression}
 
-In \cref{sec:neural-networks} we have seen that Neural Networks are a prominent way of approximating a solution to the Supervised Learning problem.
+In \cref{sec:neural-networks} we have seen that neural networks are a popular and extremely successful way of approximating a solution to the supervised learning problem.
 ResNets in particular enabled the use of very deep architectures.
-In this section, we take a closer look at ResNets and derive their continuous limit as the number of residual blocks tends towards infinity.
+In this section, we take a closer look at a simplified model of ResNets and derive their continuous limit as the number of residual blocks tends towards infinity.
 On the way of doing so, we show that the ResNet regression approach can be regarded as a discrete mechanical system following Hamilton's stationary action principle -- thus the term \emph{Mechanical Regression}.
-In the limit, this system converges to a continuous version of the same principle, which proves to be equivalent to what in image registration is known as geodesic shooting \cite{allassonniere05}.
+In the limit, this mechanical system converges to a continuous version of the same principle, which proves to be equivalent to what in image registration is known as geodesic shooting \cite{allassonniere05}.
 
-\citet{owhadi20} compares these results to the problem formulations used in image shape analysis, computational anatomy and image registration \cite{bibid}.
+\citet{owhadi20} compares these results to the problem formulations used in image shape analysis, computational anatomy and image registration.
 He views the continuous solution as a generalization of image registration and calls it \emph{idea registration}, arguing that just as in the former, data points are aligned through various transformations in their respective feature spaces.
 The difference lies in the fact that in idea registration the data points can be arbitrary rather than mere landmarks and the spaces can be high dimensional (compared to the two or three dimensional spaces images lie in).
 
 This section essentially follows Chapter 3 of \cite{owhadi20} and aims to provide a profound and comprehensive explanation of Mechanical Regression and how it can be interpreted as the continuous limit of ResNets.
-\Todo{Hint: Figure XY gives an overview of all problems.
-Also: Simplified Model of ResNet, as real architectures map different spaces}
+\cref{fig:convergence} gives an overview about the problems and theorems presented in this section and can be used as a look-up table.
+
 \subsection{Modeling Residual Neural Networks}
 
-Recall the Supervised Learning problem: Given training data $X$ and $Y$ consisting of $X_i \in \cX$, $Y_i \in \cY$ and $f^\dagger(X) = Y$, approximate $f^\dagger$.
-On possibility to solve this problem are Residual Neural Networks, which approximate the target function $f^\dagger$ through a series of residual blocks.
-Mathematically, we can write
+Recall the supervised learning problem: Given training data $X$ and $Y$ consisting of $X_i \in \cX$, $Y_i \in \cY$ and $f^\dagger(X) = Y$, approximate $f^\dagger$.
+On possibility to solve this problem are residual neural networks, which approximate the target function $f^\dagger$ through a series of residual blocks.
+In mathematical terms we can write
 \begin{equation}
 	f^\ast \coloneqq f \circ \Phi_L 
 \end{equation}
@@ -26,20 +26,21 @@ for the approximate solution, where
 \begin{equation}
 \Phi_L \coloneqq \phi_L \circ \phi_{L-1} \circ \ldots \circ \phi_1.
 \end{equation} 
-$\Phi_L$ is the composition of $L$ Residual Blocks, that is, functions $\phi_k = I + v_k$.
+$\Phi_L$ is the composition of $L$ residual blocks, that is, functions $\phi_k = I + v_k$.
 Here, the $v_k$ are functions mapping the input space $\cX$ onto itself and $I$ is the identity operator.
 Thus, we can regard $\Phi_L$ as a large deformation of $\cX$.
 $f: \cX \to \cY$ is a function mapping the deformed space to the target space $\cY$.
+Note that this model is but a simplified model of ResNets.
+In reality, the residual blocks often map the input space to a different space, as is the case in most convolutional networks \cite{he16}.
 
 By default, the $v_k$ and $f$ can be arbitrary functions.
 However, it poses a challenge to not only approximate the target with any series of functions, but with such that generalize well, meaning that they also perform well on data other than the training data $(X, Y)$.
-Thus, it is common in Machine Learning \cite{goodfellow16} to apply some form of regularization.
-One popular approach, which we will also use here, is to apply penalties to the parameter's norms -- which are, in this case, the $v_k$ and $f$.
+Thus, it is common in machine learning \cite{goodfellow16} to apply some form of regularization.
+One popular approach, which we will also use here, is to apply penalties to the parameters' norms -- which are, in this case, the norms of $v_k$ and $f$.
 
-We still need to define appropriate spaces for the functions $v_k$ and $f$.
-As we need norms for both, we introduce two RKHSs:
-$\cV \subseteq \{\cX \rightarrow \cX\}$ and $\cH \subseteq \{\cX \rightarrow \cY\}$.
-We want $v_k \in \cV$ for all $k$ and $f \in \cH$.
+We still need to define appropriate normed spaces for the functions $v_k$ and $f$.
+For that, we introduce two RKHSs
+$\cV \subseteq \{\cX \rightarrow \cX\}$ and $\cH \subseteq \{\cX \rightarrow \cY\}$ and restrict the $v_k$ and $f$ to lie in these spaces, respectively.
 By \cref{theo:kernel-for-rkhs} there is a Kernel associated with each RKHS.
 Let $\Gamma$ be the Kernel associated with $\cV$ and $K$ that of $\cH$.
 Then we can identify $f$ and the $v_k$ as solutions to the following problem:
@@ -54,9 +55,9 @@ Then we can identify $f$ and the $v_k$ as solutions to the following problem:
 \end{problem}
 Here, $\nu$ and $\lambda$ are strictly positive balancing parameters.
 $l$ is a (positive) loss measuring the similarity of the predicted outputs, that is, the image of $X$ under $f \circ \Phi_L$.
-Note that, just as intended, $v_k$ and $f$ with large norms are penalized.
+Just as intended, $v_k$ and $f$ with large norms are penalized.
 
-Utilizing the Ridge Regression Loss $l_R$ (\cref{eq:ridge-regression-loss}), we can rewrite the above minimization problem as
+Utilizing the ridge regression loss $l_R$ (\cref{eq:ridge-regression-loss}), we can rewrite the above minimization problem as
 \begin{problem}
 	\begin{cases}
 		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
@@ -69,28 +70,28 @@ For our calculations we will only assume that $l$ is a positive, continuous loss
 If desired we can later balance the $v_k$ with the regularity of $f$ by choosing the loss appropriately.
 
 In the calculations, we will work under the following conditions.
-\Todo{bGamma(X, X) is the block operator matrix with entries Gamma(Xi, Xj)}
 \begin{condition}
 	\label{cond:feature-condition}\mbox{}
 	\vspace*{-\parsep}
 	\vspace*{-\baselineskip}
 	\begin{enumerate}
 		\item There exist a finite dimensional feature space and map $\cF$ and $\psi$ such that $\psi$ and its first and second order partial derivatives are continuous and uniformly bounded.
-		\item There exists an $r > 0$ such that $\forall z \in \cX^N:~z^\T \bGamma(X, X) z \geq r z^\T z$.
+		\item There exists an $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$.
 		\item $\cX$ and $\cY$ are finite-dimensional.
 		\item $l: \cX^N \times \cY^N \rightarrow$ is a positive and continuous loss.
 	\end{enumerate}
 \end{condition}
+Just like in \cref{sec:optimal-recovery}, $\bGamma(X, X)$ is the block operator matrix with entries $\Gamma(X_i, X_j)$.
 Note that the first condition implies that the function $(x_1, x_2) \rightarrow \Gamma(x_1, x_2)$ and its first and second order partial derivatives are continuous and uniformly bounded.
 This follows immediately from the fact that we can write $\Gamma(x_1, x_2) = \psi^\T(x_1)\psi(x_2)$.
 Furthermore, we have the following equivalence for \cref{cond:feature-condition} (2).
 \begin{lemma}
-	There exists $r > 0$ such that $\forall z \in \cX^N:~z^\T \bGamma(X, X) z \geq r z^\T z$ if and only if $\bGamma(X, X)$ is non-singular.
+	There exists $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$ if and only if $\bGamma(X, X)$ is non-singular.
 \end{lemma}
 \begin{proof}
-	If $\bGamma(X, X)$ was singular, there would exist a vector $z \in \cX^N$ with $\norm{z}_{\cX^N} > 0$ and $\bGamma(X, X) z = 0$, implying $z^\T \bGamma(X, X)z = 0$. 
+	If $\bGamma(X, X)$ was singular, there would exist a vector $Z \in \cX^N$ with $\norm{Z}_{\cX^N} > 0$ and $\bGamma(X, X) Z = 0$, implying $Z^\T \bGamma(X, X)Z = 0$. 
 	A contradiction.
-	Conversely, if there exists a $0 \neq z \in \cX^N$ such that $z^\T \bGamma(X, X) z < \epsilon z^\T z$ for all $\epsilon > 0$, then $\bGamma(X, X) z = 0$.
+	Conversely, if there exists a $0 \neq Z \in \cX^N$ such that $Z^\T \bGamma(X, X) Z < \epsilon Z^\T Z$ for all $\epsilon > 0$, then $\bGamma(X, X) Z = 0$.
 \end{proof}
 Ideally, we would not need additional conditions like those introduced above.
 They are, however, automatically satisfied in most real world examples and ease calculations and proofs considerably.
@@ -99,7 +100,7 @@ They are, however, automatically satisfied in most real world examples and ease 
 
 \input{chapters/discrete_least_action_principle}
 
-\subsection{Stationary Action Principle}
+\subsection{Continuous Stationary Action Principle}
 
 \input{chapters/least_action_principle}
 
