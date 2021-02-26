@@ -1,18 +1,8 @@
 \section{Algorithm: Geodesic Shooting}
 
-The goal of this section is to reproduce the experiments in \cite{owhadi20} (is this really the goal?).
-Coarse structure:
-\begin{enumerate}
-	\item Introduction/transition to the algorithm - motivated by the infinite depth limit
-	\item A proper motivation is needed though
-	\item The algorithm: Step by step
-	\item Notes on implementation: Automatic gradients, tikhonov regularization, optimizer, convergence
-	\item Experimental results: Dataset, kernel choice, Images with different parameters, maybe something like precision?
-\end{enumerate}
-
-Instead of $\mathbb{R}^{n\times2}$ $\mathbb{R}^{2n}$.
-We utilize the Block Operator Matrix Notation, which makes calculations particularly easy as everything can be written over $\mathbb{R}^{n\times n}$ (more or less).
-Proof that we can then use standard matrix multiplication.
+In this section we will derive an algorithm from the theory established in the previous section.
+In particular, we fist try to solve the geodesic shooting formulation in \cref{prob:geodesic-shooting} by approximating it with a discrete integrator.
+Parts of this algorithm are then evaluated on a benchmark dataset common in machine learning, the Swiss Roll dataset.
 
 \subsection{An Algorithm based on Mechanical Regression}
 
@@ -63,7 +53,7 @@ Here comes a little something on step 4.
 
 In the last step, the computability of $f$ strongly depends on the chosen loss.
 For losses like optimal recovery or ridge regression, we already saw in \cref{eq:ridge-regression-f,eq:optimal-recovery-f} that $f$ can be explicitly determined.
-In other cases there might not exist closed form solutions.\Todo{Can we have an example for that?}
+In other cases there might not exist closed form solutions.
 
 \input{figures/figure_algorithm}
 
@@ -71,12 +61,13 @@ In other cases there might not exist closed form solutions.\Todo{Can we have an 
 As we are trying to approximate $q(1)$, the step size $h$ of the modified Leapfrog integration scheme explained above should ideally be chosen such that $\frac{1}{h} \in \mathbb{N}$.
 The call \texttt{optimizer.minimize()} performs one step of the utilized minimization algorithm.
 Among the viable choices for such an algorithm are variants of gradient descent, such as Stochastic Gradient Descent or Adam.
-Concerning the while-loop's condition: Of course, \Todo{Maybe fix this?}Line \ref{code:p0-convergence} cannot be implemented effectively as such.
-One alternative option would be to constantly monitor the target function's value $v$ and stop optimizing when it plateaus, in the hope of having found a minimum.
+Concerning the while-loop's condition: Of course, Line \ref{code:p0-convergence} cannot be implemented effectively as such.
+One alternative option would be to constantly monitor the target function's value $v$ and stop optimizing when it plateaus, in the hope of having found a global minimum.
 
 \subsection{Experiments}
 
-In this section some experimental results of \citet{owhadi20}'s algorithm are described.
+In order to verify that the algorithm works, some experiments are conducted.
+These will focus mainly on step 3 of the algorithm, which determines the deformation of the input space $\cX$ based on the balancing parameter $\mu$.
 
 \subsubsection{Dataset and Hyperparameters}
 
@@ -101,8 +92,7 @@ Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 \end{align}
 $\mathbbm{1}_2$ is the $(2\times2)$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$ for both.
 Note that both kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required of them in \cref{def:kernel} (which we will not proof here).
-
-\Todo{Adam was used for optimization}
+For optimization, the Adam algorithm was used \cite{kingma17}.
 
 \subsubsection{Results}
 
@@ -118,7 +108,7 @@ Hence, weighting the norms of $v_k$ more compared to the loss $l$ results in les
 This can be seen in the rightmost column ($t=1$):
 The point clouds stay closer to their original positions as $\mu$ increases.
 
-The plot at $(\mu=0.03, t=1)$ of great interest, as it is not in line with the other plots, which at $t=1$ mostly show monotonously decreasing space deformation.
+The plot at $(\mu=0.03, t=1)$ is of great interest, as it is not in line with the other plots, which at $t=1$ mostly show monotonously decreasing space deformation when $\mu$ increases.
 From $\mu = 0.02$ to $\mu = 0.03$, this trend is inverted.
 It is not clear what exactly causes this phenomenon.
 One explanation would that the optimizer performed poorly for $\mu=0.02$ and the space was transformed to a lesser degree than it should have for the optimal momentum.
@@ -157,7 +147,7 @@ It turned out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \tim
 
 Another potentially difficult step to implement is the gradient of $\fH$ with respect to $q$, especially in cases like \cref{eq:leapfrog-p.5,eq:leapfrog-p1} where no closed form formula is available.
 A solution for this would be to approximate the gradient using two-point methods such as the left/right sided or symmetric difference quotient.
-However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and Pytorch for Python) provide automatic differentiating capabilities.
+However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and PyTorch for Python) provide automatic differentiating capabilities.
 Those are not only simpler to implement but also computationally more efficient, which strongly encourages their use.
 
 As the experiments showed, using the optimal recovery loss in its pure form does not seem to be possible (at least for the Swiss Roll dataset).

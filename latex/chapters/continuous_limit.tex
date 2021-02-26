@@ -1,3 +1,5 @@
+\Todo{This section is still work in progress.}
+
 The only thing left to prove now is that as $L \rightarrow \infty$, \cref{prob:min-q} does indeed converge towards \cref{prob:cont-least-action}.
 
 \input{figures/figure_convergence_sketch}
@@ -9,14 +11,29 @@ See how this fits here
 	\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q) p
 \end{equation}
 
+Let $C([0, 1], \cV)$ be the space of continuous functions $v: [0, 1] \times \cV$, such that the function $v(t)(x)$ is globally Lipschitz in $t$ and $x$.
+For simplicity, we will write $v(t, x)$ instead of $v(t)(x)$.
+Let $\Phi_v \in C([0, 1], \cV)$ be the solution to the following initial value problem.
+\begin{equation}
+	\begin{cases}
+		&\dot{\Phi}(t, x) = v(\Phi(t, x))\\
+		&\Phi(0, x) = x \ .
+	\end{cases}
+\end{equation}
+$\dot{\Phi}(t, x)$ signifies the time derivative $\frac{\mathrm{d}}{\mathrm{d}t}\Phi$.
+
+The idea is that $\Phi_L \stackrel{L \rightarrow \infty}{\longrightarrow} \Phi$ in the sense that for $k \in [L]$, $\phi_k \circ \phi_{k-1} \circ \cdots \circ \phi_1$ is an approximation to $\Phi_v(\frac{k}{L}, \cdot)$.
+Similarly, $v_k$ from the discrete formulation approximates $v(\frac{k}{L}, \cdot)$.
+
 \begin{problem}
 	\label{prob:resnet-limit}
 	\begin{cases}
-		\text{Minimize~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
-		+ l(\phi_v(X, 1), Y)\\
-		\text{such that~}& v \in C([0, 1], \mathcal{V})\\
+		\text{Minimize~}& \frac{\nu}{2} \int_{0}^{1} \norm{v(t)}_\cV^2 \mathrm{d}t
+		+ l(\Phi_v(1, X), Y)\\
+		\text{such that~}& v \in C([0, 1], \cV)\\
 	\end{cases}
 \end{problem}
+Here $\Phi_v(1, X)$ denotes the vector $(\Phi_v(t, X_i))_{i \in [N]}$.
 
 \begin{theorem}
 	\label{theo:v-q-continuous-problem-equivalence}
@@ -26,17 +43,36 @@ See how this fits here
 	\end{equation}
 	such that $\Phi(x, 0) = x$ for all $x \in X$ and $q$ minimizes \cref{prob:cont-least-action}.
 \end{theorem}
-The proof of this theorem is similar to that of \cref{theo:v-q-problem-equivalence}.
+The proof of this theorem is very similar to that of \cref{theo:v-q-problem-equivalence}, only that the discrete elements $q_k \in \cX^N$ are replaced by one continuous function $q: [0, 1] \rightarrow \cX^N$.
+Within the scope of this thesis, we can only review the main ideas.
 \begin{proof}
-	TBD... Seems like we can just reconstruct the proof of the other theorem with some extra steps.
+	First, define the function $q: [0, 1] \rightarrow \cX^N$ by as the vector with elements
+	\begin{equation}
+		q_i(t) \coloneqq \Phi_v(t, X_i) \ .
+	\end{equation}
+	Then $\Phi_v(1, X_i) = q_i(t)$ and thus $l(\Phi_v(1, X)) = q(1)$.
+	Furthermore $\dot{q_i}(t) = \dot{\Phi}_v(t, X_i)$, or in short $\dot{q}(t) = \dot{\Phi}_v(t, X)$.
+	Because $\Phi_v$ satisfies \cref{eq:phi-v-differential-equation}, it follows that
+	\begin{equation}
+		\dot{q}(t) = v(t, \Phi_v(t, X)) \ .
+	\end{equation}
+	Now, the idea is that if $t \rightarrow \min \norm{v(t, \Phi_v(t, \cdot))}_\cV^2$ is in $C([0, 1], \cV)$ -- which requires continuity and the global Lipschitz property -- this function is a minimizer of \cref{prob:resnet-limit}.
+	For fixed $t \in [0, 1]$, we face an optimal recovery problem:
+	\begin{equation}
+		\min\{\norm{v(t, \Phi_v(t, \cdot))}_\cV^2\ |\ v(t, \Phi_v(t, X)) = q(t)\} \ .
+	\end{equation}
+	\cref{eq:optimal-recovery-f} provides an explicit solution to this problem, which is:
+	\begin{equation}
+		v(t, \Phi_v(t, x)) = \bGamma(\Phi^v(t, x), q(t))\bGamma(q(t), q(t))^{-1}\dot{q}(t) \ .
+	\end{equation}
+	One can verify that this function is $C([0, 1], \cV)$.
 \end{proof}
-
 
 \subsubsection{Existence of Minimizers}
 
 We already saw the equivalence of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit}, in the sense that their minimizers bijectively correspond to each other -- that is, if they exist.
 Now we will show that there do indeed exist such minimizers and also that the problems' minimal values are identical.
-\begin{theorem}[Existence for the continuous problems]
+\begin{theorem}[Existence of minimizers for the continuous problems]
 	\label{theo:continuous-solutions-existence}
 		There exist minimal points for \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} and their minimal values are identical.
 \end{theorem}
@@ -46,7 +82,7 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	\label{eq:discrete-hamiltonian-system}
 	\begin{split}
 		q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
-		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_k} \left(p_k^\T \bGamma(q_k, q_k) p_k\right)\ .
+		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_{k+1}} \left(p_{k+1}^\T \bGamma(q_{k+1}, q_{k+1}) p_k\right)\ .
 	\end{split}
 \end{equation}
 
