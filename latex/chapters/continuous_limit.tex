@@ -39,27 +39,28 @@ Here $\Phi_v(1, X)$ denotes the vector $(\Phi_v(t, X_i))_{i \in [N]}$.
 	\label{theo:v-q-continuous-problem-equivalence}
 	$v$ minimizes \cref{prob:resnet-limit} if and only if $v$ fulfills
 	\begin{equation}
-			\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q_t) \bGamma(q_t, q_t)^{-1} \dot{q}_t
+			\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
 	\end{equation}
-	such that $\Phi(x, 0) = x$ for all $x \in X$ and $q$ minimizes \cref{prob:cont-least-action}.
+	such that $\Phi_v(x, 0) = x$ for all $x \in X$ and $q$ minimizes \cref{prob:cont-least-action}.
 \end{theorem}
 The proof of this theorem is very similar to that of \cref{theo:v-q-problem-equivalence}, only that the discrete elements $q_k \in \cX^N$ are replaced by one continuous function $q: [0, 1] \rightarrow \cX^N$.
 Within the scope of this thesis, we can only review the main ideas.
 \begin{proof}
+	Let $v$ be a minimizer of \cref{prob:resnet-limit}.
 	First, define the function $q: [0, 1] \rightarrow \cX^N$ by as the vector with elements
 	\begin{equation}
 		q_i(t) \coloneqq \Phi_v(t, X_i) \ .
 	\end{equation}
 	Then $\Phi_v(1, X_i) = q_i(t)$ and thus $l(\Phi_v(1, X)) = q(1)$.
-	Furthermore $\dot{q_i}(t) = \dot{\Phi}_v(t, X_i)$, or in short $\dot{q}(t) = \dot{\Phi}_v(t, X)$.
-	Because $\Phi_v$ satisfies \cref{eq:phi-v-differential-equation}, it follows that
+	Furthermore $\dot{q_i}(t) = \dot{\Phi}_v(t, X_i)$, or in vector notation: $\dot{q}(t) = \dot{\Phi}_v(t, X)$.
+	Because $\Phi_v$ satisfies the differential equation in \cref{eq:phi-v-differential-equation}, it follows that
 	\begin{equation}
 		\dot{q}(t) = v(t, \Phi_v(t, X)) \ .
 	\end{equation}
 	Now, the idea is that if $t \rightarrow \min \norm{v(t, \Phi_v(t, \cdot))}_\cV^2$ is in $C([0, 1], \cV)$ -- which requires continuity and the global Lipschitz property -- this function is a minimizer of \cref{prob:resnet-limit}.
 	For fixed $t \in [0, 1]$, we face an optimal recovery problem:
 	\begin{equation}
-		\min\{\norm{v(t, \Phi_v(t, \cdot))}_\cV^2\ |\ v(t, \Phi_v(t, X)) = q(t)\} \ .
+		\min\{\norm{v(t, \Phi_v(t, \cdot))}_\cV^2\ |\ v(t, \Phi_v(t, X)) = \dot{q}(t)\} \ .
 	\end{equation}
 	\cref{eq:optimal-recovery-f} provides an explicit solution to this problem, which is:
 	\begin{equation}
@@ -76,6 +77,52 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	\label{theo:continuous-solutions-existence}
 		There exist minimal points for \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} and their minimal values are identical.
 \end{theorem}
+
+\begin{proof}
+	First, we show the existence of minimizers:
+	\cref{theo:geodesic-shooting,theo:v-q-continuous-problem-equivalence} state that we can obtain a minimizer for each problem from a minimizer $p(0)$ of the geodesic shooting formulation in \cref{prob:geodesic-shooting}.
+	Hence we just have to show the existence of such a $p(0)$.
+	Define the ball $B_\rho \coloneqq \{p(0) \in \cX^N\ > \ \norm{p(0)}_{\cX^N}^2 \leq \rho^2 \}$ ( $\norm{\cdot}_{\cX^N}$ is the norm induced by the inner product on the product space $\cX^N$).
+	Since we required $\cX$ to be finite dimensional, so is $\cX^N$.
+	This implies that $B_\rho$ is compact.
+	We now want to show the existence of a local minimum of $p(0) \rightarrow \fV(p(0), X, Y)$ on $B_\rho$.
+	If we can show that $\fV$ is continuous in $p(0)$, this follows from the extreme value theorem.
+	
+	Furthermore, \cref{cond:feature-condition} (2) states that there exists an $r > 0$ such that for all $Z \in \cX^N$ $Z^\T \bGamma(X, X) Z \geq r Z^\T Z = r \norm{Z}_{\cX^N}^2$.
+	We also required that the loss $l$ is positive.
+	These to facts imply that
+	\begin{align}
+		\lim_{\norm{p(0)} \rightarrow \infty} \fV(p(0), X, Y) 
+		&= \lim_{\norm{p(0)} \rightarrow \infty} p(0)^\T \bGamma(X, X) p(0) + l(q(1), Y)\\
+		& \geq 	\lim_{\norm{p(0)} \rightarrow \infty} p(0)^\T \bGamma(X, X) p(0) \\
+		& \geq \lim_{\norm{p(0)} \rightarrow \infty} r \norm{p(0)}_{\cX^N}^2
+		= \infty \ .
+	\end{align}
+	This means that there exists a $\rho > 0$ such that $B_\rho$ contains a global minimizer of $\fV$ and even a $\rho > 0$ such that all global minimizers are contained in a $B_\rho$.
+	
+	Now we are left with the proof that $\fV$ is continuous in $p(0)$.
+	The first term of $\fV$ is a quadratic form in $p(0)$ and hence continuous.
+	The second term -- the loss $l$ -- is continuous in $q(1)$.
+	In order to see that $q(1)$ is continuous in $p(0)$ we use a result from the theory of ODEs.
+	Again, write
+	\begin{equation}
+		\left(\dot{q}(t), \dot{p}(t)\right)^\T = f\left(t, \left(q(t), p(t)\right)^\T \right)
+	\end{equation}
+	for the Hamiltonian system in \cref{eq:hamiltonian-system}.
+	We already know that $f$ is bounded for $t \in [0, 1]$, because $q(t)$ and $p(t)$ are.
+	$f$ is continuous in $\left(q(t), p(t)\right)^\T$ and so is its Jacobian (which is therefore also bounded), as one can easily verify.
+	Let $(q_i, p_i)^\T$ be the unique solution to the Hamiltonian system $f$ with initial conditions $q_i(0) = X, p(0) = p_{0, i}$ for $i \in [2]$ (which exists according to \cref{theo:hamiltonian-system-solution}).
+	Now, we use a result from the theory of ODEs:
+	From \cite[Theorem~1.4.1]{arino06} it follows as a special case that:
+	For all $\epsilon > 0$ there exists $\delta > 0$ such that:
+	\begin{equation}
+		\norm{p_{0, 1} - p_{0, 2}}_{\cX^{2N}} < \delta \Rightarrow 
+		\left(\forall t \in [0, 1]:\ \norm{(q_1(t), p_1(t))^\T - (q_2(t), p_2(t))^\T}_{\cX^{2N}} < \epsilon \right) \ .
+	\end{equation}
+	Since $\norm{\cdot}_{\cX^{2N}}$ is the norm that is induced on the product space, it follows that especially $\norm{q_1(t) - q_2(t)} < \epsilon$, which proves the continuity of $q(1)$ in $p(0)$.
+	
+	The identity of the minimal values can be deduced directly from the theorems \cref{theo:v-q-continuous-problem-equivalence,theo:geodesic-shooting} and their proofs.
+\end{proof}
 
 \Todo{Check with paper again. In the paper the equation for p might be wrong...}
 \begin{equation}

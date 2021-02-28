@@ -25,7 +25,7 @@
 					$\begin{cases}
 						\text{Min~} & \frac{\nu}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t\\
 						&+ l(q_{L+1}, Y) \\
-						\text{s.t.~} & q_1 = X,\ q_2, \ldots, q_{L+1} \in \cX^N,\ t = \frac{1}{L}\\
+						\text{s.t.~} & q_1 = X,\ q_2, \ldots, q_{L+1} \in \cX^N,\ \Delta t = \frac{1}{L}\\
 						& v_k(x) = \bGamma(x, q_k)^\mathrm{T}\bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k)
 					\end{cases}$};
 				\node[below= of b,outer sep=-2em] (z3) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:v-q-continuous-problem-equivalence}};
