@@ -80,116 +80,147 @@ From the fact that $\frac{\partial \fL}{\partial t} = 0$ it follows that:
 \end{proof}
 If the Hamiltonian is constant along a trajectory $q$ one often speaks of \emph{energy preservation} along $q$.
 
-Our next task will be to show that there exists a unique solution to the Hamiltonian system in \cref{eq:hamiltonian-system}.
+Our next objective will be to show that there exists a unique solution to the Hamiltonian system in \cref{eq:hamiltonian-system}.
 If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}:
 A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and if that system has a unique solution given suitable initial conditions, this must be it.
 Of course, we can only identify the flow once we have determined the value of $p(0)$ as otherwise we would be lacking an initial value.
 
-\Todo{Das Theorem inkl. Beweis muss ich nochmal vollständig überarbeiten.}
 \begin{theorem}
 	\label{theo:hamiltonian-system-solution}
 	There exists a unique solution $(q, p)$ for the Hamiltonian system in \cref{eq:hamiltonian-system} with $q \in C^2([0, 1], \cX^N)$ and $p \in C^1([0, 1], \cX^N)$.
 \end{theorem}
 
 \begin{proof}
-	Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
-	Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
-	\begin{equation}
-	\label{eq:feature-hamiltonian}
-		\begin{split}
-			\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
-			\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
-		\end{split}
-	\end{equation}
-	with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
-	From \cref{cor:feature-space-norm} we get:
-	\begin{align}
-		\norm{\alpha}_\cF^2 &= \norm{\psi^\T(x) \alpha}_\cV^2\\
-		&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
-		&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
-		&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
-		&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
-		&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
-		&= p^\T \bGamma(q, q) p \ .
-	\end{align}
-	In the second to last step we again used the reproducing property of the kernel $\Gamma$.
-	This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
-	\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).
-	Our goal is to use a global version of the Picard-Lindelöf theorem \cite[~Theorem 1.2.3]{arino06} to prove that the Hamiltonian system does have a unique solution.
-	From this it immediately follows that $q$ and $p$ are $C^1$.
-	The right side of the first line in \cref{eq:feature-hamiltonian} is also differentiable by $t$.
+	In order to show that the Hamiltonian system does have a unique solution, we want to use a global version of the Picard-Lindelöf theorem \cite[Theorem~1.2.3]{arino06}.
+	If such a solution exists, it immediately follows that $q$ and $p$ are $C^1$.
+	The right side of the first line in \cref{eq:feature-hamiltonian} is also continuously differentiable by $t$, because $p$ is and $\Gamma$ has continuous partial derivatives.
 	Thus $q$ is $C^2$.
 	
-	For being able to apply Picard-Lindelöf we need the vector field $(q, p)$ to be globally Lipschitz continuous.
-	Showing component-wise Lipschitz continuity suffices because we can choose the global constant $L$ as the maximum of the components'.
-	We will show the Lipschitz property by proofing that $\dot{q}$ and $\dot{p}$ are bounded.
-	This will do:
-	Let $\dot{q}$ and $\dot{p}$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$ and
+	For being able to apply Picard-Lindelöf we need the Hamiltonian system to be globally Lipschitz continuous.
+	Define
 	\begin{equation}
 	\label{eq:hamiltonian-time-derivative}
 		\begin{pmatrix}
 			\dot{q}\\\dot{p}
 		\end{pmatrix}
-		= \frac{\mathrm{d}}{\mathrm{d} t}\begin{pmatrix}q\\p\end{pmatrix}
 		= f\left(t, \begin{pmatrix}q\\p\end{pmatrix}\right) 
 		\coloneqq 			
-		\begin{pmatrix}\bGamma(q, q)p\\ 
-		-\frac{\partial \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)}{\partial q}
-		\end{pmatrix} 
+		\begin{pmatrix}
+			\bGamma(q, q)p\\ 
+			-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)
+		\end{pmatrix} \ .
 	\end{equation}
-	Then by the mean value theorem there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX$ such that
+	Then we have to show that $f$ is globally Lipschitz.
+	We show this by proving that the Jacobian matrix $J(t, (q, p)^\T)$ of the system $f$ is bounded.
+	This will do:
+	Let $J$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX^N$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$.
+	The mean value theorem states that there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX^N$ such that
 	\begin{align}
-		\norm{f\left(t, x\right) - f\left(t, y\right) }
-		= \norm{
-			\frac{\mathrm{d}}{\mathrm{d} t}f\left(t, z \right)}
-		\cdot \norm{x-y} \ .
+		\norm{f_i\left(t, x\right) - f_i\left(t, y\right)}_{\cX^{2N}}
+		= \norm{J(t, z)}_O\cdot \norm{x-y}_{\cX^{2N}} \ .
 	\end{align}
-	Because of the equality in \cref{eq:hamiltonian-time-derivative} we immediately arrive at the desired result:
-	$\norm{f\left(t, x\right) - f\left(t, y\right) } \leq L \norm{x - y}$.
-	For the detailed requirements of the Picard-Lindelöf theorem the reader is referred to \cite{arino06, tenenbaum85}.
-	
-	All that is left to show now is the boundedness of $\dot{q}$ and $\dot{p}$.
-	That of of $\dot{q}$ is easy to see from \cref{eq:feature-hamiltonian}:
-	\begin{equation}
-		\norm{\dot{q}_i}_\cX \leq \norm{\psi^T(q_i)}_O \norm{\alpha}_\cF 
-		\leq \sup_{x \in \cX}\norm{\psi^T(x)}_O \norm{\alpha}_\cF\ .
-	\end{equation}
 	Here, $\norm{\cdot}_O$ is the operator norm \cite{conway07}.
-	Because of the assumption in \cref{cond:feature-condition}, $\psi$ is bounded.
-	This implies that the adjoint $\psi^\T$ is, too.
-	We already saw that $\alpha$ is constant.
-	It remains to show the boundedness of $\dot{p_i}$.
-	First consider each entry $\dot{p}_{i, j}$ of $\dot{p}_i$.
-	By common differentiation rules and Cauchy-Schwarz we get
+	Because of the equality in \cref{eq:hamiltonian-time-derivative} we immediately arrive at the desired result:
+	$\norm{f_i\left(t, x\right) - f_i\left(t, y\right)}_{\cX^{2N}} \leq L \norm{x - y}_{\cX^{2N}}$.
+	As this holds true for all $i \in [N]$, it follows that
+	For the detailed requirements of the Picard-Lindelöf theorem the reader is referred to \cite{arino06}.
+	
+	All that is left to show now is the boundedness of the Jacobian $J(t, (q, p)^\T)$.
+	For we have to prove the boundedness of four types of partial derivatives for $i, j \in [N]$:
 	\begin{align}
-		\abs{p_{i,j}} &= \abs{\frac{\partial}{\partial q_{i, j}}\left<p_i, \psi^\T(q_i) \alpha \right> }\\
-		&= \abs{\left<p_i, \frac{\partial}{\partial q_{i, j}} \psi^\T(q_i) \alpha \right> }\\
-		&\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) }_\cX \ .
+		\frac{\partial}{\partial q_{i}} \left(\bGamma(q, q) p\right)_j \ ,\
+		&\frac{\partial}{\partial p_{i}} \left(\bGamma(q, q) p\right)_j \\
+		\frac{\partial}{\partial q_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j \ ,\
+		&\frac{\partial}{\partial p_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j\\
 	\end{align}
-	Observe the second factor, $\psi^\T(q_i) \alpha$. $\psi^\T$ is a matrix (actually a bounded linear operator in $L(\cF, \cX)$, but we are finite-dimensional), and $\alpha \in \cF$.
-	The matrix-vector product is a continuous, bilinear operator and thus we can apply the product rule for partial derivatives.
-	$\alpha$ does not depend on $q_{i, j}$, thus the equality $\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) = \left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha$ holds true. The partial derivative of $\psi^\T$ is again a bounded linear operator.
+	We will demonstrate the boundedness for two cases:
 	\begin{equation}
-		\norm{\left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha}_\cX \leq \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \norm{\alpha}_\cF \ .
+		\frac{\partial}{\partial q_{i}} \left(\bGamma(q, q) p\right)_j
+		= \frac{\partial}{\partial q_{i}} \sum_{k=1}^N \Gamma(q_j, q_k) p_j
+		=  \sum_{k=1}^N \left(\frac{\partial}{\partial q_{i}} \Gamma(q_j, q_k)\right) p_j \ .
 	\end{equation}
-	Together with the already established inequality we get
+	As $q$ and $p$ and that of the first and second order partial derivatives of $\Gamma$ are bounded, this first partial derivative is therefore also bounded.
+	For the second case, we have
 	\begin{align}
-		\abs{\dot{p}_{i,j}} &\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i)\right) \alpha }_\cX\\
-		&\leq  \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \cdot \norm{\alpha }_\cF \ .
+		\frac{\partial}{\partial q_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j
+		&= - \frac{\partial}{\partial q_i} \frac{\partial}{\partial q_j} \left(\frac{1}{2}
+		\sum_{k=1}^N\sum_{l=1}^{N} p_k \Gamma(q_k, q_l) p_l\right)\\
+		&= -\frac{1}{2} \left(
+		\sum_{k=1}^N\sum_{l=1}^{N} p_k \left(\frac{\partial}{\partial q_i} \frac{\partial}{\partial q_j} \Gamma(q_k, q_l)\right) p_l\right) \ .
 	\end{align}
-	In total, this gives
-	\begin{align}
-		\norm{\dot{p}_i}^2 &= \sum_{i=1}^N \dot{p}_{i,j}^2\\
-		&\leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sum_{i=1}^N  \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O^2\\
-		& = \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \norm{\grad \psi^T(q_i)}^2 \\
-		& \leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)}^2 \ ,
-	\end{align}
-	which is, of course, equivalent to 
-	\begin{equation}
-	\label{eq:norm-p-inequality}
-		\norm{\dot{p}_i}\leq \norm{p_i}_\cX \cdot \norm{\alpha }_\cF \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)} \ .
-	\end{equation}
-	All factors on the right side are bounded: $p_i$ is a continuous function defined on a compact interval, $\alpha$ is constant, as we have seen, and the last term by \cref{cond:feature-condition}.
-	This means $\dot{p_i}$ and therefore $\dot{p}$ are bounded, too.
-	This concludes the proof.
+	Again, the boundedness follows just the same as above.
+	That of the other partial derivatives is similarly easy to see.
+	This shows that the Jacobian $J$ is indeed bounded and hence concludes the proof.
+	
+%	That of of $\dot{q}$ is easy to see from \cref{eq:feature-hamiltonian}:
+%	\begin{equation}
+%	\norm{\dot{q}_i}_\cX \leq \norm{\psi^T(q_i)}_O \norm{\alpha}_\cF 
+%	\leq \sup_{x \in \cX}\norm{\psi^T(x)}_O \norm{\alpha}_\cF\ .
+%	\end{equation}
+%	Here, $\norm{\cdot}_O$ is the operator norm \cite{conway07}.
+%	Because of the assumption in \cref{cond:feature-condition}, $\psi$ is bounded.
+%	This implies that the adjoint $\psi^\T$ is, too.
+%	We already saw that $\alpha$ is constant.
+%	It remains to show the boundedness of $\dot{p_i}$.
+%	First consider each entry $\dot{p}_{i, j}$ of $\dot{p}_i$.
+%	By common differentiation rules and Cauchy-Schwarz we get
+%	\begin{align}
+%	\abs{p_{i,j}} &= \abs{\frac{\partial}{\partial q_{i, j}}\left<p_i, \psi^\T(q_i) \alpha \right> }\\
+%	&= \abs{\left<p_i, \frac{\partial}{\partial q_{i, j}} \psi^\T(q_i) \alpha \right> }\\
+%	&\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) }_\cX \ .
+%	\end{align}
+%	Observe the second factor, $\psi^\T(q_i) \alpha$. $\psi^\T$ is a matrix (actually a bounded linear operator in $L(\cF, \cX)$, but we are finite-dimensional), and $\alpha \in \cF$.
+%	The matrix-vector product is a continuous, bilinear operator and thus we can apply the product rule for partial derivatives.
+%	$\alpha$ does not depend on $q_{i, j}$, thus the equality $\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i) \alpha\right) = \left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha$ holds true. The partial derivative of $\psi^\T$ is again a bounded linear operator.
+%	\begin{equation}
+%	\norm{\left(\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)\right)  \alpha}_\cX \leq \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \norm{\alpha}_\cF \ .
+%	\end{equation}
+%	Together with the already established inequality we get
+%	\begin{align}
+%	\abs{\dot{p}_{i,j}} &\leq \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \left(\psi^T(q_i)\right) \alpha }_\cX\\
+%	&\leq  \norm{p_i}_\cX \cdot \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O \cdot \norm{\alpha }_\cF \ .
+%	\end{align}
+%	In total, this gives
+%	\begin{align}
+%	\norm{\dot{p}_i}^2 &= \sum_{i=1}^N \dot{p}_{i,j}^2\\
+%	&\leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sum_{i=1}^N  \norm{\frac{\partial}{\partial q_{i, j}} \psi^T(q_i)}_O^2\\
+%	& = \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \norm{\grad \psi^T(q_i)}^2 \\
+%	& \leq \norm{p_i}_\cX^2 \cdot \norm{\alpha }_\cF^2 \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)}^2 \ ,
+%	\end{align}
+%	which is, of course, equivalent to 
+%	\begin{equation}
+%	\label{eq:norm-p-inequality}
+%	\norm{\dot{p}_i}\leq \norm{p_i}_\cX \cdot \norm{\alpha }_\cF \cdot \sup_{x \in \cX}\norm{\grad \psi^T(x)} \ .
+%	\end{equation}
+%	All factors on the right side are bounded: $p_i$ is a continuous function defined on a compact interval, $\alpha$ is constant, as we have seen, and the last term by \cref{cond:feature-condition}.
+%	This means $\dot{p_i}$ and therefore $\dot{p}$ are bounded, too.
+%	This concludes the proof.
 \end{proof}
+
+\subsubsection{Outlook: Hamiltonian System in Feature Space}
+Although this is not necessary for the results in other sections, we will still take a look at the Hamiltonian system with its representation in feature space, as it of interest in its own.
+
+Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
+Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
+\begin{equation}
+\label{eq:feature-hamiltonian}
+	\begin{split}
+		\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
+		\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
+	\end{split}
+\end{equation}
+with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
+
+A very interesting consequence of \cref{cor:feature-space-norm} is that $\alpha$ is constant:
+\begin{align}
+	\norm{\alpha}_\cF^2 &= \norm{\psi^\T(x) \alpha}_\cV^2\\
+	&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
+	&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
+	&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
+	&= p^\T \bGamma(q, q) p \ .
+\end{align}
+In the second to last step we again used the reproducing property of the kernel $\Gamma$.
+This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
+\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).

@@ -1,7 +1,7 @@
-In order to show the similarity of \cref{prob:min-q} with a mechanical system, consider the first term of its objective function (the balancing parameter $\nu$ has been deliberately omitted):
+In order to show the similarity of \cref{prob:min-q} with a mechanical system, consider the first term of its objective function (the balancing parameter $\frac{\nu}{2}$ has been deliberately omitted):
 \begin{equation}
 	\label{eq:discrete-lagrangian}
-	\frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} \Delta t \ .
+	\sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t \ .
 \end{equation}
 With some imagination this very much looks like an approximation to the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
 This would require the sequence $q_k$ to be a discrete equidistant sampling of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
@@ -11,7 +11,7 @@ Using physical nomenclature we call the domain of $q$ \emph{time} and write $\do
 In mechanical applications, $q$ is the trajectory of particles and $\dot{q}$ their velocities.
 We can formulate the following approximation:
 \begin{equation}
-	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t} 
+	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)
 	\approx \dot{q}\left(\frac{k}{L}\right)^\mathrm{T} \mathbf{\Gamma}\left(q\left(\frac{k}{L}\right), q\left(\frac{k}{L}\right)\right)^{-1}\dot{q}\left(\frac{k}{L}\right) \ .
 \end{equation}
 This leads us to the obvious question if the solutions of \cref{prob:min-q} are also approximating the solutions of a similar continuous problem.

@@ -1,9 +1,9 @@
-\Todo{This section is still work in progress.}
 
 The only thing left to prove now is that as $L \rightarrow \infty$, \cref{prob:min-q} does indeed converge towards \cref{prob:cont-least-action}.
 
 \input{figures/figure_convergence_sketch}
 
+\subsection{Continuous Residual Neural Network} 
 This is equation 1.12 from \cite{owhadi20}.
 See how this fits here
 \begin{equation}
@@ -69,7 +69,39 @@ Within the scope of this thesis, we can only review the main ideas.
 	One can verify that this function is $C([0, 1], \cV)$.
 \end{proof}
 
-\subsubsection{Existence of Minimizers}
+\subsection{Discrete Geodesic Shooting}
+
+The equivalence of the continuous least action \ref{prob:cont-least-action} and the geodesic shooting formulation \ref{prob:geodesic-shooting} can also be derived for the discrete case.
+For completeness, we will briefly cover the results of this process in this section.
+The derivation involves the theory of discrete Lagrangian and Hamiltonian mechanics and is similar to the continuous case.
+\Todo{Check with paper again. In the paper the equation for p might be wrong...}
+\begin{equation}
+\label{eq:discrete-hamiltonian-system}
+\begin{split}
+q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
+p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_{k+1}} \left(p_{k+1}^\T \bGamma(q_{k+1}, q_{k+1}) p_k\right)\ .
+\end{split}
+\end{equation}
+
+\begin{problem}
+	\label{prob:discrete-geodesic-shooting}
+	\begin{cases}
+		\text{Minimize~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
+		\text{such that~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X \\
+		&\text{~and~} (q_k, p_k) \text{~follow the discrete Hamiltonian equations \ref{eq:discrete-hamiltonian-system}}\ .
+	\end{cases}
+\end{problem}
+Again, for later reference we explicitly define the target function again as
+\begin{equation}
+\fV_L(p_1, X, Y) \coloneqq \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y) \ .
+\end{equation}
+
+\begin{theorem}
+	\label{theo:discrete-shooting-min-q-equivalence}
+	\cref{prob:discrete-geodesic-shooting} and \cref{prob:min-q} are equivalent.
+\end{theorem}
+
+\subsection{Existence of Minimizers}
 
 We already saw the equivalence of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit}, in the sense that their minimizers bijectively correspond to each other -- that is, if they exist.
 Now we will show that there do indeed exist such minimizers and also that the problems' minimal values are identical.
@@ -90,7 +122,7 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	
 	Furthermore, \cref{cond:feature-condition} (2) states that there exists an $r > 0$ such that for all $Z \in \cX^N$ $Z^\T \bGamma(X, X) Z \geq r Z^\T Z = r \norm{Z}_{\cX^N}^2$.
 	We also required that the loss $l$ is positive.
-	These to facts imply that
+	These two facts imply that
 	\begin{align}
 		\lim_{\norm{p(0)} \rightarrow \infty} \fV(p(0), X, Y) 
 		&= \lim_{\norm{p(0)} \rightarrow \infty} p(0)^\T \bGamma(X, X) p(0) + l(q(1), Y)\\
@@ -110,7 +142,8 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	\end{equation}
 	for the Hamiltonian system in \cref{eq:hamiltonian-system}.
 	We already know that $f$ is bounded for $t \in [0, 1]$, because $q(t)$ and $p(t)$ are.
-	$f$ is continuous in $\left(q(t), p(t)\right)^\T$ and so is its Jacobian (which is therefore also bounded), as one can easily verify.
+	$f$ is continuous in $\left(q(t), p(t)\right)^\T$ and so is its Jacobian, as one can easily verify.
+	The continuity of the Jacobian implies its boundedness.
 	Let $(q_i, p_i)^\T$ be the unique solution to the Hamiltonian system $f$ with initial conditions $q_i(0) = X, p(0) = p_{0, i}$ for $i \in [2]$ (which exists according to \cref{theo:hamiltonian-system-solution}).
 	Now, we use a result from the theory of ODEs:
 	From \cite[Theorem~1.4.1]{arino06} it follows as a special case that:
@@ -119,45 +152,19 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 		\norm{p_{0, 1} - p_{0, 2}}_{\cX^{2N}} < \delta \Rightarrow 
 		\left(\forall t \in [0, 1]:\ \norm{(q_1(t), p_1(t))^\T - (q_2(t), p_2(t))^\T}_{\cX^{2N}} < \epsilon \right) \ .
 	\end{equation}
-	Since $\norm{\cdot}_{\cX^{2N}}$ is the norm that is induced on the product space, it follows that especially $\norm{q_1(t) - q_2(t)} < \epsilon$, which proves the continuity of $q(1)$ in $p(0)$.
+	Since $\norm{\cdot}_{\cX^{2N}}$ is the norm that is induced on the product space, it follows that especially $\norm{q_1(t) - q_2(t)}_{\cX^N} < \epsilon$, which proves the continuity of $q(1)$ in $p(0)$.
 	
 	The identity of the minimal values can be deduced directly from the theorems \cref{theo:v-q-continuous-problem-equivalence,theo:geodesic-shooting} and their proofs.
 \end{proof}
 
-\Todo{Check with paper again. In the paper the equation for p might be wrong...}
-\begin{equation}
-	\label{eq:discrete-hamiltonian-system}
-	\begin{split}
-		q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
-		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_{k+1}} \left(p_{k+1}^\T \bGamma(q_{k+1}, q_{k+1}) p_k\right)\ .
-	\end{split}
-\end{equation}
-
-\begin{problem}
-\label{prob:discrete-geodesic-shooting}
-	\begin{cases}
-		\text{Minimize~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
-		\text{such that~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X \\
-		&\text{~and~} (q_k, p_k) \text{~follow the discrete Hamiltonian equations \ref{eq:discrete-hamiltonian-system}}\ .
-	\end{cases}
-\end{problem}
-Again, for later reference we explicitly define the target function again as
-\begin{equation}
-	\fV_L(p_1, X, Y) \coloneqq \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y) \ .
-\end{equation}
-
-\begin{theorem}
-	\label{theo:discrete-shooting-min-q-equivalence}
-	\cref{prob:discrete-geodesic-shooting} and \cref{prob:min-q} are equivalent.
-\end{theorem}
-
+An equivalent result as \cref{theo:continuous-solutions-existence} can be derived for the discrete case.
 \begin{theorem}[Existence of solutions to the discrete problems]
 	\label{theo:discrete-solutions-existence}
 	There exist minimal points for \cref{prob:discrete-geodesic-shooting,prob:min-v-f,prob:min-q} and their minimal values are identical.
 \end{theorem}
+The proof is practically identical to the proof for the continuous case and will not be conducted here.
 
-
-\subsubsection{Convergence}
+\subsection{Convergence}
 
 The following theorem is quite a big one.
 It states convergence results for all three discrete problems we have dealt with so far.
@@ -167,10 +174,10 @@ Respectively, let $M(X, Y)$ be the set of minimizers of \cref{prob:geodesic-shoo
 \begin{theorem}[Convergence theorem]
 	\label{theo:problem-convergence}
 	The minimal value of \cref{prob:discrete-geodesic-shooting,prob:min-q,prob:min-v-f} converges towards the minimal value of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} as $L \rightarrow \infty$.
-	Furthermore,
+	Furthermore, the limit of $M_L(X, Y)$ is contained in $M(X, Y)$:
 	\begin{equation}
 	\label{eq:limit-adherence}
-		\bigcap_{L' \in \mathbb{N}} \closure\left(\bigcup_{L' \geq L} M_L(X, Y)\right) = M(X, Y) \ .
+		\bigcap_{L' \in \mathbb{N}} \closure\left(\bigcup_{L' \geq L} M_L(X, Y)\right) \subseteq M(X, Y) \ .
 	\end{equation}
 \end{theorem}
 Here, $\closure (A)$ is the closure of the set $A$.
@@ -178,8 +185,22 @@ Note that \cref{eq:limit-adherence} means that the adherence values of $M_L(X, Y
 The proof we will now conduct is the highlight of this section:
 It involves everything we have done thus far.
 \begin{proof}
-	Sketch (for now).
-	
 	We know by \dots that we can parameterize the minimal values and points by the initial momentum $p_1$ and $p(0)$ for the discrete and continuous geodesic shooting problem, respectively.
 	This means if suffices to show the convergence of $\fV_L(p_1, X, Y)$ towards $\fV(p(0), X, Y)$.
+	This convergence is even uniform:
+	\begin{equation}
+		content...
+	\end{equation}
+	This shows the convergence of minimal values.
+	
+	For the second part, let $p_k \in M_k(X, Y), k \in \mathbb{N}$ be a sequence of optimal initial momenta.
+	Let $p(0)$ be one of its adherence values, that is, a subsequence $(p_{k_n})_n \in \mathbb{N}$ converges against $p(0)$.
+	Then, $\lim_{n\rightarrow \infty} \fV_{k_n}(p_{k_n}) = \fV(p(0))$ and $p(0)$ minimizes $\fV$.
+	This can be seen as follows:
+	\begin{align}
+		content...
+	\end{align}
 \end{proof}
+
+In \cite{owhadi20}, the author claims $\bigcap_{L' \in \mathbb{N}} \closure\left(\bigcup_{L' \geq L} M_L(X, Y)\right) \supseteq M(X, Y)$.
+However, this could not be shown here.
