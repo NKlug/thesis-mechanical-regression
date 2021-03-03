@@ -2,7 +2,7 @@
 	\makebox[\textwidth][c]{
 		\centering
 		\begin{tikzpicture}[font=\scriptsize, align=center]
-				\node[draw, above left, align=center] (a) {
+				\node[draw, above left, align=center, text width=77mm, minimum height=20mm] (a) {
 					ResNet \ref{prob:min-v-f}\\
 					$\begin{cases}
 						\text{Min~} & \frac{\nu \cdot L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
@@ -11,7 +11,7 @@
 					\end{cases}$};
 				\node[right=of a, align=center,outer sep=-2em] (z1) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
 					\scriptsize\cref{theo:problem-convergence}};
-				\node[draw, right= of z1, align=center] (b) {
+				\node[draw, right= of z1, align=center,text width=75mm, minimum height=20mm] (b) {
 					Limit of ResNet \ref{prob:resnet-limit}\\
 					$\begin{cases}
 						\text{Min~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
@@ -20,7 +20,7 @@
 						&\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
 					\end{cases}$};
 				\node[below= of a,outer sep=-2em] (z2) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:v-q-problem-equivalence}};
-				\node[draw, below= of z2, align=center] (c) {
+				\node[draw, below= of z2, align=center, text width=77mm, minimum height=25mm] (c) {
 					Discrete Least Action \ref{prob:min-q}\\
 					$\begin{cases}
 						\text{Min~} & \frac{\nu}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t\\
@@ -31,14 +31,14 @@
 				\node[below= of b,outer sep=-2em] (z3) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:v-q-continuous-problem-equivalence}};
 				\node[right=of c, align=center,outer sep=-2em] (z4) {\large$\stackrel{L \rightarrow \infty}{\longrightarrow}$\\
 					\scriptsize\cref{theo:problem-convergence}};
-				\node[draw, below= of z3, right=of z4, align=center] (d) {
+				\node[draw, below= of z3, right=of z4, align=center, text width=75mm, minimum height=25mm] (d) {
 					Least Action \ref{prob:cont-least-action}\\
 					$\begin{cases}
 					\text{Min~} & \frac{\nu}{2} \int_{0}^{1} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1}  \dot{q}(t) \mathrm{d}t + l(q(1), Y)\\
 					\text{s.t.~} & q \in C^1([0,1], \cX^N),\ q(0) = X
 					\end{cases}$};
 				\node[below= of d,outer sep=-2em] (z5) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:geodesic-shooting}};
-				\node[draw, below= of z5, align=center] (e) {
+				\node[draw, below= of z5, align=center, text width=75mm, minimum height=25mm] (e) {
 					Geodesic Shooting \ref{prob:geodesic-shooting}\\
 					$\begin{cases}
 						\text{Min~} & \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
@@ -46,7 +46,7 @@
 						&\dot{p} = -\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)
 					\end{cases}$};
 				\node[below= of c,outer sep=-2em] (z6) {\large{$\big\Updownarrow$} \scriptsize\cref{theo:discrete-shooting-min-q-equivalence}};
-				\node[draw, below= of z6, align=center] (f) {
+				\node[draw, below= of z6, align=center, text width=77mm, minimum height=25mm] (f) {
 					Discrete Geodesic Shooting \ref{prob:discrete-geodesic-shooting}\\
 					$\begin{cases}
 					\text{Min~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
