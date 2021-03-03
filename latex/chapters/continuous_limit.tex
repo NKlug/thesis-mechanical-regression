@@ -71,34 +71,30 @@ Within the scope of this thesis, we can only review the main ideas.
 
 \subsection{Discrete Geodesic Shooting}
 
-The equivalence of the continuous least action \ref{prob:cont-least-action} and the geodesic shooting formulation \ref{prob:geodesic-shooting} can also be derived for the discrete case.
-For completeness, we will briefly cover the results of this process in this section.
-The derivation involves the theory of discrete Lagrangian and Hamiltonian mechanics and is similar to the continuous case.
-\Todo{Check with paper again. In the paper the equation for p might be wrong...}
+For completeness, we will briefly show the discrete formulation of \cref{prob:geodesic-shooting}.
+The derivation involves the theory of discrete Lagrangian and Hamiltonian mechanics (see e.g. \cite{west04}) and is similar to the continuous case.
+Consider the discrete Hamiltonian system
 \begin{equation}
 \label{eq:discrete-hamiltonian-system}
-\begin{split}
-q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
-p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_{k+1}} \left(p_{k+1}^\T \bGamma(q_{k+1}, q_{k+1}) p_k\right)\ .
-\end{split}
+	\begin{split}
+		q_{k+1} &= q_k + \Delta t \bGamma(q_k, q_k) p_k\\
+		p_{k+1} &= p_k + \frac{\Delta t}{2} \grad_{q_{k+1}} \left(p_{k+1}^\T \bGamma(q_{k+1}, q_{k+1}) p_{k+1}\right)\ .
+	\end{split}
 \end{equation}
-
+The discrete geodesic shooting formulation is as follows:
 \begin{problem}
 	\label{prob:discrete-geodesic-shooting}
 	\begin{cases}
 		\text{Minimize~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
-		\text{such that~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X \\
+		\text{such that~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X, \Delta t = \frac{1}{L} \\
 		&\text{~and~} (q_k, p_k) \text{~follow the discrete Hamiltonian equations \ref{eq:discrete-hamiltonian-system}}\ .
 	\end{cases}
 \end{problem}
-Again, for later reference we explicitly define the target function again as
-\begin{equation}
-\fV_L(p_1, X, Y) \coloneqq \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y) \ .
-\end{equation}
-
+Let $\fV_L(p_1, X, Y)$ denote the problem's objective function.
+We end up with the following result.
 \begin{theorem}
 	\label{theo:discrete-shooting-min-q-equivalence}
-	\cref{prob:discrete-geodesic-shooting} and \cref{prob:min-q} are equivalent.
+	$q_1, \dots, q_{L+1}$ minimizes \cref{prob:min-q} if and only if with $p_k \coloneqq \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t}$, $p_1$ minimizes \cref{prob:discrete-geodesic-shooting}.
 \end{theorem}
 
 \subsection{Existence of Minimizers}
@@ -121,7 +117,7 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	If we can show that $\fV$ is continuous in $p(0)$, this follows from the extreme value theorem.
 	
 	Furthermore, \cref{cond:feature-condition} (2) states that there exists an $r > 0$ such that for all $Z \in \cX^N$ $Z^\T \bGamma(X, X) Z \geq r Z^\T Z = r \norm{Z}_{\cX^N}^2$.
-	We also required that the loss $l$ is positive.
+	\cref{cond:feature-condition} (4) requires the loss $l$ to be positive.
 	These two facts imply that
 	\begin{align}
 		\lim_{\norm{p(0)} \rightarrow \infty} \fV(p(0), X, Y) 
@@ -166,7 +162,6 @@ The proof is practically identical to the proof for the continuous case and will
 
 \subsection{Convergence}
 
-The following theorem is quite a big one.
 It states convergence results for all three discrete problems we have dealt with so far.
 Let $M_L(X, Y)$ be the set of minimizers of \cref{prob:discrete-geodesic-shooting}.
 Respectively, let $M(X, Y)$ be the set of minimizers of \cref{prob:geodesic-shooting}.
@@ -181,26 +176,41 @@ Respectively, let $M(X, Y)$ be the set of minimizers of \cref{prob:geodesic-shoo
 	\end{equation}
 \end{theorem}
 Here, $\closure (A)$ is the closure of the set $A$.
-Note that \cref{eq:limit-adherence} means that the adherence values of $M_L(X, Y)$ converge towards $M(X, Y)$ as $L \rightarrow \infty$.
-The proof we will now conduct is the highlight of this section:
-It involves everything we have done thus far.
+We will sketch the proof:
 \begin{proof}
-	We know by \dots that we can parameterize the minimal values and points by the initial momentum $p_1$ and $p(0)$ for the discrete and continuous geodesic shooting problem, respectively.
-	This means if suffices to show the convergence of $\fV_L(p_1, X, Y)$ towards $\fV(p(0), X, Y)$.
-	This convergence is even uniform:
+	From the previous equivalence theorems in this section we know that we can parameterize the minimal values and points by the initial momentum $p_1$ and $p(0)$ for the discrete \ref{prob:discrete-geodesic-shooting} and continuous geodesic shooting problem \ref{prob:geodesic-shooting} respectively.
+	This means if suffices to show the convergence of $\fV_L(\cdot, X, Y)$ towards $\fV(\cdot, X, Y)$.
+	Let $p_1$ minimize $\fV_L$.
+	Then $p_1, \ldots, p_L$, $q_1, \ldots, q_L$ follow the discrete Hamiltonian system \ref{eq:discrete-hamiltonian-system}.
+	It can be shown that this system converges uniformly to the continuous Hamiltonian system in \cref{eq:hamiltonian-system} in the sense that as $L \rightarrow \infty$, the interpolation of the solutions $p_k, q_k, k \in [L]$ form a trajectory that follows the continuous Hamiltonian system (we will not prove this here).
+	This implies
 	\begin{equation}
-		content...
+		\frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y) 
+		\stackrel{L \rightarrow \infty}{\longrightarrow} \frac{\nu}{2} \int_{0}^{1} p(t)^\T \bGamma(q(t), q(t)) p(t) \mathrm{d} t + l(q(1), Y) \ . 
 	\end{equation}
-	This shows the convergence of minimal values.
-	
-	For the second part, let $p_k \in M_k(X, Y), k \in \mathbb{N}$ be a sequence of optimal initial momenta.
-	Let $p(0)$ be one of its adherence values, that is, a subsequence $(p_{k_n})_n \in \mathbb{N}$ converges against $p(0)$.
+	But because the Hamiltonian is constant along the $q, p$, the latter term is equal to $\frac{\nu}{2} p(0)^\T \bGamma(X, X) p(0) + l(q(1), Y)$.
+	This shows the convergence of $\fV_L(\cdot, X, Y)$ towards $\fV(\cdot, X, Y)$, which is even uniform.
+	In the proof of \cref{theo:continuous-solutions-existence} we saw that there exists a $\rho$ such that $B_\rho$ contains all global minima of $\fV$.
+	This can also be shown for $\fV_L$, where $\rho$ can be chosen independently of $L$.
+	Hence, choose $\rho$ such that all global minima of $\fV_L$ and $\fV$ are contained in $B_\rho$.
+	Then, it follows that
+	\begin{equation}
+		\lim_{L \rightarrow \infty} \min_{p_1 \in B_\rho} \fV_L(p_1, X, Y) = \min_{p_1 \in B_\rho} \lim_{L \rightarrow \infty}  \fV_L(p_1, X, Y) = \min_{p_1 \in B_\rho} \fV(p_1, X, Y) \ .
+	\end{equation}
+
+	For the second part, let $(p_k)_{k \in \mathbb{N}}, p_k \in M_k(X, Y)$ be a sequence of optimal initial momenta.
+	Let $p(0)$ be one of its adherence values, that is, a subsequence $(p_{k_n})_{n \in \mathbb{N}}$ converges towards $p(0)$.
 	Then, $\lim_{n\rightarrow \infty} \fV_{k_n}(p_{k_n}) = \fV(p(0))$ and $p(0)$ minimizes $\fV$.
-	This can be seen as follows:
+	In order to see that, let $\epsilon > 0$. 
+	Because of the uniform convergence of $\fV_k$ towards $\fV$, there exists an $n_0 \in \mathbb{N}$ such that for all $n \geq n_0$:
 	\begin{align}
-		content...
+		\abs{\fV_{k_n}(p_{k_n}) - \fV(p(0))} 
+		&\leq \abs{\fV_{k_n}(p_{k_n}) - \fV_{k_n}(p(0))} + \abs{\fV_{k_n}(p(0)) - \fV(p(0))}\\
+		&< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon \ .
 	\end{align}
 \end{proof}
 
-In \cite{owhadi20}, the author claims $\bigcap_{L' \in \mathbb{N}} \closure\left(\bigcup_{L' \geq L} M_L(X, Y)\right) \supseteq M(X, Y)$.
+In \cref{eq:limit-adherence}, \citet{owhadi20} claims that equality holds.
 However, this could not be shown here.
+
+This concludes the section on mechanical regression.

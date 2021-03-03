@@ -132,7 +132,7 @@ For later use, we explicitly define the objective function of this problem:
 The following theorem states the equivalence between \cref{prob:cont-least-action} and \cref{prob:geodesic-shooting}, which means that the Least Action formulation can be solved by Geodesic Shooting.
 \begin{theorem}
 	\label{theo:geodesic-shooting}
-	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $p$ minimizes \cref{prob:geodesic-shooting}.
+	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $p(0)$ minimizes \cref{prob:geodesic-shooting}.
 \end{theorem}
 \begin{proof}
 	Let $q$ minimize \cref{prob:cont-least-action} and define $p = \bGamma(q, q)^{-1}\dot{q}$.

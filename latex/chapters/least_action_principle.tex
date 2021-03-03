@@ -4,8 +4,8 @@ In order to show the similarity of \cref{prob:min-q} with a mechanical system, c
 	\sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t \ .
 \end{equation}
 With some imagination this very much looks like an approximation to the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
-This would require the sequence $q_k$ to be a discrete equidistant sampling of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
-Without loss of generality we choose $A = [0, 1]$ and let $q$ be such that $q_k = q(k \Delta t)$.
+This would require the sequence $q_k$ to be a discrete equidistant approximation of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
+Without loss of generality we choose $A = [0, 1]$ and let $q$ be such that $q_k \approx q(k \Delta t)$.
 This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative of $q$ on at the point $k \Delta t = \frac{k}{L}$.
 Using physical nomenclature we call the domain of $q$ \emph{time} and write $\dot{q}$ for the (time-)derivative $\frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
 In mechanical applications, $q$ is the trajectory of particles and $\dot{q}$ their velocities.
