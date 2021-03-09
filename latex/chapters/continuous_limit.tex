@@ -182,7 +182,7 @@ We will sketch the proof:
 	This means if suffices to show the convergence of $\fV_L(\cdot, X, Y)$ towards $\fV(\cdot, X, Y)$.
 	Let $p_1$ minimize $\fV_L$.
 	Then $p_1, \ldots, p_L$, $q_1, \ldots, q_L$ follow the discrete Hamiltonian system \ref{eq:discrete-hamiltonian-system}.
-	It can be shown that this system converges uniformly to the continuous Hamiltonian system in \cref{eq:hamiltonian-system} in the sense that as $L \rightarrow \infty$, the interpolation of the solutions $p_k, q_k, k \in [L]$ form a trajectory that follows the continuous Hamiltonian system (we will not prove this here).
+	It can be shown that this system converges uniformly to the continuous Hamiltonian system in \cref{eq:hamiltonian-system} in the sense that as $L \rightarrow \infty$, the interpolation of the solutions $p_k, q_k, k \in [L]$ converge towards a trajectory that follows the continuous Hamiltonian system (we will not prove this here).
 	This implies
 	\begin{equation}
 		\frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y) 
@@ -208,6 +208,7 @@ We will sketch the proof:
 		&\leq \abs{\fV_{k_n}(p_{k_n}) - \fV_{k_n}(p(0))} + \abs{\fV_{k_n}(p(0)) - \fV(p(0))}\\
 		&< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon \ .
 	\end{align}
+	\Todo{Hier fehlt noch warum p(0) ein Minimum ist.}
 \end{proof}
 
 In \cref{eq:limit-adherence}, \citet{owhadi20} claims that equality holds.

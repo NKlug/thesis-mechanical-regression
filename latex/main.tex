@@ -34,7 +34,7 @@
 \usepackage{csquotes} % autmatic left quotation marks
 \usepackage{aliascnt} % alias counts
 \usepackage[outline]{contour} % bold arrows
-\usepackage{algorithmic}
+\usepackage{algorithmic,algorithm}
 \usepackage{bbm} % double struck numbers
 \usepackage{tikz-cd} % commutative diagrams
 \usepackage[activate=true,final,tracking=true,kerning=true,factor=1100,stretch=10,shrink=10]{microtype} % even better line spacing
@@ -63,6 +63,7 @@
 \renewcommand\tagform@[1]{\maketag@@@{\ignorespaces#1\unskip\@@italiccorr}}
 \renewcommand\theequation{(\oldtheequation)}
 
+\mathtoolsset{showonlyrefs}
 
 % Multiple abstracts
 \newenvironment{polyabstract}[1]
@@ -90,6 +91,10 @@
 % Captions for figures
 \captionsetup{justification=raggedright, format=plain, font=small,labelfont=bf}
 
+% manually set line number in algorithmic
+\renewcommand\thealgorithm{}
+\newcommand{\setalglineno}[1]{%
+	\setcounter{ALC@line}{\numexpr#1-1}}
 
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=orange,backgroundcolor=orange!25,bordercolor=orange,#1]{#2}}
 \newcommandx{\Todo}[2][1=]{\todo[linecolor=yellow,backgroundcolor=yellow!25,bordercolor=yellow,#1]{#2}}

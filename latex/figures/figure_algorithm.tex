@@ -19,13 +19,14 @@
 	\begin{minipage}{.45\linewidth}
 		\scriptsize
 		\begin{algorithmic}[1]
+			\setalglineno{9}
 			\STATE \texttt{solve\_hamiltonian\_system($p_0$, X)} \{
 			\begin{ALC@g}
 				\STATE $p \coloneqq$ $p_0$
 				\STATE $q \coloneqq X$
 				\FOR{$i \coloneqq 1$ to  $\mathrm{int}(\frac{1}{h})$}
 				\STATE $p \coloneqq p - \frac{h}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
-				\STATE $q \coloneqq h \cdot \mathbf{\Gamma}(q,q) p$
+				\STATE $q \coloneqq q + h \cdot \mathbf{\Gamma}(q,q) p$
 				\STATE $p \coloneqq p - \frac{h}{2} \grad_q\left(\frac{1}{2}p^\T\mathbf{\Gamma}(q, q)p\right)$
 				\ENDFOR
 				\RETURN $q$

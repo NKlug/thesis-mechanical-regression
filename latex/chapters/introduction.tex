@@ -1,65 +1,54 @@
 \section{Introduction}
 
-Machine learning involving neural networks has been one of the fastest growing field of research that ever existed (ref!).
-Their success in ... is unpreceded.
-However, the driving force in machine learning, neural networks, are still not fully understood from a theoretical point of view.
-They are like an "elephant in a dark room", and showing properties from various mathematical fields.
-In an effort to shed light on their nature, in "Do Ideas Have Shape Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks" \cite{owhadi20}, the author analyzes neural networks by modeling a special class of neural networks which are called residual neural networks (ResNets).
-In this thesis, parts of this paper are presented in depth.
+Research in Artificial Intelligence (AI) has grown extremely fast over the last years \cite{aireport21}.
+In particular, algorithms involving neural networks are one of the driving forces in contemporary machine learning research.
+In spite of their extraordinary success, neural networks are still not fully understood from a theoretical point of view.
+They are like an "elephant in a dark room" \cite{owhadi20,rumi95}, showing properties connected to various mathematical theories.
+In an effort to shed some light on their nature, in the paper "Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks" \cite{owhadi20} from 2020, the author analyzes neural networks by modeling a special subclass, which are called residual neural networks (ResNets).
+In this thesis, parts of this paper are presented and discussed.
 
-Ideas on what to write here:
-\begin{itemize}
-	\item Neural Networks are universal approximators
-	\item Why neural networks work so well \cite{lin17}
-	\item It is not entirely clear why neural networks work so well. 
-	They were inspired by the neurological structure of the human brain.
-	No real mathematical explanation.
-	\item A short note that the thesis assumes basic knowledge of neural networks.
-\end{itemize}
-Structure
-\begin{enumerate}
-	\item some lame first sentences :/
-	\item introduction to supervised learning
-	\item we can solve supervised learning very well with neural networks
-	\item give some resource for basics of neural networks - we ain't got time to explain
-	\item transition to the paper: what does the author explore?
-	\item outline
-\end{enumerate}
+Neural networks are particularly successful in solving the \emph{supervised learning} problem.
+This problem is defined as follows:
+Let $\cX$ and $\cY$ be two arbitrary domains and $(X_i, Y_i), i \in [N]$ be a finite number of pairs with $X_i \in \cX, Y_i \in \cY$, where the $X_i$ are pairwise distinct.
+$[N] = \{1, 2, \ldots N\}$ denotes is the standard $N$-set.
+Furthermore, let $f^\dagger: \cX \rightarrow \cY$ be an \emph{unknown} function.
+Then the task is to approximate $f^\dagger$ with a function $f: \cX \rightarrow \cY$, given that
+\begin{equation}
+	f^\dagger(X_i) = Y_i \ \forall i \in [N] \ .
+\end{equation}
+In short, we write $X$ and $Y$ for the sets of $X_i$ and $Y_i$ and $f^\dagger(X) = Y$.
+Given that we just know the mapping $f^\dagger(X) = Y$, there are a priori a multitude of possible choices for $f$ that fulfill $f(X) = Y$.
+Thus, one wants to find a function $f$ that generalizes well.
+The domains $\cX$ and $\cY$ are usually vector spaces.
 
-Argument:
-Deep models are better than flat ones. An explanation for this might be \cite{lin17}.
-However, before ResNets, models showed deteriorating performance from certain depths onward.
-Here: Conjecture that NNs have a hard time learning the identity.
-\cite{he16} proposed a clever trick to prevent deteriorating performance:
-Residual Connections.
+In \cite{owhadi20}, the author shows that residual neural networks can be seen as an approximation to a mechanical system, in the sense that as the number of layers tends to infinity, the ResNet solution of the supervised learning problem converges towards that system.
+For this reason, the notion of \emph{mechanical regression} is introduced.
+From this (continuous) formulation, an algorithm, called \emph{geodesic shooting}, is derived.
+In later parts of the paper, \citet{owhadi20} extends his basic model of ResNets to artificial neural networks.
+Also, regularization is added.
 
-Briefly explain ResNets and give results of experiments with ResNets.
+The goal of this thesis is to present chapter 3 of \cite{owhadi20} and reproduce the numerical experiments that are presented at the end of that chapter.
+Furthermore, this thesis aims to serve as a foundation to the further understanding of the later chapters of the paper.
+The reader is expected to have basic knowledge of neural networks and deep learning.
+An extensive introduction to those concepts can be found e.g. in \cite{goodfellow16} and in numerous online courses.
+The following outlines the coarse structure.
 
-Somehow connect this with the paper and briefly sum up what happens in the paper.
+\subsection{Outline}
 
-The title of the paper is a very philosophical question.
-In this thesis, however, we will focus rather on the mathematical side and examine \cite{owhadi20} up to but excluding chapter 4.
+\cref{sec:neural-networks} begins with a brief introduction to residual neural networks.
+They are the foundation from which \citet{owhadi20} derives the concept of mechanical regression.
+Their motivation and distinctive properties are described.
 
-Introduction to main problem at hand:
-Approximating $f^\dagger$ with the known injective mapping $f^\dagger(X) = Y$ with a function $f^\ddagger$.
-This is essentially regression, however can also be classification (explanation and references needed!).
-Wlog We only regard the case where the $X_i$ are pairwise distinct.
-Otherwise the pair $(X_i, Y_i)$ would occur twice.
+\cref{sec:preliminaries} introduces mathematical concepts that are needed in later sections.
+The main concept is that of Reproducing Kernel Hilbert Spaces, which are characterized by a special function, called kernel.
+Furthermore, block operator notation for product spaces is introduced alongside certain loss functions, namely the optimal recovery loss and the ridge regression loss.
 
-Notation: $X$ is set/ array, $X_i$ is $i$-th component
+\cref{sec:mechanical-regression} presents the theory of mechanical regression.
+Starting from a model of residual neural networks, their similarity to a discrete mechanical system are shown.
+This mechanical system can be regarded as an approximation to a continuous Stationary Action Principle, from which a problem formulation as geodesic shooting is derived.
+Furthermore, convergence results of the discrete problems towards their continuous counterparts are shown.
 
-A part of the success of neural networks can be explained not only by mathematics but also physics.
-It seems to be the case that neural networks are not very cost efficient in approximating any function, but are for most functions humans are interested in.
-
-The goal of this thesis is to present chapter 3 of owhadi and provide/serve as a foundation to the further understanding of the rest of the paper...
-
-\subsection{Overview}
-This thesis is structured in the following way:
-
-\subsection{Notation}
-We'll have to see if this section is required.
-\begin{itemize}
-	\item $[n] \coloneqq \{1, 2, \ldots, n\}$ for the standard $n$-set for $n \in \mathbb{N}$
-	\item $X, Y$ are given datapoints
-	\item We seek to approximate a function $f^\dagger$.
-\end{itemize}
+In \cref{sec:algorithm}, an algorithm is derived from the theory of mechanical regression.
+In the algorithm, the geodesic shooting problem is approximated.
+Experiments are conducted on a benchmark dataset.
+The results come close to those presented by \cite{owhadi20}.

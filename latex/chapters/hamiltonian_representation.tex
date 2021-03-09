@@ -197,30 +197,30 @@ Of course, we can only identify the flow once we have determined the value of $p
 %	This concludes the proof.
 \end{proof}
 
-\subsubsection{Outlook: Hamiltonian System in Feature Space}
-Although this is not necessary for the results in other sections, we will still take a look at the Hamiltonian system with its representation in feature space, as it of interest in its own.
-
-Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
-Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
-\begin{equation}
-\label{eq:feature-hamiltonian}
-	\begin{split}
-		\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
-		\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
-	\end{split}
-\end{equation}
-with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
-
-A very interesting consequence of \cref{cor:feature-space-norm} is that $\alpha$ is constant:
-\begin{align}
-	\norm{\alpha}_\cF^2 &= \norm{\psi^\T(x) \alpha}_\cV^2\\
-	&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
-	&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
-	&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
-	&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
-	&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
-	&= p^\T \bGamma(q, q) p \ .
-\end{align}
-In the second to last step we again used the reproducing property of the kernel $\Gamma$.
-This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
-\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).
+%\subsubsection{Outlook: Hamiltonian System in Feature Space}
+%Although this is not necessary for the results in other sections, we will still take a look at the Hamiltonian system with its representation in feature space, as it of interest in its own.
+%
+%Recall \cref{eq:kernel-feature-map}, which reads $\Gamma(x_1, x_2) = \psi^\mathrm{T}(x_1)\psi(x_2)$.
+%Using this equality, we can rewrite \cref{eq:hamiltonian-system} as
+%\begin{equation}
+%\label{eq:feature-hamiltonian}
+%	\begin{split}
+%		\dot{q}_i &= \psi^\mathrm{T}(q_i) \alpha\\
+%		\dot{p}_i &= -\frac{\partial}{\partial q_i} \left(p_i^\mathrm{T} \psi^\mathrm{T}(q_i) \alpha \right)\ ,
+%	\end{split}
+%\end{equation}
+%with $\alpha \coloneqq \sum_{k=1}^{N} \psi(q_k) p_k$.
+%
+%A very interesting consequence of \cref{cor:feature-space-norm} is that $\alpha$ is constant:
+%\begin{align}
+%	\norm{\alpha}_\cF^2 &= \norm{\psi^\T(x) \alpha}_\cV^2\\
+%	&= \norm{\sum_{i=1}^N \psi^\T(x) \psi(q_i)p_i}_\cV^2 \\
+%	&= \norm{\sum_{i=1}^N \Gamma(x, q_i) p_i}_\cV^2\\
+%	&= \left<\sum_{i=1}^N\Gamma(x, q_i)p_i, \sum_{j=1}^N \Gamma(x, q_j) p_j \right>_\cV\\
+%	&= \sum_{i=1}^N \sum_{j=1}^N \left<\Gamma(x, q_i)p_i, \Gamma(x, q_j) p_j \right>_\cV\\
+%	&= \sum_{i=1}^N \sum_{j=1}^N \left<p_i, \Gamma(q_i, q_j) p_j\right>_\cX\\
+%	&= p^\T \bGamma(q, q) p \ .
+%\end{align}
+%In the second to last step we again used the reproducing property of the kernel $\Gamma$.
+%This gives us $\norm{\alpha}_\cF^2 = 2 \fH(q, p)$.
+%\cref{cor:energy-preservation} states that $\fH$ is constant across time, which implies that $\norm{\alpha}_\cF^2$ is, too (and thus  $\norm{\alpha}_\cF$).
