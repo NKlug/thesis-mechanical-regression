@@ -1,34 +1,33 @@
 \section{Introduction}
 
-Research in Artificial Intelligence (AI) has grown extremely fast over the last years \cite{aireport21}.
-In particular, algorithms involving neural networks are one of the driving forces in contemporary machine learning research.
-In spite of their extraordinary success, neural networks are still not fully understood from a theoretical point of view.
+Research in Artificial Intelligence (AI) has shown extreme growth over the last years \cite{aireport21}.
+Algorithms involving neural networks have been and still are the main driving force in contemporary machine learning research.
+But in spite of their extraordinary success, neural networks are still not fully understood from a theoretical point of view.
 They are like an "elephant in a dark room" \cite{owhadi20,rumi95}, showing properties connected to various mathematical theories.
-In an effort to shed some light on their nature, in the paper "Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks" \cite{owhadi20} from 2020, the author analyzes neural networks by modeling a special subclass, which are called residual neural networks (ResNets).
+In an effort to shed some light on their nature, in the paper "Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks" \cite{owhadi20} from 2020, the author analyzes neural networks starting from a model of special subclass of networks, which are called residual neural networks (ResNets).
 In this thesis, parts of this paper are presented and discussed.
 
-Neural networks are particularly successful in solving the \emph{supervised learning} problem.
+Neural networks are a particularly successful way of solving the \emph{supervised learning} problem.
 This problem is defined as follows:
-Let $\cX$ and $\cY$ be two arbitrary domains and $(X_i, Y_i), i \in [N]$ be a finite number of pairs with $X_i \in \cX, Y_i \in \cY$, where the $X_i$ are pairwise distinct.
-$[N] = \{1, 2, \ldots N\}$ denotes is the standard $N$-set.
+Let $\cX$ and $\cY$ be two arbitrary domains (usually vector spaces) and $(X_i, Y_i), i \in [N]
+\footnote{For $N \in \mathbb{N}$, $[N] = \{1,2,\ldots, N\}$ denotes the standard $N$-set.}$ be a finite number of pairs with $X_i \in \cX, Y_i \in \cY$, where the $X_i$ are pairwise distinct.
 Furthermore, let $f^\dagger: \cX \rightarrow \cY$ be an \emph{unknown} function.
 Then the task is to approximate $f^\dagger$ with a function $f: \cX \rightarrow \cY$, given that
 \begin{equation}
 	f^\dagger(X_i) = Y_i \ \forall i \in [N] \ .
 \end{equation}
 In short, we write $X$ and $Y$ for the sets of $X_i$ and $Y_i$ and $f^\dagger(X) = Y$.
+$X$ and $Y$ are often called training data.
 Given that we just know the mapping $f^\dagger(X) = Y$, there are a priori a multitude of possible choices for $f$ that fulfill $f(X) = Y$.
 Thus, one wants to find a function $f$ that generalizes well.
-The domains $\cX$ and $\cY$ are usually vector spaces.
 
 In \cite{owhadi20}, the author shows that residual neural networks can be seen as an approximation to a mechanical system, in the sense that as the number of layers tends to infinity, the ResNet solution of the supervised learning problem converges towards that system.
 For this reason, the notion of \emph{mechanical regression} is introduced.
 From this (continuous) formulation, an algorithm, called \emph{geodesic shooting}, is derived.
-In later parts of the paper, \citet{owhadi20} extends his basic model of ResNets to artificial neural networks.
-Also, regularization is added.
+In later parts of the paper, \citet{owhadi20} extends his basic model of ResNets to artificial neural networks and also adds regularization.
 
 The goal of this thesis is to present chapter 3 of \cite{owhadi20} and reproduce the numerical experiments that are presented at the end of that chapter.
-Furthermore, this thesis aims to serve as a foundation to the further understanding of the later chapters of the paper.
+Furthermore, this thesis aims to serve as a foundation to the further understanding of the later parts of the paper.
 The reader is expected to have basic knowledge of neural networks and deep learning.
 An extensive introduction to those concepts can be found e.g. in \cite{goodfellow16} and in numerous online courses.
 The following outlines the coarse structure.
@@ -44,8 +43,8 @@ The main concept is that of Reproducing Kernel Hilbert Spaces, which are charact
 Furthermore, block operator notation for product spaces is introduced alongside certain loss functions, namely the optimal recovery loss and the ridge regression loss.
 
 \cref{sec:mechanical-regression} presents the theory of mechanical regression.
-Starting from a model of residual neural networks, their similarity to a discrete mechanical system are shown.
-This mechanical system can be regarded as an approximation to a continuous Stationary Action Principle, from which a problem formulation as geodesic shooting is derived.
+Starting from a model of residual neural networks, their similarity to a discrete mechanical system is shown.
+This mechanical system can be regarded as an approximation to a continuous stationary action principle, from which a problem formulation as geodesic shooting is derived.
 Furthermore, convergence results of the discrete problems towards their continuous counterparts are shown.
 
 In \cref{sec:algorithm}, an algorithm is derived from the theory of mechanical regression.
