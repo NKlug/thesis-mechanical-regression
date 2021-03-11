@@ -39,11 +39,11 @@ As we will not require kernels without those properties, we included them in the
 	Then for all $n \in \mathbb{N}$ and pairwise distinct $x_i \in \cX, i \in [n]$ the matrix with entries $(K(x_i, x_j))_{i, j \in [n]}$ is non-singular.
 \end{lemma}
 \begin{proof}
-	If the kernel of $(K(x_i, x_j))_{i, j \in [n]}$ contained a non-zero element $Y \in cY^n$, it would follow that $\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0$; a contradiction.
+	If the kernel of $(K(x_i, x_j))_{i, j \in [n]}$ contained a non-zero element $Y \in \cY^n$, it would follow that $\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0$; a contradiction.
 \end{proof}
-In \cref{sec:block-operator-notation} we will further explore matrices made of operators.
+In \cref{sec:block-operator-notation} we will further explore matrices of operators.
 
-Next, we will define Reproducing Kernel Hilbert Spaces (RKHS).
+Next, we will define Reproducing Kernel Hilbert Spaces (RKHSs).
 The definition follows \citet{kadri16}, which examine RKHS in the setting where $\cY$ is a Hilbert space of functions.
 However, their definition also applies to the more general case where $\cY$ is an arbitrary Hilbert space.
 \begin{definition}
@@ -60,8 +60,8 @@ However, their definition also applies to the more general case where $\cY$ is a
 \end{definition}
 
 In an RKHS, the kernel is also called the \emph{reproducing kernel}.
-This definition of an RKHS is in accord with earlier definitions \cite{berlinet04, sejdinovic12} which were stricter and only permitted $\cY = \R$.
-However, as $\R$ together with the standard scalar product is a Hilbert space itself, it is easy to see that the definition above includes this case, which we will refer to as the scalar case.
+This definition of an RKHS is in accordance with earlier definitions \cite{berlinet04, sejdinovic12} which are stricter and only permit $\cY = \R$.
+However, as $\R$ together with the standard scalar product is a Hilbert space itself, it is easy to see that the definition above includes this special case, which we will refer to as the scalar case.
 
 One important result for RKHSs is that a kernel is associated with a unique RKHS and vice versa:
 \begin{theorem}

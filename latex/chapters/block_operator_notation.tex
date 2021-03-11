@@ -1,9 +1,8 @@
-This section gives a brief introduction to the block operator notation used in later sections.
-It allows simpler and more concise notation for vectors like $X \in \cX^N$ and $Y \in \cY^N$ for what would otherwise require statements on an vector entry basis.
+Next, we introduce block operator matrices which are closely related to the product space of a Hilbert Space $\cY$.
+It allows simpler and more concise notation for what would otherwise require statements on an vector entry basis.
 Although most of the time the notation will seem intuitive, we still have to ensure that all transformations involving it are mathematically sound.
 
-Block operator matrices are defined on the $N$-fold product space of $\cY$.
-As a short reminder, the $N$-fold product space of $\cY$ is defined as $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$.
+The $N$-fold product space of $\cY$ is defined as $\cY^N \coloneqq \bigtimes_{i=1}^N \cY$.
 The inner product on $\cY$ can be extended to $\cY^N$ in a natural way:
 Let $A, B \in \cY^N$.
 Then $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \right >$ fulfills the properties of an inner product on $\cY^N$ and thus makes $\cY^N$ a Hilbert space.
@@ -11,23 +10,25 @@ Then $\left < A, B \right >_{\cY^N} \coloneqq \sum_{i=1}^{N} \left <A_i, B_i \ri
 \begin{definition}[Block Operator Matrix]
 	A \emph{Block Operator Matrix} $\mathbf{A}$ is an $(N \times N)$-Matrix with Elements in $L(\cY, \cY)$.
 \end{definition}
-\Todo{By definition of the product space L(YN, YN) is isomorphic to L(Y, Y)NxN}
-Although the definition of block operator matrices does not involve the product space, they are closely connected, which can be seen in the following lemma.
-\begin{lemma}
+Although the definition of block operator matrices does not directly involve the product space, they are closely connected, which can be seen in the following corollary.
+\begin{corollary}
   $L(\cY, \cY)^{N \times N} \cong L(\cY^N, \cY^N)$.
-\end{lemma}
-The proof is quite intuitive and will not be conducted here.
-
-For $\mathbf{A} \in L(Y, Y)^{N\times N}$ and $U \in \cY^N$ we can define a function
-\begin{align}
-	\sigma:~&L(Y, Y)^{N\times N} \times \cY^N \rightarrow \cY^N \\
-	\sigma(\mathbf{A}, U) & = V \coloneqq \mathbf{A} \cdot U\ \text{, where $V$ is defined as} \\
-	V_{i, j} &\coloneqq \sum_{k = 1}^N \mathbf{A}_{i,k} \cdot U_{k, j} \\
-\end{align}
+\end{corollary}
+This property is an immediate consequence of the definition of the product space.
+It enables us to express the evaluation of a bounded linear operator in a fashion akin to a matrix-vector product.
+Let $\mathbf{A} \in L(\cY, \cY)^{N\times N}$ be the block operator matrix associated to a linear operator $\mathbf{A}^\prime \in L(\cY^N, \cY^N)$ and $U \in \cY^N$.
+Then we can define a function
+\begin{gather}
+	\varphi: L(Y, Y)^{N\times N} \times \cY^N \rightarrow \cY^N \\
+	\varphi(\mathbf{A}, U) = V \ ,
+%	\text{, where $V$ is defined as} \\
+%	V_{i, j} &\coloneqq \sum_{k = 1}^N \mathbf{A}_{i,k} \cdot U_{k, j} \ .
+\end{gather}
+where $V$ is defined as the vector with elements $V_{i, j} \coloneqq \sum_{k = 1}^N \mathbf{A}_{i,k} \cdot U_{k, j}$.
 This is similar to the standard matrix-vector product known from linear algebra.
-The only difference is that instead of multiplying elements of a field, we here apply the operator $\mathbf{A}_{i, j}$ to element $U_{k, j} \in \cY$.
-It already seems like block operator matrices can be treated as regular matrices, but this has not been proven yet.
-We will show two important properties: That block operator matrices form a ring and that we can treat $\sigma$ like the standard matrix-vector product.
+The only difference is that instead of multiplying elements of a field, here the operator $\mathbf{A}_{i, j}$ is evaluated at the element $U_{k, j} \in \cY$.
+It already seems like block operator matrices can be treated as regular matrices, but this has not been fully proven yet.
+We will show two important properties: That block operator matrices form a ring and that we can in fact treat $\varphi$ like the standard matrix-vector product.
 
 \begin{theorem}
 	\label{theo:product-space-ring}
@@ -36,34 +37,31 @@ We will show two important properties: That block operator matrices form a ring 
 \begin{proof}
 	We conduct the proof by showing that $\cL(\cY^N, \cY^N) \cong \dK^{nN \times nN}$, where $\dK = \R$ or $\dK = \mathbb{C}$ is the underlying field.
 	Let $\mathbf{A} \in L(\cY^N, \cY^N)$ $n \coloneqq \mathrm{dim}(\cY) < \infty$ (we required $\cY$ to be finite).
-	First, we have $\cL(\cY) \stackrel{\phi}{\cong}\R^{n\times n}$ by mapping an operator to its transformation matrix with respect to a fixed choice of basis.
-	Thus we can regard $\mathbf{A}$ as a big $(N \times N)$ matrix of $(n \times n)$ matrices.
-	Actually, $\phi$ induces an isomorphism $L(\cY^N, \cY^N) \cong \left(\dK^{nxn}\right)^{N \times N}$.
-	Now, the idea is to define $\xi:\left(\dK^{nxn}\right)^{N \times N} \rightarrow \dK^{nN \times nN}$ as the function that "flattens" this matrix.
+	First, we have $\cL(\cY) \cong \dK^{n\times n}$ by mapping an operator to its transformation matrix with respect to a fixed choice of basis.
+	Thus we can regard $\mathbf{A}$ as an $(N \times N)$ matrix consisting of $(n \times n)$ matrices.
+	This yields an isomorphism $\phi: L(\cY^N, \cY^N) \cong \left(\dK^{n\times n}\right)^{N \times N}$.
+	Now, the idea is to define $\psi:\left(\dK^{nxn}\right)^{N \times N} \rightarrow \dK^{nN \times nN}$ as the function that "flattens" the matrix.
 	This is visualized in \cref{fig:block-operator-example} and should suffice as a definition.
-	One can easily check that $\xi \circ \phi$ is the desired isomorphism.
+	One can easily check that $\psi \circ \phi$ is the desired isomorphism.
 \end{proof}
 
 \input{figures/figure_block_operator_example}
 
-As a consequence of the proof, we get the following corollary.
-\begin{corollary}
-	\label{cor:matrix-ring-equivalence}
-	If $\cY$ is a real Hilbert space, $\cL(\cY, \cY) \cong \R^{nN \times nN}$.
-\end{corollary}
-Similarly, we get an isomorphism $\cY^N \cong \R^nN$.
-These new representations of $\mathbf{A}$ and $U$ make it particularly easy to compute $\sigma$:
-Simply map $\mathbf{A}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y}$ to $y \in \R^{nN}$, calculate $A \cdot y = x$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in\cY^N$.
-This is summed up in the following diagram
+Similar to the isomorphism in the proof, we get an isomorphism $\cY^N \cong \R^nN$.
+These new representations make it particularly easy to evaluate a bounded linear operator in $L(\cY^N, \cY^N)$.
+First, map $\mathbf{A} \in L(\cY, \cY)^{N\times N}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y} \in \cY^N$ to $y \in \R^{nN}$.
+Then calculate $x = A \cdot y$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in \cY^N$.
+This means not only that $\varphi$ can in fact be treated like the standard matrix-vector product, but also makes implementation easier, as we will see in \cref{sec:algorithm}.
 
+The following corollary summarizes the section on block operator matrices.
 \begin{corollary}
 	\label{cor:matrix-vector-equivalence}
+	\label{cor:matrix-ring-equivalence}
+	Let $\cY$ be a real Hilbert space, $\delta$ the evaluation of a bounded linear operator on $\cY^N$ and $\partial$ the standard matrix-vector product. Then the following diagram commutes.
 	\begin{equation}
 		\begin{tikzcd}
-		 	L(\cY^N, \cY^N) \arrow{r}{\delta_U} \arrow[swap, leftrightarrow]{d}{\cong} & \cY^N \arrow[leftrightarrow]{d}{\cong} \\%
-			\R^{nN \times nN} \arrow{r}{\partial_V}& \R^{nN}
+		 	L(\cY, \cY)^{N\times N} \arrow[leftrightarrow]{r}{\cong} &L(\cY^N, \cY^N) \arrow{r}{\delta} \arrow[swap, leftrightarrow]{d}{\cong} & \cY^N \arrow[leftrightarrow]{d}{\cong} \\%
+			&\R^{nN \times nN} \arrow{r}{\partial}& \R^{nN}
 		\end{tikzcd}
 	\end{equation}
 \end{corollary}
-
-\Todo{These facts make implementation easier, as we will see in section ?}

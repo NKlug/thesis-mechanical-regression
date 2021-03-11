@@ -24,7 +24,7 @@ These facts indicate that deeper networks are more efficient and should generall
 Nonetheless, the example in \cref{fig:depth-performance-decline} shows the opposite effect.
 It seems that contemporary optimizers are not able to effectively learn the constructed, deeper solution presented above.
 \citet{he16} conjecture that this is because it is hard to learn the identity mapping through non-linear layers and suggest that it is easier to learn the zero function instead.
-This leads to their proposed network architecture: Residual Neural Networks.
+This leads to their proposed network architecture: residual neural networks.
 
 The characteristic feature of ResNets is that they learn residual mappings instead of unreferenced mappings.
 Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (non-linear) layers and $x \in \cX$.
