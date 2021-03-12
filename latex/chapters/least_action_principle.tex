@@ -1,15 +1,15 @@
-In order to show the similarity of \cref{prob:min-q} with a mechanical system, consider the first term of its objective function (the balancing parameter $\frac{\nu}{2}$ has been deliberately omitted):
+In order to show the similarity of \cref{prob:min-q} to a mechanical system, consider the first term of its objective function (the balancing parameter $\frac{\nu}{2}$ has been deliberately omitted):
 \begin{equation}
 	\label{eq:discrete-lagrangian}
 	\sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t \ .
 \end{equation}
-With some imagination this very much looks like an approximation to the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
+This very much looks like an approximation to the integral of some continuous function with a step function using $L$ intervals of width $\Delta t$.
 This would require the sequence $q_k$ to be a discrete equidistant approximation of a function $q: A \rightarrow \cX^N$, where $A$ is an interval in $\R$.
 Without loss of generality we choose $A = [0, 1]$ and let $q$ be such that $q_k \approx q(k \Delta t)$.
-This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward differential quotient approximating the derivative of $q$ on at the point $k \Delta t = \frac{k}{L}$.
+This way, $\frac{q_{k+1} - q_k}{\Delta t}$ can be interpreted as a forward difference quotient approximating the derivative of $q$ at the point $k \Delta t = \frac{k}{L}$.
 Using physical nomenclature we call the domain of $q$ \emph{time} and write $\dot{q}$ for the (time-)derivative $\frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
 In mechanical applications, $q$ is the trajectory of particles and $\dot{q}$ their velocities.
-We can formulate the following approximation:
+This motivates the following approximation:
 \begin{equation}
 	\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \mathbf{\Gamma}(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)
 	\approx \dot{q}\left(\frac{k}{L}\right)^\mathrm{T} \mathbf{\Gamma}\left(q\left(\frac{k}{L}\right), q\left(\frac{k}{L}\right)\right)^{-1}\dot{q}\left(\frac{k}{L}\right) \ .
@@ -17,37 +17,40 @@ We can formulate the following approximation:
 This leads us to the obvious question if the solutions of \cref{prob:min-q} are also approximating the solutions of a similar continuous problem.
 As it turns out, they do.
 This "convergence" will be the main result of this section and is presented at the end in \cref{theo:problem-convergence}.
-For now, we will work under the assumption that it holds true and continue evolving the theory, being cautious not to introduce proof cycles.
+For now, we will work under the assumption that it holds true and continue evolving the theory.
 
-Consider the \emph{Action}
-\begin{equation}
-\label{eq:action}
-	\cA(q) \coloneqq \int_{0}^{1} \fL(t, q(t), \dot{q}(t)) \mathrm{d}t \ ,
-\end{equation}
-with the \emph{Lagrangian}
+Consider the \emph{Lagrangian}
 \begin{equation}
 \label{eq:lagrangian}
-	\begin{split}
-		\fL(t, x_1, x_2): [0, 1] \times \cX^N \times \cX^N \rightarrow \R\\ 
-		\fL(t, x_1, x_2) \coloneqq \frac{1}{2}  x_2^\mathrm{T} \mathbf{\Gamma}(x_1, x_1)^{-1} x_2 \ .
-	\end{split}
+\begin{split}
+\fL: [0, 1] \times U \times \cX^N \rightarrow \R\\ 
+\fL(t, x_1, x_2) \coloneqq \frac{1}{2}  x_2^\mathrm{T} \mathbf{\Gamma}(x_1, x_1)^{-1} x_2 \ .
+\end{split}
 \end{equation}
-These expressions have their origins in Lagrangian mechanics (from a physical point of view) and calculus of variations (the mathematical approach) and have a strong physical interpretation.
+$U \subset \cX^N$ is the open subset on which $\bGamma(x_1, x_1)$ is invertible.
+The Lagrangian has its origins in Lagrangian mechanics (from a physical point of view) and calculus of variations (the mathematical approach) and has a strong physical interpretation.
 But first, a caveat concerning the Lagrangian:
 It is not exclusively defined when the third argument is the time derivative of the second, but more generally.
-Using this general definition, we can then construct a function $(t, q) \rightarrow \fL(t, q(t), \dot{q}(t))$, where $\dot{q} = \frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
-This was done in the definition of the action.
+Using this general definition, we can then construct a function $(t, q) \rightarrow \fL(t, q(t), \dot{q}(t))$, where $q: [0, 1] \rightarrow U$ and $\dot{q} = \frac{\mathrm{d}}{\mathrm{d}t}q(t)$.
 
-In a physical scenario, the Lagrangian is often the difference between the kinetic and the potential energy of (the particles of) the system, that is $L = T - V$.
-Usually $T$ does not depend on the second and $V$ not on the third argument of the function, which correspond to the velocities and the locations of the particles.
-In physics, the Lagrangian theory is especially helpful in problems where constraining forces act.
-
-In our application, the Lagrangian in \cref{eq:lagrangian} is a quadratic form.
+Commonly, in the Lagrangian theory $q$ describes the trajectory of particles.
+Within our application, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles.
+The Lagrangian defined in \cref{eq:lagrangian} is a quadratic form.
 In a physical interpretation it most closely resembles that of a system of free moving particles that don't interact with each other (which also is a quadratic form, though not dependent on the location).
 Here, the particles are coupled by a location dependent matrix, which can be regarded as a mass matrix \cite{marsden10}.
-However, these "masses" would be location dependent.
+However, in our case these "masses" are be location dependent.
 
-With the definition of the action, we can write a continuous version of \cref{prob:min-q}:
+%In a physical scenario, the Lagrangian is often the difference between the kinetic and the potential energy of (the particles of) the system, that is $L = T - V$.
+%Usually $T$ does not depend on the second and $V$ not on the third argument of the function, which correspond to the locations and velocities of the particles.
+%In physics, the Lagrangian theory is especially helpful in problems where constraining forces act.
+
+Next, we can define the \emph{action}:
+\begin{equation}
+\label{eq:action}
+	\cA(q) \coloneqq \int_{0}^{1} \fL(t, q(t), \dot{q}(t)) \mathrm{d}t \ .
+\end{equation}
+It also originates from theoretical physics, as we well see below.
+But first, using this definition we can formulate a continuous version of \cref{prob:min-q}:
 \begin{problem}
 \label{prob:cont-least-action}
 	\begin{cases}
@@ -56,37 +59,35 @@ With the definition of the action, we can write a continuous version of \cref{pr
 	\end{cases}
 \end{problem}
 As usual, $C^1([0,1], \cX^N)$ is the set of continuously differentiable functions $q: [0, 1] \rightarrow \cX^N$.
+Now that we have established a problem formulation within the framework of theoretical physics, we can explore if the theory of Lagrangian mechanics can help us in the analysis of the problem.
 
-Commonly, in the Lagrangian theory $q$ describes the trajectory of particles.
-In our case, each training sample constitutes a particle, therefore $q$ -- a vector -- describes the trajectories of not one, but $N$ particles. 
-Now that we have established a problem formulation within the framework of theoretical physics, we can explore if the theory of Lagrangian mechanics can help us in the analysis the problem.
-
-One core principle in Lagrangian Mechanics is \emph{Hamilton's Stationary Action Principle}, also referred to as \emph{The Principle of Least Action} or just Hamilton's Principle.
+One core principle in Lagrangian Mechanics is \emph{Hamilton's Stationary Action Principle}, also referred to as \emph{The Principle of Least Action} or just \emph{Hamilton's Principle}.
 It postulates that\vspace{.5em}
 \newline
 \noindent{\emph{"The motion of the system from time $t_1$ to time $t_2$ is such that the [action] has a stationary value for the actual path of the motion." \cite{goldstein01}}}
 
 This means that in the real world, the trajectories particles follow are a stationary point of the action.
 A stationary point is one for which the \emph{variation} of the action is $0$.
-Note that "Principle of Least Action" is therefore a misnomer in general and should rather be "Principle of Stationary Action", as the action does not necessarily have to be minimal.
-Regardless of that, within the scope of \cref{prob:cont-least-action} it is appropriate to use the term "Least Action" because we are in fact seeking a minimum.
-An introduction to the theory derived from the postulate can be found in various books on theoretical mechanics \cite{goldstein01, marsden10, feynman63} and in calculus of variations \cite{kielhofer18}.
+Note that "Principle of Least Action" is hence a misnomer in general.
+Instead, "Principle of Stationary Action" is more appropriate, as the action does not necessarily have to be minimal.
+Regardless of that, within the scope of \cref{prob:cont-least-action} it is adequate to use the term "Least Action" because we are in fact seeking a minimum.
+An introduction to the theory derived from the postulate can be found in various books on theoretical mechanics \cite{goldstein01, marsden10, feynman63} and on calculus of variations \cite{kielhofer18}.
 
 Despite the fact that Hamilton's principle is postulated in physics, within the scope of \cref{prob:cont-least-action} we do not rely on it being a postulate.
 By the problem's definition it is \emph{required} that the actual trajectory $q$ minimizes the action.
 
 A core result in calculus of variations are the Euler-Lagrange equations.
 It can be shown that every extremal point $q$ of the actions satisfies them.
-The Euler-Lagrange equations (EL) are given by
+The Euler-Lagrange (EL) equations  are given by
 \begin{equation}
 \frac{\mathrm{d}}{\mathrm{d}t} \frac{\partial \fL}{\partial \dot{q}_{i, j}} - \frac{\partial \fL}{\partial q_{i, j}} = 0
 \end{equation}
 and hold true for each component $q_{i, j}$ of the vector $q$ and its time-derivative $\dot{q}$.
 The partial derivatives with respect to $q$ and $\dot{q}$ are to be read as the partial derivatives of the Lagrangian $\fL$ with respect to the second and third argument at the point $x_1 = q(t)$ and $x_2 = \dot{q}(t)$.
 
-Now we will try to apply this theory to \cref{prob:cont-least-action}.
+Now we will apply this theory to \cref{prob:cont-least-action}.
 Here, we also seek to minimize the action, but in combination with the loss term which depends on the endpoint of the trajectory, $q(1)$.
-However, this is not an obstacle, as we will see in the following lemma.
+However, this is not an obstacle, as the following lemma shows.
 \begin{lemma}
 	A minimizer $q$ of \cref{prob:cont-least-action} follows the Euler-Lagrange equations.
 \end{lemma}
@@ -101,13 +102,13 @@ As we have seen, the vector $q$ describes the trajectories of $N$ particles.
 Setting $m \coloneqq \mathrm{dim}(\cX)$, this would result in $mN$ EL equations, one for each $q_{i, j}$, $i \in [N],\ j \in [m]$.
 For simplicity we will combine them into one and write $\grad_{\dot{q}} \fL$ for the vector of partial derivatives with respect to $\dot{q}_{i, j}$ (the gradient).
 $q(t)$ is an $(N\times1)$ vector with elements in $\cX$ and in turn each of its elements can be regarded as a $(m\times1)$ vector.
-So technically speaking $q$ is $(N \times m)$, or equivalently (\cref{cor:matrix-ring-equivalence}) a a $(mN \times 1)$ vector.
+So technically speaking $q$ is $(N \times m)$, or equivalently (\cref{cor:matrix-ring-equivalence}) a $(mN \times 1)$ vector.
 For the notation $\grad_q \fL$, the interpretation as $(mN \times 1)$ would be more appropriate.
 However, for more flexibility we will not strictly define it like that and interpret such expressions with generosity.
 
-$\grad_q \fL$ is to be interpreted analogously.
+$\grad_{\dot{q}} \fL$ is to be interpreted analogously.
 Together with the block operator notation we can write the EL equations in a concise formulation.
-Because of $\grad_{\dot{q}} \fL = \bGamma(q(t), q(t))^{-1} \dot{q}(t)$, we get:
+Because of $\grad_{\dot{q}} \fL = \bGamma(q(t), q(t))^{-1} \dot{q}(t)$, we get
 \begin{equation}
 \label{eq:concrete-lagrangian}
 	\frac{\mathrm{d}}{\mathrm{d}t} \left(\mathbf{\Gamma}(q(t), q(t))^{-1} \dot{q}(t) \right)

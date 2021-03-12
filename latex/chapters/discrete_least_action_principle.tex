@@ -4,8 +4,8 @@ In order to do that, we first reformulate the problem by introducing additional 
 	q_{1, j} &\coloneqq X_j \, \\
 	q_{i, j} &\coloneqq (\phi_{i-1} \circ \ldots \circ \phi_1) (X_j) \ .
 \end{align}
-Write $q_i$ for the vector with entries $q_{i,j}$ and hence we get $q_1 = X$ and $q_i = \phi_i(q_{i-1})$.
-Regard the following minimization problem:
+Writing $q_i$ for the vector with entries $q_{i,j}$, we get $q_1 = X$ and $q_i = \phi_i(q_{i-1})$.
+Consider the following minimization problem:
 \begin{problem}
 	\label{prob:min-q}
 	\begin{cases}
@@ -13,7 +13,8 @@ Regard the following minimization problem:
 		\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 	\end{cases}
 \end{problem}
-We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f} and also that we can obtain a closed form expression for the $v_k$ from its optimal points.
+We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f} and also that we can obtain a closed-form expression for the $v_k$ as a function of the $q_k$.
+Remember from \cref{sec:preliminaries} that $\bGamma(x, q_k)$ denotes the vector with entries $\Gamma(x, q_{k,i})$.
 
 \begin{theorem}
 	\label{theo:v-q-problem-equivalence}
@@ -31,11 +32,12 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 			& q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .
 		\end{cases}
 	\end{problem}
-	Here we just added the $q_k$ as additional variables but then constrained them to certain values, concretely $q_{k+1} = q_k + v_k(q_k) = \phi_k(q_k)$, with $q_1 = X$.
+	Here we just added the $q_k$ as additional variables but then constrained them to $q_{k+1} = q_k + v_k(q_k) = \phi_k(q_k)$, with $q_1 = X$.
 	Recursively we get $q_{L+1} = \Phi_L(X)$ which means the target function remains the same as in \cref{prob:min-v-f}.
-	Note that even though we seemingly added constraints to the domains of the $v_k$ they are still the same: We just have to choose $q_{k+1}$ accordingly (which we can, as they are unconstrained).
+	Also, the domains of the $v_k$ do not change, as we can simply choose $q_k$ accordingly.
+	This means that the minimal points are the same as in \cref{prob:min-v-f}.
 	
-	We will now derive closed form expressions for the $v_k$ as as functions of the $q_k$.
+	We will now derive closed form expressions for the $v_k$ as functions of the $q_k$.
 	For that, let $q_k \in \cX^N$, $2 \leq k \leq N$ be arbitrary but fixed .
 	This means $l(q_{L+1}, Y)$ is constant and $v_k \in V_q(k) \coloneqq \{v \in \cV~|~ v_k(q_k) = q_{k+1} - q_k\}$.
 %	These sets remain convex: Let $\lambda \in [0, 1]$ and $v_{k, 1}, v_{k, 2} \in V_{k, q}$, then we get
@@ -44,7 +46,7 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 %		&=\lambda(q_{k+1} - q_k) + (1 - \lambda)(q_{k+1} - q_k)\\
 %		&= q_{k+1} - q_k \ .
 %	\end{align}
-	We are left with the minimization of the following problem:
+	We are left with the following problem:
 	\begin{problem}
 		\begin{cases}
 			\text{Minimize} &\sum_{k=1}^L \norm{v_k}_\cV^2\\
@@ -63,13 +65,13 @@ We will now prove that this problem is in fact equivalent to \cref{prob:min-v-f}
 		\norm{v_k}_\cH^2 &= (q_{k+1} - q_k)^\mathrm{T} \bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k) \ .
 	\end{align}
 	In these expressions $\bGamma(q_k, q_k)$ is the block operator matrix with entries $\Gamma(q_{k,i}, q_{k, j})$ and $\bGamma(x, q_k)$ the vector $(\Gamma(x, q_{k, i}))_{i \in [N]}$.
-	Having now computed optimal $v_k$ -- or rather their squared $\cH$-norms -- as a function of $q_2, \ldots, q_{L+1}$ we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
+	Having now computed optimal $v_k$ -- or rather their squared $\cH$-norms -- as a function of $q_2, \ldots, q_{L+1}$, we can reformulate \cref{prob:min-q-v} without the $v_k$ as variables.
 	Define $\Delta t \coloneqq \frac{1}{L}$.
-	We get:
+	We get
 	\begin{problem}
 		\begin{cases}
 			\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L}  
-			\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)
+			\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1}
 			\left(\frac{q_{k+1} - q_k}{\Delta t}\right) \cdot \Delta t
 			+ l(q_{L+1}, Y) \\
 			\text{such that~} & q_1 = X \text{~and~} q_2, \ldots, q_{L+1} \in \cX^N \ .

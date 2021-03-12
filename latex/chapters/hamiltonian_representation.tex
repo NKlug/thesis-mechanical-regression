@@ -1,7 +1,7 @@
 An alternative formulation of Lagrangian mechanics is the Hamiltonian formalism.
-In its own, it does not add anything particularly new to the Lagrangian theory but rather gives a more powerful framework to work with the already established theory.
-In essence, a change of variables from $(q, \dot{q}, t)$ to $(q, p, t)$ is applied through a certain kind of transformation called \emph{Legendre transformation}.
-The obtained $(q, p)$ are known as the \emph{canonical variables}, concretely canonical coordinate and canonical momentum.
+On its own, it does not add anything particularly new to the Lagrangian theory but rather gives a more powerful framework to work with the already established theory.
+In essence, a change of variables from $(tq, \dot{q})$ to $(t,q, p)$ is applied through a certain kind of transformation called \emph{Legendre transformation}.
+The obtained $(q, p)$ are known as the \emph{canonical variables}, specifically canonical coordinate and canonical momentum.
 We will briefly cover the derivation of the Hamiltonian formulation within the scope of our application, but exclude most of the theoretical details.
 For a complete formal derivation from a physical point of view, see \cite[Chapter~8]{goldstein01}.
 For a more mathematical approach, consult \cite[Chapter~2]{marsden10}.
@@ -18,7 +18,7 @@ Next, we define the \emph{Hamiltonian} function, often also called \emph{energy 
 \begin{equation}
 	\fH(t, q(t), p(t)) \coloneqq p(t)^\mathrm{T}\dot{q}(t) - \fL(t, q(t), \dot{q}(t)) \ .
 \end{equation}
-Formally the Hamiltonian is defined as a function $\fH(t, x_1, x_2): [0,1] \times \R \times \R \rightarrow \R$; \emph{without} the connection between $p$ and $q$ defined in \cref{eq:canonical-momentum}.
+Formally the Hamiltonian is defined as a function $\fH: [0,1] \times \cX^N \times \cX^N \rightarrow \R$; \emph{without} the connection between $p$ and $q$ defined in \cref{eq:canonical-momentum}.
 This means that we mostly treat the $p, q$ as independent variables unless mentioned otherwise.
 In a physical context, the Hamiltonian can often be expressed as the sum of the system's kinetic and potential energies and represents the total energy of the system, hence the name "energy function".
 For our application, we can calculate the Hamiltonian explicitly.
@@ -31,9 +31,8 @@ We get
 	&= \frac{1}{2} p(t)^\T \bGamma(q(t), q(t)) p(t) \ .
 \end{align}
 
-As you can see, the equations already become quite cluttered.
-Thus, despite the risk of confusion, we will often omit the time dependence of $p$ and $q$ in the following.
-For example, we write $\bGamma(q, q)$ instead of $\bGamma(q(t), q(t))$, but mean the same.
+For better readability and despite the risk of confusion, we will often omit the time dependence of $p$ and $q$ in the following.
+For example, we write $\bGamma(q, q)$ instead of $\bGamma(q(t), q(t))$.
 
 The next theorem describes the classical correspondence between Lagrangian and Hamiltonian mechanics:
 \begin{theorem}
@@ -55,10 +54,10 @@ The next theorem describes the classical correspondence between Lagrangian and H
 	The claim immediately follows from the equivalence of the Euler-Lagrange equations and Hamilton's equations under the diffeomorphism defined in \cref{eq:canonical-momentum}, as can be seen in e.g. \cite{marsden10, goldstein01}.
 \end{proof}
 
-From the fact that $\frac{\partial \fL}{\partial t} = 0$ it follows that:
+From the fact that $\frac{\partial \fL}{\partial t} = 0$ we obtain the following corollary:
 \begin{corollary}
 	\label{cor:energy-preservation}
-	Along the trajectory $q$ the Hamiltonian $\cH$ is constant.
+	Along the trajectory $q$, the Hamiltonian $\cH$ is constant.
 \end{corollary}
 \begin{proof}
 	The Lagrangian is not explicitly time dependent, that is $\frac{\partial \fL}{\partial t} = 0$.
@@ -78,11 +77,10 @@ From the fact that $\frac{\partial \fL}{\partial t} = 0$ it follows that:
 	\end{equation}
 	which means that the energy function does not change over time and hence is constant.
 \end{proof}
-If the Hamiltonian is constant along a trajectory $q$ one often speaks of \emph{energy preservation} along $q$.
+If the Hamiltonian is constant along a trajectory $q$, one often speaks of \emph{energy preservation} along $q$.
 
 Our next objective will be to show that there exists a unique solution to the Hamiltonian system in \cref{eq:hamiltonian-system}.
-If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}:
-A minimizer of \cref{prob:cont-least-action} solves the Hamiltonian system and if that system has a unique solution given suitable initial conditions, this must be it.
+If this is the case, we could solve -- or at least approximate -- the flow of the Hamiltonian system to acquire a solution to \cref{prob:cont-least-action}, as we will see in the next section.
 Of course, we can only identify the flow once we have determined the value of $p(0)$ as otherwise we would be lacking an initial value.
 
 \begin{theorem}
@@ -93,7 +91,7 @@ Of course, we can only identify the flow once we have determined the value of $p
 \begin{proof}
 	In order to show that the Hamiltonian system does have a unique solution, we want to use a global version of the Picard-Lindelöf theorem \cite[Theorem~1.2.3]{arino06}.
 	If such a solution exists, it immediately follows that $q$ and $p$ are $C^1$.
-	The right side of the first line in \cref{eq:feature-hamiltonian} is also continuously differentiable by $t$, because $p$ is and $\Gamma$ has continuous partial derivatives.
+	The right side of the first line in \cref{eq:hamiltonian-system} is also continuously differentiable by $t$, because $p$ is and $\Gamma$ has continuous partial derivatives.
 	Thus $q$ is $C^2$.
 	
 	For being able to apply Picard-Lindelöf we need the Hamiltonian system to be globally Lipschitz continuous.
@@ -101,9 +99,9 @@ Of course, we can only identify the flow once we have determined the value of $p
 	\begin{equation}
 	\label{eq:hamiltonian-time-derivative}
 		\begin{pmatrix}
-			\dot{q}\\\dot{p}
+			\dot{q}\\ \dot{p}
 		\end{pmatrix}
-		= f\left(t, \begin{pmatrix}q\\p\end{pmatrix}\right) 
+		= f\left(t, \begin{pmatrix}q\\ p\end{pmatrix}\right) 
 		\coloneqq 			
 		\begin{pmatrix}
 			\bGamma(q, q)p\\ 
@@ -111,7 +109,7 @@ Of course, we can only identify the flow once we have determined the value of $p
 		\end{pmatrix} \ .
 	\end{equation}
 	Then we have to show that $f$ is globally Lipschitz.
-	We show this by proving that the Jacobian matrix $J(t, (q, p)^\T)$ of the system $f$ is bounded.
+	We do this by proving that the Jacobian matrix $J(t, (q, p)^\T)$ of the system $f$ is bounded.
 	This will do:
 	Let $J$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX^N$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$.
 	The mean value theorem states that there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX^N$ such that
