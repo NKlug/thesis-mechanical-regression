@@ -114,30 +114,31 @@ Of course, we can only identify the flow once we have determined the value of $p
 	Let $J$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX^N$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$.
 	The mean value theorem states that there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX^N$ such that
 	\begin{align}
-		\norm{f_i\left(t, x\right) - f_i\left(t, y\right)}_{\cX^{2N}}
+		\norm{f\left(t, x\right) - f\left(t, y\right)}_{\cX^{2N}}
 		= \norm{J(t, z)}_O\cdot \norm{x-y}_{\cX^{2N}} \ .
 	\end{align}
 	Here, $\norm{\cdot}_O$ is the operator norm \cite{conway07}.
-	Because of the equality in \cref{eq:hamiltonian-time-derivative} we immediately arrive at the desired result:
-	$\norm{f_i\left(t, x\right) - f_i\left(t, y\right)}_{\cX^{2N}} \leq L \norm{x - y}_{\cX^{2N}}$.
-	As this holds true for all $i \in [N]$, it follows that
+	We then immediately arrive at the desired result:
+	$\norm{f\left(t, x\right) - f\left(t, y\right)}_{\cX^{2N}} \leq L \norm{x - y}_{\cX^{2N}}$.
 	For the detailed requirements of the Picard-Lindelöf theorem the reader is referred to \cite{arino06}.
 	
-	All that is left to show now is the boundedness of the Jacobian $J(t, (q, p)^\T)$.
-	For we have to prove the boundedness of four types of partial derivatives for $i, j \in [N]$:
+	Now, all that is left to show is the boundedness of the Jacobian $J(t, (q, p)^\T)$.
+	For that, we have to prove the boundedness of four types of partial derivatives for $i, j \in [N]$:
 	\begin{align}
 		\frac{\partial}{\partial q_{i}} \left(\bGamma(q, q) p\right)_j \ ,\
 		&\frac{\partial}{\partial p_{i}} \left(\bGamma(q, q) p\right)_j \\
 		\frac{\partial}{\partial q_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j \ ,\
 		&\frac{\partial}{\partial p_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j\\
 	\end{align}
-	We will demonstrate the boundedness for two cases:
+	The index $j$ signifies the entry at position $j$.
+	We will demonstrate the boundedness for two cases.
+	First, we have
 	\begin{equation}
 		\frac{\partial}{\partial q_{i}} \left(\bGamma(q, q) p\right)_j
 		= \frac{\partial}{\partial q_{i}} \sum_{k=1}^N \Gamma(q_j, q_k) p_j
 		=  \sum_{k=1}^N \left(\frac{\partial}{\partial q_{i}} \Gamma(q_j, q_k)\right) p_j \ .
 	\end{equation}
-	As $q$ and $p$ and that of the first and second order partial derivatives of $\Gamma$ are bounded, this first partial derivative is therefore also bounded.
+	As $q$, $p$ and $\Gamma$ and its first and second order partial derivatives are bounded, this expression is also bounded.
 	For the second case, we have
 	\begin{align}
 		\frac{\partial}{\partial q_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j
@@ -146,7 +147,7 @@ Of course, we can only identify the flow once we have determined the value of $p
 		&= -\frac{1}{2} \left(
 		\sum_{k=1}^N\sum_{l=1}^{N} p_k \left(\frac{\partial}{\partial q_i} \frac{\partial}{\partial q_j} \Gamma(q_k, q_l)\right) p_l\right) \ .
 	\end{align}
-	Again, the boundedness follows just the same as above.
+	The boundedness again follows from that of $q, p$ and $\bGamma$.
 	That of the other partial derivatives is similarly easy to see.
 	This shows that the Jacobian $J$ is indeed bounded and hence concludes the proof.
 	
