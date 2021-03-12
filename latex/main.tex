@@ -20,8 +20,6 @@
 \usepackage[sort, numbers, square]{natbib} % citeauthor, citet
 \usepackage{physics} % norm
 \usepackage{enumitem} % changing enumeration styles
-\usepackage{gensymb} % degree
-\usepackage{booktabs} % nice table separators
 \usepackage{tabularx} % better tables, X column
 \usepackage{caption} % change style of figure 
 \usepackage{subcaption} % subfigures
@@ -39,8 +37,9 @@
 \usepackage{tikz-cd} % commutative diagrams
 \usepackage[activate=true,final,tracking=true,kerning=true,factor=1100,stretch=10,shrink=10]{microtype} % even better line spacing
 \usepackage{xr-hyper} 
-\usepackage[pagebackref, pdftex, colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[hypertexnames=false, pagebackref, pdftex, colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
 \usepackage[capitalize,nameinlink,noabbrev]{cleveref} % better "\autoref"
+\usepackage{autonum} % auto equation numbering
 
 % use " as left quotation mark
 \MakeOuterQuote{"}
@@ -63,7 +62,6 @@
 \renewcommand\tagform@[1]{\maketag@@@{\ignorespaces#1\unskip\@@italiccorr}}
 \renewcommand\theequation{(\oldtheequation)}
 
-\mathtoolsset{showonlyrefs}
 
 % Multiple abstracts
 \newenvironment{polyabstract}[1]
@@ -73,8 +71,8 @@
 % Define new environment for problem
 \newaliascnt{problem}{equation}
 \newenvironment{problem}%
-{\begin{equation*}\refstepcounter{problem}}
-{\eqno \hbox{\@eqnnum}\end{equation*}\@ignoretrue}
+{\begin{equation}}
+{\end{equation}\@ignoretrue}
 
 \makeatother
 
