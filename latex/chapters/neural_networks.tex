@@ -12,15 +12,15 @@ Set the remaining layers such that they perform an identity mapping, which means
 Then the deep network produces the same output as the shallow one.
 This indicates that in general, a deeper network should not yield worse results than one with fewer layers.
 
-Furthermore, deep networks cannot be efficiently replaced by shallow architectures:
-Non-flattening theorems state the the number of neurons required by a shallow network, i.e. one with only one hidden layer, grows (almost) exponentially compared to a deep network \cite{lin17,delalleau11}.
-An example: the product of $n$ numbers can be computed by a deep network with only $4n$ neurons, where as a flattened equivalent with only one hidden layer would require $2^n$ neurons \cite{lin17}.
+%Furthermore, deep networks cannot be efficiently replaced by shallow architectures:
+%Non-flattening theorems state the the number of neurons required by a shallow network, i.e. one with only one hidden layer, grows (almost) exponentially compared to a deep network \cite{lin17,delalleau11}.
+%An example: the product of $n$ numbers can be computed by a deep network with only $4n$ neurons, where as a flattened equivalent with only one hidden layer would require $2^n$ neurons \cite{lin17}.
 
 \input{figures/figure_depth_performance}
 
 %Yet in practice one can observe deteriorating performance after a certain depth has been reached.
 %An example for this can be seen in \cref{fig:depth-performance-decline} on the left.
-These facts indicate that deeper networks are more efficient and should generally perform better than shallow ones.
+This indicates that deeper networks should generally perform better than shallow ones.
 Nonetheless, the example in \cref{fig:depth-performance-decline} shows the opposite effect.
 It seems that contemporary optimizers are not able to effectively learn the constructed, deeper solution presented above.
 \citet{he16} conjecture that this is because it is hard to learn the identity mapping through non-linear layers and suggest that it is easier to learn the zero function instead.

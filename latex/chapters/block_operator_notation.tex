@@ -32,7 +32,7 @@ We will show two important properties: That block operator matrices form a ring 
 
 \begin{theorem}
 	\label{theo:product-space-ring}
-	$(L(\cY, \cY)^{N\times N}, +, \circ)$ is a  ring.
+	$(L(\cY, \cY)^{N\times N}, +, \circ)$ is a ring.
 \end{theorem}
 \begin{proof}
 	We conduct the proof by showing that $\cL(\cY^N, \cY^N) \cong \dK^{nN \times nN}$, where $\dK = \R$ or $\dK = \mathbb{C}$ is the underlying field.
@@ -47,9 +47,9 @@ We will show two important properties: That block operator matrices form a ring 
 
 \input{figures/figure_block_operator_example}
 
-Similar to the isomorphism in the proof, we get an isomorphism $\cY^N \cong \R^nN$.
+Similar to the isomorphism in the proof, we get an isomorphism $\cY^N \cong \dK^{nN}$ ($\dK$ is the field of $\cY$).
 These new representations make it particularly easy to evaluate a bounded linear operator in $L(\cY^N, \cY^N)$.
-First, map $\mathbf{A} \in L(\cY, \cY)^{N\times N}$ to $A \in \R^{nN \times nN}$ and $\mathbf{y} \in \cY^N$ to $y \in \R^{nN}$.
+First, map $\mathbf{A} \in L(\cY, \cY)^{N\times N}$ to $A \in \dK^{nN \times nN}$ and $\mathbf{y} \in \cY^N$ to $y \in \dK^{nN}$.
 Then calculate $x = A \cdot y$ as the standard matrix-vector product and map the resulting vector $x$ back to $\mathbf{x} \in \cY^N$.
 This means not only that $\varphi$ can in fact be treated like the standard matrix-vector product, but also makes implementation easier, as we will see in \cref{sec:algorithm}.
 
@@ -57,11 +57,12 @@ The following corollary summarizes the section on block operator matrices.
 \begin{corollary}
 	\label{cor:matrix-vector-equivalence}
 	\label{cor:matrix-ring-equivalence}
-	Let $\cY$ be a real Hilbert space, $\delta$ the evaluation of a bounded linear operator on $\cY^N$ and $\partial$ the standard matrix-vector product. Then the following diagram commutes.
+	Let $\cY$ be a real Hilbert space, $\delta$ the evaluation of a bounded linear operator on $\cY^N$ and $\partial$ the standard matrix-vector product. 
+	Then the following diagram commutes:
 	\begin{equation}
 		\begin{tikzcd}
 		 	L(\cY, \cY)^{N\times N} \arrow[leftrightarrow]{r}{\cong} &L(\cY^N, \cY^N) \arrow{r}{\delta} \arrow[swap, leftrightarrow]{d}{\cong} & \cY^N \arrow[leftrightarrow]{d}{\cong} \\%
-			&\R^{nN \times nN} \arrow{r}{\partial}& \R^{nN}
+			&\R^{nN \times nN} \arrow{r}{\partial}& \R^{nN} \ .
 		\end{tikzcd}
 	\end{equation}
 \end{corollary}
