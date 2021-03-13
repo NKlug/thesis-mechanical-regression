@@ -2,13 +2,17 @@
 The only thing left to prove now is that as $L \rightarrow \infty$, \cref{prob:min-q} does indeed converge towards \cref{prob:cont-least-action}.
 We conduct this proof by using the equivalence of \cref{prob:min-q} to a discrete geodesic shooting problem, which we will briefly introduce.
 For completeness, we will furthermore show a continuous equivalent of the ResNet formulation in \cref{prob:min-v-f}.
+With these preparations, we can then continue to prove that in fact, all three discrete problems converge towards their continuous counterparts.
 A depiction of all problems and their equivalence can be seen in \cref{fig:convergence}.
 
 \input{figures/figure_convergence_sketch}
 
 \subsubsection{Discrete Geodesic Shooting}
 
-The derivation involves the theory of discrete Lagrangian and Hamiltonian mechanics (see for example \cite{west04}) and is similar to the continuous case.
+We will briefly introduce the discrete geodesic shooting formulation.
+Its derivation involves the theory of discrete Lagrangian and Hamiltonian mechanics (see for example \cite{west04}) and is similar to the continuous case.
+Within this thesis, we can only review the results.
+
 Consider the discrete Hamiltonian system
 \begin{equation}
 	\label{eq:discrete-hamiltonian-system}
@@ -40,7 +44,7 @@ We get the following result.
 %	\label{eq:phi-v-differential-equation}
 %	\dot{\Phi}^v(x, t) = \mathbf{\Gamma}(\Phi^v(x, t), q) p
 %\end{equation}
-In this section we will briefly derive a continuous formulation of the ResNet problem in \ref{prob:min-v-f} and show that it is equivalent to the continuous least action formulation \ref{prob:cont-least-action}.
+In this section we will derive a continuous formulation of the ResNet problem in \ref{prob:min-v-f} and show that it is equivalent to the continuous least action formulation \ref{prob:cont-least-action}.
 
 Let $C([0, 1], \cV)$ be the space of continuous functions $v: [0, 1] \rightarrow \cV$, such that the function $v(t)(x)$ is globally Lipschitz in $t$ and $x$.
 For simplicity, we will write $v(t, x)$ instead of $v(t)(x)$.
@@ -113,8 +117,8 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 \end{theorem}
 
 \begin{proof}
-	First, we show the existence of minimizers:
-	\cref{theo:geodesic-shooting,theo:v-q-continuous-problem-equivalence} state that we can obtain a minimizer for each problem from a minimizer $p(0)$ of the geodesic shooting formulation in \cref{prob:geodesic-shooting}.
+	First, we show the existence of minimizers.
+	\cref{theo:geodesic-shooting,theo:v-q-continuous-problem-equivalence} state that we can obtain a minimizer for each problem from a minimizer $p(0)$ of the geodesic shooting formulation (\cref{prob:geodesic-shooting}).
 	Hence we just have to show the existence of such a $p(0)$.
 	Define the ball $B_\rho \coloneqq \{p(0) \in \cX^N\ | \ \norm{p(0)}_{\cX^N}^2 \leq \rho^2 \}$ ($\norm{\cdot}_{\cX^N}$ is the norm induced by the inner product on the product space $\cX^N$).
 	Since we required $\cX$ to be finite dimensional, so is $\cX^N$.
@@ -122,8 +126,29 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 	We now want to show the existence of a local minimum of the function $p(0) \mapsto \fV(p(0), X, Y)$ on $B_\rho$.
 	If we can show that $\fV$ is continuous in $p(0)$, this follows from the extreme value theorem.
 	
-	Furthermore, \cref{cond:feature-condition} (2) states that there exists an $r > 0$ such that for all $Z \in \cX^N$ $Z^\T \bGamma(X, X) Z \geq r Z^\T Z = r \norm{Z}_{\cX^N}^2$.
-	\cref{cond:feature-condition} (4) requires the loss $l$ to be positive.
+	The first term of $\fV$ is a quadratic form in $p(0)$ and hence continuous.
+	The second term -- the loss $l$ -- is continuous in $q(1)$.
+	In order to see that $q(1)$ is continuous in $p(0)$ we use a result from the theory of ODEs.
+	Again, write
+	\begin{equation}
+	\left(\dot{q}(t), \dot{p}(t)\right)^\T = f\left(t, \left(q(t), p(t)\right)^\T \right)
+	\end{equation}
+	for the Hamiltonian system in \cref{eq:hamiltonian-system}.
+	We already know that $f$ is bounded for $t \in [0, 1]$, because $q(t)$ and $p(t)$ are.
+	$f$ is continuous in $\left(q(t), p(t)\right)^\T$ and so is its Jacobian, as one can easily verify.
+	Furthermore, we know from the proof of \cref{theo:hamiltonian-system-solution} that the Jacobian is bounded.
+	Let $(q_i, p_i)^\T$ be the unique solution to the Hamiltonian system $f$ with initial conditions $q_i(0) = X, p(0) = p_{0, i}$ for $i \in [2]$ (which exists according to \cref{theo:hamiltonian-system-solution}).
+	Now, we use a result from the theory of ODEs:
+	From \cite[Theorem~1.4.1]{arino06} it follows as a special case that for all $\epsilon > 0$ there exists $\delta > 0$ such that
+	\begin{equation}
+	\norm{p_{0, 1} - p_{0, 2}}_{\cX^{2N}} < \delta \Rightarrow 
+	\left(\forall t \in [0, 1]:\ \norm{(q_1(t), p_1(t))^\T - (q_2(t), p_2(t))^\T}_{\cX^{2N}} < \epsilon \right) \ .
+	\end{equation}
+	Since $\norm{\cdot}_{\cX^{2N}}$ is the norm that is induced on the product space, it follows that especially $\norm{q_1(t) - q_2(t)}_{\cX^N} < \epsilon$, which proves the continuity of $q(1)$ in $p(0)$.
+	This shows that $B_\rho$ contains a local minimum.
+	
+	\cref{cond:feature-condition} (2) states that there exists an $r > 0$ such that for all $Z \in \cX^N$ $Z^\T \bGamma(X, X) Z \geq r Z^\T Z = r \norm{Z}_{\cX^N}^2$.
+	Moreover, \cref{cond:feature-condition} (4) requires the loss $l$ to be positive.
 	These two facts imply that
 	\begin{align}
 		\lim_{\norm{p(0)} \rightarrow \infty} \fV(p(0), X, Y) 
@@ -132,35 +157,13 @@ Now we will show that there do indeed exist such minimizers and also that the pr
 		& \geq \lim_{\norm{p(0)} \rightarrow \infty} r \norm{p(0)}_{\cX^N}^2
 		= \infty \ .
 	\end{align}
-	This means that there exists a $\rho > 0$ such that $B_\rho$ contains a global minimizer of $\fV$ and even a $\rho > 0$ such that all global minimizers are contained in a $B_\rho$.
-	
-	Now we are left with the proof that $\fV$ is continuous in $p(0)$.
-	The first term of $\fV$ is a quadratic form in $p(0)$ and hence continuous.
-	The second term -- the loss $l$ -- is continuous in $q(1)$.
-	In order to see that $q(1)$ is continuous in $p(0)$ we use a result from the theory of ODEs.
-	Again, write
-	\begin{equation}
-		\left(\dot{q}(t), \dot{p}(t)\right)^\T = f\left(t, \left(q(t), p(t)\right)^\T \right)
-	\end{equation}
-	for the Hamiltonian system in \cref{eq:hamiltonian-system}.
-	We already know that $f$ is bounded for $t \in [0, 1]$, because $q(t)$ and $p(t)$ are.
-	$f$ is continuous in $\left(q(t), p(t)\right)^\T$ and so is its Jacobian, as one can easily verify.
-	The continuity of the Jacobian implies its boundedness.
-	Let $(q_i, p_i)^\T$ be the unique solution to the Hamiltonian system $f$ with initial conditions $q_i(0) = X, p(0) = p_{0, i}$ for $i \in [2]$ (which exists according to \cref{theo:hamiltonian-system-solution}).
-	Now, we use a result from the theory of ODEs:
-	From \cite[Theorem~1.4.1]{arino06} it follows as a special case that:
-	For all $\epsilon > 0$ there exists $\delta > 0$ such that:
-	\begin{equation}
-		\norm{p_{0, 1} - p_{0, 2}}_{\cX^{2N}} < \delta \Rightarrow 
-		\left(\forall t \in [0, 1]:\ \norm{(q_1(t), p_1(t))^\T - (q_2(t), p_2(t))^\T}_{\cX^{2N}} < \epsilon \right) \ .
-	\end{equation}
-	Since $\norm{\cdot}_{\cX^{2N}}$ is the norm that is induced on the product space, it follows that especially $\norm{q_1(t) - q_2(t)}_{\cX^N} < \epsilon$, which proves the continuity of $q(1)$ in $p(0)$.
+	This means that there exists a $\rho > 0$ such that $B_\rho$ contains a global minimizer of $\fV$ and even a $\rho > 0$ such that all global minimizers are contained in $B_\rho$.
 	
 	The identity of the minimal values can be deduced directly from the \cref{theo:v-q-continuous-problem-equivalence,theo:geodesic-shooting} and their proofs.
 \end{proof}
 
-An result equivalent to \cref{theo:continuous-solutions-existence} can be derived for the discrete case.
-\begin{theorem}[Existence of solutions to the discrete problems]
+An equivalent result can be derived for the discrete problems.
+\begin{theorem}[Existence of minimizers for the discrete problems]
 	\label{theo:discrete-solutions-existence}
 	There exist minimal points for \cref{prob:discrete-geodesic-shooting,prob:min-v-f,prob:min-q} and their minimal values are identical.
 \end{theorem}
@@ -168,14 +171,14 @@ The proof is practically identical to the proof of the continuous case and will 
 
 \subsubsection{Convergence}
 
-We now can prove the convergence of the discrete problems towards their continuous counterparts.
-Let $M_L(X, Y)$ be the set of minimizers of \cref{prob:discrete-geodesic-shooting}.
+With all preparations completed, we can now prove the convergence of the discrete problems towards their continuous counterparts.
+For that, let $M_L(X, Y)$ be the set of minimizers of \cref{prob:discrete-geodesic-shooting}.
 Respectively, let $M(X, Y)$ be the set of minimizers of \cref{prob:geodesic-shooting}.
 \cref{theo:continuous-solutions-existence,theo:discrete-solutions-existence} imply that both sets are non-empty.
 \begin{theorem}
 	\label{theo:problem-convergence}
 	The minimal value of \cref{prob:discrete-geodesic-shooting,prob:min-q,prob:min-v-f} converges towards the minimal value of \cref{prob:cont-least-action,prob:geodesic-shooting,prob:resnet-limit} as $L \rightarrow \infty$.
-	Furthermore, the limit of $M_L(X, Y)$ is contained in $M(X, Y)$:
+	Furthermore, the adherence values of $M_L(X, Y)$ are contained in $M(X, Y)$:
 	\begin{equation}
 	\label{eq:limit-adherence}
 		\bigcap_{L' \in \mathbb{N}} \closure\left(\bigcup_{L' \geq L} M_L(X, Y)\right) \subseteq M(X, Y) \ .
@@ -184,7 +187,7 @@ Respectively, let $M(X, Y)$ be the set of minimizers of \cref{prob:geodesic-shoo
 Here, $\closure (A)$ is the closure of the set $A$.
 We will sketch the proof:
 \begin{proof}
-	From the previous equivalence theorems in this section we know that we can parameterize the minimal values and points by the initial momentum $p_1$ and $p(0)$ for the discrete \ref{prob:discrete-geodesic-shooting} and continuous geodesic shooting problem \ref{prob:geodesic-shooting} respectively.
+	From the previous equivalence theorems we know that we can parameterize the minimal values and points by the initial momenta $p_1$ and $p(0)$ for the discrete \ref{prob:discrete-geodesic-shooting} and continuous geodesic shooting problem \ref{prob:geodesic-shooting} respectively.
 	This means if suffices to show the convergence of $\fV_L(\cdot, X, Y)$ towards $\fV(\cdot, X, Y)$.
 	Let $p_1$ minimize $\fV_L$.
 	Then $p_1, \ldots, p_L$, $q_1, \ldots, q_L$ follow the discrete Hamiltonian system \ref{eq:discrete-hamiltonian-system}.
@@ -195,7 +198,7 @@ We will sketch the proof:
 		\stackrel{L \rightarrow \infty}{\longrightarrow} \frac{\nu}{2} \int_{0}^{1} p(t)^\T \bGamma(q(t), q(t)) p(t) \mathrm{d} t + l(q(1), Y) \ . 
 	\end{equation}
 	But because the Hamiltonian is constant along its trajectory, the latter term is equal to $\frac{\nu}{2} p(0)^\T \bGamma(X, X) p(0) + l(q(1), Y)$.
-	This shows the convergence of $\fV_L(\cdot, X, Y)$ towards $\fV(\cdot, X, Y)$ (the convergence is even uniform).
+	This shows the convergence of $\fV_L(\cdot, X, Y)$ towards $\fV(\cdot, X, Y)$ (this convergence is even uniform).
 	In the proof of \cref{theo:continuous-solutions-existence} we saw that there exists a $\rho$ such that $B_\rho$ contains all global minima of $\fV$.
 	This can also be shown for $\fV_L$, where $\rho$ can be chosen independently of $L$.
 	Hence we choose $\rho$ such that all global minima of $\fV_L$ and $\fV$ are contained in $B_\rho$.
@@ -205,7 +208,7 @@ We will sketch the proof:
 	\end{equation}
 	This shows the convergence of minimal values.
 	
-	For the second part, let $(p_k)_{k \in \mathbb{N}}, p_k \in M_k(X, Y)$ be a sequence of optimal initial momenta.
+	For the second part, let $(p_k)_{k \in \mathbb{N}},\ p_k \in M_k(X, Y)$ be a sequence of optimal initial momenta.
 	Let $p(0)$ be one of its adherence values, that is, a subsequence $(p_{k_n})_{n \in \mathbb{N}}$ converges towards $p(0)$.
 	Then, $\lim_{n\rightarrow \infty} \fV_{k_n}(p_{k_n}) = \fV(p(0))$ and $p(0)$ minimizes $\fV$.
 	In order to see that, let $\epsilon > 0$. 
@@ -215,7 +218,7 @@ We will sketch the proof:
 		&\leq \abs{\fV_{k_n}(p_{k_n}) - \fV_{k_n}(p(0))} + \abs{\fV_{k_n}(p(0)) - \fV(p(0))}\\
 		&< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon \ .
 	\end{align}
-	\Todo{Hier fehlt noch warum p(0) ein Minimum ist.}
+	The fact that $p(0)$ minimizes $\fV$ follows from the uniform convergence of $\fV_L$ towards $\fV$.
 \end{proof}
 
 \citet{owhadi20} claims that in \cref{eq:limit-adherence}, equality holds.
