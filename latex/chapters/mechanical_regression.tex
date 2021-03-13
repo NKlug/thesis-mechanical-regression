@@ -15,6 +15,7 @@ This section essentially follows chapter 3 of \cite{owhadi20} and aims to provid
 \cref{fig:convergence} gives an overview about the problems and theorems presented in this section and can be used as a look-up table.
 
 \subsection{Modeling Residual Neural Networks}
+\label{sec:resnet-model}
 
 Recall the supervised learning problem: Given training data $X$ and $Y$ consisting of $X_i \in \cX$, $Y_i \in \cY$ and $f^\dagger(X) = Y$, approximate $f^\dagger$.
 One possibility to solve this problem are residual neural networks, which approximate the target function $f^\dagger$ through a series of residual blocks.
@@ -24,7 +25,8 @@ In mathematical terms we can write
 \end{equation}
 for the approximate solution, where
 \begin{equation}
-\Phi_L \coloneqq \phi_L \circ \phi_{L-1} \circ \ldots \circ \phi_1.
+	\label{eq:resnet-blocks}
+	\Phi_L \coloneqq \phi_L \circ \phi_{L-1} \circ \ldots \circ \phi_1.
 \end{equation} 
 $\Phi_L$ is the composition of $L$ residual blocks, that is, functions $\phi_k = I + v_k$.
 Here, the $v_k$ are functions mapping the input space $\cX$ onto itself and $I$ is the identity operator.
@@ -107,11 +109,10 @@ They are, however, automatically satisfied in most real world examples and ease 
 
 \subsection{Geodesic Shooting}
 
-Using the Hamiltonian formulation, we can now formulate another problem equivalent to \cref{prob:cont-least-action}.
-The search for the optimal trajectory $q$ is reduced to the search for the optimal initial momentum $p(0)$.
-A similar method, called \emph{Geodesic Shooting} has been introduced by \citet{allassonniere05} in the field of image registration.
+Using the Hamiltonian formalism, we can now formulate another problem equivalent to \cref{prob:cont-least-action} in which the search for the optimal trajectory $q$ is reduced to the search for the optimal initial momentum $p(0)$.
+A similar method, called \emph{geodesic shooting} has been introduced by \citet{allassonniere05} in the field of image registration.
 In this method, an optimal control problem is also reduced to finding optimal initial momenta for a Hamiltonian system.
-For mechanical regression, the equivalent problem is given as follows.
+For mechanical regression, the equivalent problem is given by
 \begin{problem}
 	\label{prob:geodesic-shooting}
 	\begin{cases}
@@ -126,10 +127,10 @@ For later use, we explicitly define the objective function of this problem:
 \fV(p(0), X, Y) \coloneqq \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ .
 \end{equation}
 
-The following theorem states the equivalence between \cref{prob:cont-least-action} and \cref{prob:geodesic-shooting}, which means that the Least Action formulation can be solved by Geodesic Shooting.
+The following theorem states the equivalence between \cref{prob:cont-least-action} and \cref{prob:geodesic-shooting}, which means that the least action formulation can be solved by geodesic shooting.
 \begin{theorem}
 	\label{theo:geodesic-shooting}
-	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if with $p\coloneqq \bGamma(q, q)^{-1}\dot{q}$, $p(0)$ minimizes \cref{prob:geodesic-shooting}.
+	$q \in C^1([0, 1], \cX^N)$ minimizes \cref{prob:cont-least-action} if and only if $p = \bGamma(q, q)^{-1}\dot{q}$ and $p(0)$ minimizes \cref{prob:geodesic-shooting}.
 \end{theorem}
 \begin{proof}
 	Let $q$ minimize \cref{prob:cont-least-action} and define $p = \bGamma(q, q)^{-1}\dot{q}$.
@@ -145,8 +146,10 @@ The following theorem states the equivalence between \cref{prob:cont-least-actio
 	\nu \cH(0, q(0), p(0)) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \bGamma(q(0), q(0))p(0) + l(q(1), Y)\\
 	&= \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ ,
 	\end{align}
-	which is the target function $\fV$ defined in \cref{prob:geodesic-shooting}.
-	Vice versa, if $p(0)$ minimizes $\fV$ and $(q, p)$ follow Hamilton's equations, with the same argument, $q$ minimizes \cref{prob:cont-least-action}.
+	which is the target function $\fV$ of \cref{prob:geodesic-shooting}.
+	Vice versa, if $p(0)$ minimizes $\fV$ and $(q, p)$ follow Hamilton's equations, $q$ minimizes \cref{prob:cont-least-action} using the same argument.
 \end{proof}
+
+\subsection{Continuous Limit and Adherence Values}
 
 \input{chapters/continuous_limit}
