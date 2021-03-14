@@ -1,6 +1,7 @@
 from os import path
 
 from geodesic_shooting.losses import optimal_recovery_loss, ridge_regression_loss
+from geodesic_shooting.quadrants_dataset import generate_quadrants_dataset
 from geodesic_shooting.swiss_roll_dataset import generate_swiss_roll_dataset
 
 losses = {
@@ -22,7 +23,8 @@ class TrainingParameters(object):
         :param r: nugget for gaussian kernel
         """
         _datasets = {
-            'default_swiss_roll': generate_swiss_roll_dataset(1, jitter=0.1, coils=0.65, n=100)
+            'default_swiss_roll': generate_swiss_roll_dataset(1, jitter=0.1, coils=0.65, n=100),
+            'quadrants': generate_quadrants_dataset()
         }
 
         self.dataset = _datasets[dataset]
@@ -35,6 +37,7 @@ class TrainingParameters(object):
         if loss is None:
             loss = 'optimal_recovery'
         self.loss = losses[loss]
+
 
         if name is None:
             raise Exception('Experiment name must not be None!')
