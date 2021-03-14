@@ -76,35 +76,38 @@ The following theorem is the continuous analogue to \cref{theo:v-q-problem-equiv
 	\label{theo:v-q-continuous-problem-equivalence}
 	$v$ minimizes \cref{prob:resnet-limit} if and only if $v$ fulfills
 	\begin{equation}
+			\label{eq:v-q-differential-equation}
 			\dot{\Phi}_v(t, x) = \mathbf{\Gamma}(\Phi_v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
 	\end{equation}
 	such that $\Phi_v(0, x) = x$ for all $x \in X$ and $q$ minimizes \cref{prob:cont-least-action}.
 \end{theorem}
 The proof of this theorem is very similar to that of \cref{theo:v-q-problem-equivalence}, with the difference that the discrete elements $q_k \in \cX^N$ are replaced by one continuous function $q: [0, 1] \rightarrow \cX^N$.
 Within the scope of this thesis, we can only review the main ideas.
-\Todo{Check this proof again -- seems weird at times}
 \begin{proof}
 	Let $v$ be a minimizer of \cref{prob:resnet-limit}.
-	First, define the function $q: [0, 1] \rightarrow \cX^N$ as the vector with elements
+	First, we define the function $q: [0, 1] \rightarrow \cX^N$ as the vector with elements
 	\begin{equation}
 		q_i(t) \coloneqq \Phi_v(t, X_i) \ .
 	\end{equation}
-	Then $\Phi_v(1, X_i) = q_i(1)$ and thus $\Phi_v(1, X) = q(1)$.
-	Furthermore $\dot{q_i}(t) = \dot{\Phi}_v(t, X_i)$, or in vector notation: $\dot{q}(t) = \dot{\Phi}_v(t, X)$.
-	Because $\Phi_v$ satisfies the differential equation in \cref{eq:phi-v-differential-equation}, it follows that
+	In vector notation we get $\Phi_v(1, X) = q(1)$.
+	As $\Phi_v$ follows the differential equation in \ref{eq:phi-v-differential-equation}, it follows that 
 	\begin{equation}
-		\dot{q}(t) = v(t, \Phi_v(t, X)) \ .
+		\dot{q}(t) = \dot{\Phi}_v(t, X) = v(t, \Phi_v(t, X)) = v(t, q(t)) \ .
 	\end{equation}
-	Now, the idea is that if the function $t \mapsto \min \norm{v(t, \Phi_v(t, \cdot))}_\cV^2$ is in $C([0, 1], \cV)$ -- which requires continuity and the global Lipschitz property -- this function is a minimizer of \cref{prob:resnet-limit}.
-	For fixed $t \in [0, 1]$, we face an optimal recovery problem:
+	Now, for fixed $t \in [0, 1]$, we face an optimal recovery problem:
 	\begin{equation}
-		\min\{\norm{v(t, \Phi_v(t, \cdot))}_\cV^2\ |\ v(t, \Phi_v(t, X)) = \dot{q}(t)\} \ .
+		\min\{\norm{v(t, \cdot)}_\cV^2\ |\ v(t, q(t)) = \dot{q}(t)\} \ .
 	\end{equation}
 	\cref{eq:optimal-recovery-f} provides an explicit solution to this problem, which is:
 	\begin{equation}
-		v(t, \Phi_v(t, x)) = \bGamma(\Phi^v(t, x), q(t))\bGamma(q(t), q(t))^{-1}\dot{q}(t) \ .
+		v(t, \cdot) = \bGamma(\cdot, q(t))\bGamma(q(t), q(t))^{-1}\dot{q}(t) \ .
 	\end{equation}
-	One can verify that this function is $C([0, 1], \cV)$.
+	Evaluating this function at $\Phi_v(t, X)$ yields \cref{eq:v-q-differential-equation}.
+	From \cref{eq:optimal-recovery-loss-closed-form} it follows that 
+	\begin{equation}
+		\norm{v(t, \cdot)}_\cV^2 = \dot{q}(t) \bGamma(q(t), q(t))^{-1} \dot{q}(t) = 2 \fL(t, q(t), \dot{q}(t))  \ .
+	\end{equation}
+	This and $\Phi_v(1, X) = q(1)$ implies that $q$ minimizes \cref{prob:cont-least-action}.
 \end{proof}
 
 \subsubsection{Existence of Minimizers}

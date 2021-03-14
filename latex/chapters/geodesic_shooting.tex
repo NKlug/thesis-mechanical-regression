@@ -2,8 +2,8 @@
 \label{sec:algorithm}
 
 In this section we will derive an algorithm from the theory established in the previous section.
-In particular, we fist try to solve the geodesic shooting formulation in \cref{prob:geodesic-shooting} by approximating it with a discrete integrator.
-Parts of this algorithm are then evaluated on a benchmark dataset common in machine learning, the Swiss Roll dataset.
+In particular, we first solve the geodesic shooting formulation in \cref{prob:geodesic-shooting} by approximating it with a discrete integrator.
+Parts of this algorithm are then evaluated on a benchmark dataset common in machine learning, the \emph{Swiss Roll} dataset.
 
 \subsection{An Algorithm based on Mechanical Regression}
 
@@ -14,10 +14,10 @@ Given the data points $X$ and $Y$, the basic idea is as follows:
 	\item Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.
 	\item Choose an initial momentum $p_0$.
 	\item Minimize $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ by iterating the following steps:
-	\begin{enumerate}[label=\arabic*.]
+	\begin{enumerate}[label=3.\arabic*.]
 		\item Solve the Hamiltonian system \ref{eq:hamiltonian-system} with initial conditions $q(0) = X$, $p(0) = p_0$.
 		\item Compute $q(1)$ and with that, the gradient of $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ with respect to $p(0)$.
-		\item Update $p(0)$ accordingly.
+		\item Update $p(0)$ through gradient descent.
 	\end{enumerate}
 	\item Solve the differential equation \ref{eq:phi-v-differential-equation} with $q(0) = X$ and the optimal momentum $p(0)$ computed above to obtain $\Phi^v(\cdot, 1): \cX \rightarrow \cX$.
 	\item Compute $f: \cX \rightarrow \cY$ as the minimizer of $l(\Phi^v(X, 1), Y)$ and approximate the target function $f^\dagger$ with $f \circ \Phi^v(\cdot, 1)$.
@@ -27,30 +27,28 @@ We will now examine the individual steps in depth.
 The first two steps are fairly straight forward.
 Viable choices for the loss are, of course, the optimal recovery and the ridge regression loss, which includes common losses such as the empirical squared error.
 The kernels can be chosen arbitrarily, in theory every function satisfying the definition is possible.
-In classical machine learning, popular kernel choices (e.g. for Support Vector Machines (SVM)) include linear, polynomial, Gaussian/Radial Basis Function (RBF), sigmoid and ANOVA kernels.
+In classical machine learning, popular kernel choices (e.g. for Support Vector Machines (SVM)) include linear, polynomial, Gaussian/Radial Basis Function (RBF), sigmoid and ANOVA kernels \cite{souza21}.
 
 The first difficulties arise when implementing step 3.1, which involves solving the Hamiltonian system \ref{eq:hamiltonian-system}.
 This system cannot be solved analytically and thus has to be approximated.
 For solving (systems of) differential equations, many numerical integration schemes exist, some of them preserving different invariants.
 The Hamiltonian system we are dealing with has many invariants:
-We have already seen that the energy is preserved, other invariants are the canonical symplectic 2-form \cite{marsden10} and the area/volume in the so called phase space (the space in which $(q(t), p(t))$ lies) \cite{hairer06}.
-In their implementation, \citet{owhadi20} use a slightly modified version of the classical Störmer-Verlet method (also known as leapfrog method)\footnote{This method even was used by Newton in his \emph{Principia Mathematica} to prove Kepler's second law \cite{hairer03}.}.
+We have already seen that the energy is preserved; other invariants are the canonical symplectic 2-form \cite{marsden10} and the area/volume in the so called phase space (the space in which $(q(t), p(t))$ lies) \cite{hairer06}.
+In his implementation, \citet{owhadi20} uses a slightly modified version of the classical Störmer-Verlet method (also known as leapfrog method)\footnote{This method even was used by Newton in his \emph{Principia Mathematica} to prove Kepler's second law \cite{hairer03}.}.
 However, the Hamiltonian, here, is non-separable.
 This means that it cannot be written as $\cH(q, p) = T(p) + U(q)$, which is often possible in physical applications, where $T$ corresponds to the kinetic and $U$ to the potential energy of the system.
-Non-separability of the Hamiltonian implies that the Störmer-Verlet scheme is implicit \cite{hairer06}, which makes it difficult to implement and computationally inefficient.
-Thus \citet{owhadi20} use a modified scheme, which is given by
+Non-separability of the Hamiltonian implies that the Störmer-Verlet scheme is implicit \cite{hairer06}.
+Thus \citet{owhadi20} uses a modified scheme, which is given by
 \begin{align}
 	p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \grad_q\fH\left(q_n, p_n\right) \label{eq:leapfrog-p.5}\\
 	q_{n+1} &\gets q_n + h \grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
 	p_{n+1} &\gets p_{n+\frac{1}{2}} - \frac{h}{2} \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \label{eq:leapfrog-p1}\ .
 \end{align}
-Note the difference in the second line, where usually 
+Note the difference in the second line, where the classical scheme usually updates $q_{n+1}$ according to 
 \begin{equation}
 q_{n+1} \gets q + \frac{h}{2} \left(\grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \grad_p\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
 \end{equation}
-Whereas the modified scheme lost its symplecticity, it is explicit, time-reversible and shows sufficient stability.
-
-Here comes a little something on step 4.
+Although the modified scheme lost its symplecticity, it is explicit, time-reversible and shows sufficient stability.
 
 In the last step, the computability of $f$ strongly depends on the chosen loss.
 For losses like optimal recovery or ridge regression, we already saw in \cref{eq:ridge-regression-f,eq:optimal-recovery-f} that $f$ can be explicitly determined.
@@ -61,7 +59,7 @@ In other cases there might not exist closed form solutions.
 \cref{fig:algo} shows a pseudo code implementation of step 3.
 As we are trying to approximate $q(1)$, the step size $h$ of the modified Leapfrog integration scheme explained above should ideally be chosen such that $\frac{1}{h} \in \mathbb{N}$.
 The call \texttt{optimizer.minimize()} performs one step of the utilized minimization algorithm.
-Among the viable choices for such an algorithm are variants of gradient descent, such as Stochastic Gradient Descent or Adam.
+Among the viable choices for such an algorithm are variants of gradient descent, such as Stochastic Gradient Descent or Adam \cite{kingma17}.
 Concerning the while-loop's condition: Of course, Line \ref{code:p0-convergence} cannot be implemented effectively as such.
 One alternative option would be to constantly monitor the target function's value $v$ and stop optimizing when it plateaus, in the hope of having found a global minimum.
 
@@ -82,17 +80,17 @@ The result of this process are pairs $(X_i, Y_i)$, $i \in [200]$, with $X_i \in 
 A depiction of the dataset can be seen in \cref{fig:dataset}. 
 \input{figures/figure_dataset}
 
-Recall the RKHSs $\cV \subseteq \{\cX \rightarrow \cX\}$ and $\cH \subseteq \{\cX \rightarrow \cY\}$ with the respective kernels $\Gamma$ and $K$.
+Recall the RKHSs $\cV \subseteq \{f: \cX \rightarrow \cX\}$ and $\cH \subseteq \{g: \cX \rightarrow \cY\}$ with the respective kernels $\Gamma$ and $K$.
 In order to implement the algorithm, we have to choose those kernels.
-For both $K$ and $\Gamma$ variants of a Gaussian kernel (also known as Gaussian RBF kernel) were used.
+For both $K$ and $\Gamma$, variants of a Gaussian kernel (also known as Gaussian RBF kernel) were used.
 These kinds of kernels have proven to be well-suited for a multitude of applications in machine learning and are especially popular choices for SVMs \cite{steinwart08}. 
 Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 \begin{align}
-	\Gamma(x_1, x_2) &\coloneqq \left(e^{-\frac{\norm{x_1 - x_2}_\cX^2}{s^2}} + r\right) \cdot \mathbbm{1}_2\\
+	\Gamma(x_1, x_2) &\coloneqq \left(e^{-\frac{\norm{x_1 - x_2}_\cX^2}{s^2}} + r\right) \cdot \mathbbm{1}_2 \ ,\\
 	K(x_1, x_2) &\coloneqq e^{-\frac{\norm{x_1 - x_2}_\cX^2}{s^2}} + r \ .
 \end{align}
-$\mathbbm{1}_2$ is the $(2\times2)$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$ for both.
-Note that both kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required of them in \cref{def:kernel} (which we will not proof here).
+$\mathbbm{1}_2$ is the $(2\times2)$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$.
+Note that both kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required \cref{def:kernel} (which we will not prove here).
 For optimization, the Adam algorithm was used \cite{kingma17}.
 
 \subsubsection{Results}
@@ -125,16 +123,16 @@ For $\mu = 0.01$, for example, the spirals are still visible in \cite{owhadi20} 
 Only at $\mu = 0.05$ does the deformation approximately match that in \cite{owhadi20}.
 The cause of these differences remain unclear.
 A possible explanation would be the Tikhonov regularization that was applied here.
-It could also be possible that the search for the optimal momentum was performed for more iterations or that different optimization algorithms were used.
+It is also possible that the search for the optimal momentum was performed for more iterations or that different optimization algorithms were used.
 
-The experiments visualize \citet{owhadi20}'s interpretation of mechanical regression as idea registration, which he compares to image registration.
+The experiments visualize Owhadi's \cite{owhadi20} interpretation of mechanical regression as idea registration, which he compares to image registration.
 In mechanical regression, it is not the images or landmarks that are transformed, but general data points.
 The two-dimensional example shows the overlap between these notions.
 The data points are still transformed, but their "targets" cannot be seen -- they are intrinsic to the algorithm.
 
 \subsubsection{Remarks on the Implementation}
 
-The pseudocode in \cref{fig:algo} can be implemented fairly straight forward.
+The pseudocode in \cref{fig:algo} can be implemented fairly straightforward.
 However, there are some tricks that make it easier, some of which are presented here.
 
 The first simplification lies in the implementation of the inner product on $\cX = \R^2$, which is just the standard scalar product.
@@ -146,19 +144,19 @@ The application of a block operator matrix to a vector can be performed similarl
 Block operator matrices are mapped from $L(\cX^N, \cX^N)$ to $\R^{2N \times 2N}$ and subsequently standard matrix-vector multiplication can be carried out.
 It turned out that it is easier to work in the spaces $\R^{2N}$ and $\R^{2N \times 2N}$ by default and switch to the isomorphic ones only when necessary.
 
-Another potentially difficult step to implement is the gradient of $\fH$ with respect to $q$, especially in cases like \cref{eq:leapfrog-p.5,eq:leapfrog-p1} where no closed form formula is available.
+Another potentially difficult step to implement is the computation of the gradient of $\fH$ with respect to $q$, especially in cases like \cref{eq:leapfrog-p.5,eq:leapfrog-p1} where no closed form formula is available.
 A solution for this would be to approximate the gradient using two-point methods such as the left/right sided or symmetric difference quotient.
-However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and PyTorch for Python) provide automatic differentiating capabilities.
+However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and PyTorch for Python) provide automatic differentiation capabilities.
 Those are not only simpler to implement but also computationally more efficient, which strongly encourages their use.
 
 As the experiments showed, using the optimal recovery loss in its pure form does not seem to be possible (at least for the Swiss Roll dataset).
 Recall \cref{eq:optimal-recovery-loss-closed-form} where we identified the loss as $l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y$.
-Note that it involves computing $\mathbf{K}(X, X)^{-1}$, or rather solving the linear system $\mathbf{K}(X, X)^{-1} Y$.
+Note that it involves solving the linear system $\mathbf{K}(X, X)^{-1} Y$.
 That system, involving a $(200\times200)$ matrix, proved to be ill-conditioned, which gave rise to some numerical issues and compromised the minimization process.
-Hence, some matrix regularization was applied:
+Hence, some matrix regularization was applied.
 Adding a small perturbation $\lambda$ to the diagonal elements (in the experiments $\lambda = 10^{-6}$ was used) alleviated this problem.
 This method is also known as Tikhonov regularization.
-However, this effectively changed the loss to the ridge regression loss employing the empirical squared error, which reads (\cref{eq:ridge-regression-loss-se-closed-form}):
+However, this effectively changed the loss to the ridge regression loss employing the empirical squared error, which reads (\cref{eq:ridge-regression-loss-se-closed-form})
 \begin{equation}
 	l(X, Y) = \lambda Y^\T (\mathbf{K}(X, X) + \lambda \mathbbm{1}_N)^{-1} Y \ ,
 \end{equation}
