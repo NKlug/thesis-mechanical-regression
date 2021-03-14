@@ -34,7 +34,7 @@ This system cannot be solved analytically and thus has to be approximated.
 For solving (systems of) differential equations, many numerical integration schemes exist, some of them preserving different invariants.
 The Hamiltonian system we are dealing with has many invariants:
 We have already seen that the energy is preserved; other invariants are the canonical symplectic 2-form \cite{marsden10} and the area/volume in the so called phase space (the space in which $(q(t), p(t))$ lies) \cite{hairer06}.
-In his implementation, \citet{owhadi20} uses a slightly modified version of the classical Störmer-Verlet method (also known as leapfrog method)\footnote{This method even was used by Newton in his \emph{Principia Mathematica} to prove Kepler's second law \cite{hairer03}.}.
+In his implementation, \citet{owhadi20} uses a slightly modified version of the classical Störmer-Verlet method, which is also known as the Leapfrog method\footnote{This method even was used by Newton in his \emph{Principia Mathematica} to prove Kepler's second law \cite{hairer03}.}.
 However, the Hamiltonian, here, is non-separable.
 This means that it cannot be written as $\cH(q, p) = T(p) + U(q)$, which is often possible in physical applications, where $T$ corresponds to the kinetic and $U$ to the potential energy of the system.
 Non-separability of the Hamiltonian implies that the Störmer-Verlet scheme is implicit \cite{hairer06}.
@@ -46,7 +46,7 @@ Thus \citet{owhadi20} uses a modified scheme, which is given by
 \end{align}
 Note the difference in the second line, where the classical scheme usually updates $q_{n+1}$ according to 
 \begin{equation}
-q_{n+1} \gets q + \frac{h}{2} \left(\grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \grad_p\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
+q_{n+1} \gets q_n + \frac{h}{2} \left(\grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right) + \grad_p\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right)\right) \ .
 \end{equation}
 Although the modified scheme lost its symplecticity, it is explicit, time-reversible and shows sufficient stability.
 
@@ -60,7 +60,7 @@ In other cases there might not exist closed form solutions.
 As we are trying to approximate $q(1)$, the step size $h$ of the modified Leapfrog integration scheme explained above should ideally be chosen such that $\frac{1}{h} \in \mathbb{N}$.
 The call \texttt{optimizer.minimize()} performs one step of the utilized minimization algorithm.
 Among the viable choices for such an algorithm are variants of gradient descent, such as Stochastic Gradient Descent or Adam \cite{kingma17}.
-Concerning the while-loop's condition: Of course, Line \ref{code:p0-convergence} cannot be implemented effectively as such.
+Of course, the while-loop's condition in Line \ref{code:p0-convergence} cannot be implemented effectively as such.
 One alternative option would be to constantly monitor the target function's value $v$ and stop optimizing when it plateaus, in the hope of having found a global minimum.
 
 \subsection{Experiments}
@@ -76,13 +76,14 @@ It consists of two interleaved spirals, one belonging to class $A$, the other to
 The spirals were sampled equidistantly with $100$ points each spanning a total of approximately two coils.
 Class $A$ was assigned the value $1$ and $B$ the value $-1$.
 Additionally, some Gaussian noise was added to the sampled points in order to mimic imprecisions found in real world datasets.
-The result of this process are pairs $(X_i, Y_i)$, $i \in [200]$, with $X_i \in \R^2$ and $Y_i \in \R$; so continuing the nomenclature of the previous sections, we have $\cX = \R^2$ and $\cY = \R$.
+The result of this process are pairs $(X_i, Y_i)$, $i \in [200]$, with $X_i \in \R^2$ and $Y_i \in \R$.
+So continuing the terminology of the previous sections, we have $\cX = \R^2$ and $\cY = \R$.
 A depiction of the dataset can be seen in \cref{fig:dataset}. 
 \input{figures/figure_dataset}
 
 Recall the RKHSs $\cV \subseteq \{f: \cX \rightarrow \cX\}$ and $\cH \subseteq \{g: \cX \rightarrow \cY\}$ with the respective kernels $\Gamma$ and $K$.
 In order to implement the algorithm, we have to choose those kernels.
-For both $K$ and $\Gamma$, variants of a Gaussian kernel (also known as Gaussian RBF kernel) were used.
+For both $K$ and $\Gamma$, variants of a Gaussian kernel (also known as Gaussian RBF kernel) are used.
 These kinds of kernels have proven to be well-suited for a multitude of applications in machine learning and are especially popular choices for SVMs \cite{steinwart08}. 
 Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 \begin{align}
@@ -90,7 +91,7 @@ Formally, for $x_1, x_2 \in \cX$ the kernels are defined as
 	K(x_1, x_2) &\coloneqq e^{-\frac{\norm{x_1 - x_2}_\cX^2}{s^2}} + r \ .
 \end{align}
 $\mathbbm{1}_2$ is the $(2\times2)$-identity matrix and $s, r \in \R$ the kernels' parameters which we set to $s = 5$ and $r = 0.1$.
-Note that both kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required \cref{def:kernel} (which we will not prove here).
+Note that both kernels are well-defined in the sense that they are (isomorphic to) functions $\Gamma: \cX \times \cX \rightarrow L(\cX, \cX)$ and $K: \cX \times \cX \rightarrow L(\cY, \cY)$ and satisfy all properties required in \cref{def:kernel} (which we will not prove here).
 For optimization, the Adam algorithm was used \cite{kingma17}.
 
 \subsubsection{Results}
@@ -100,7 +101,7 @@ For optimization, the Adam algorithm was used \cite{kingma17}.
 \cref{fig:results-swiss-roll} shows experimental results for step 3 of the algorithm.
 Each plot represents the locations $q(t)$ at a point in time $t \in \{0.2, 0.4, 0.6, 0.8, 1\}$ for different parameters $\mu$.
 Because of $q(0) = X$, at time $t = 0$ the points are still at their original positions (\cref{fig:dataset}).
-The magnitude of the points' movement (or rather the deformation of the space) depends on the balancing parameter $\mu$.
+The magnitude of the points' movement -- or rather the deformation of the space -- depends on the balancing parameter $\mu$.
 As $\mu$ increases, the deformation of the space is penalized to a stronger degree.
 This is due to the fact that the norm of $v_k$ in \cref{prob:min-v-f} decreases the more similar $v_k$ is to the zero function.
 Hence, weighting the norms of $v_k$ more compared to the loss $l$ results in less space deformation.
@@ -110,7 +111,7 @@ The point clouds stay closer to their original positions as $\mu$ increases.
 The plot at $(\mu=0.03, t=1)$ is of great interest, as it is not in line with the other plots, which at $t=1$ mostly show monotonously decreasing space deformation when $\mu$ increases.
 From $\mu = 0.02$ to $\mu = 0.03$, this trend is inverted.
 It is not clear what exactly causes this phenomenon.
-One explanation would that the optimizer performed poorly for $\mu=0.02$ and the space was transformed to a lesser degree than it should have for the optimal momentum.
+One explanation would be that the optimizer performed poorly for $\mu=0.02$ and the space was transformed to a lesser degree than it should have for the optimal momentum.
 However, this has been ruled out by repeated experiments with $\mu = 0.02$.
 This leads to another possible explanation, which is that the optimization algorithm (here, a version of gradient descent) is not performing well.
 If the optimizer struggles to approximate the optimal initial momentum $p(0)$ and mostly remains at sub-optimal points or local minima, it could still -- by chance -- hit better points.
@@ -149,7 +150,7 @@ A solution for this would be to approximate the gradient using two-point methods
 However, some modern programming languages or frameworks therein (like the Julia language or Tensorflow and PyTorch for Python) provide automatic differentiation capabilities.
 Those are not only simpler to implement but also computationally more efficient, which strongly encourages their use.
 
-As the experiments showed, using the optimal recovery loss in its pure form does not seem to be possible (at least for the Swiss Roll dataset).
+As the experiments showed, using the optimal recovery loss in its pure form does not seem to be possible -- at least for the Swiss Roll dataset.
 Recall \cref{eq:optimal-recovery-loss-closed-form} where we identified the loss as $l(X, Y) = Y^\T \mathbf{K}(X, X)^{-1} Y$.
 Note that it involves solving the linear system $\mathbf{K}(X, X)^{-1} Y$.
 That system, involving a $(200\times200)$ matrix, proved to be ill-conditioned, which gave rise to some numerical issues and compromised the minimization process.
