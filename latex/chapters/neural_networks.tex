@@ -4,13 +4,12 @@
 Residual neural networks (ResNets) were first introduced in 2016 by \citet{he16} and have their origins in practical application rather than theory.
 They are motivated from the fact that in standard deep networks, one can observe deteriorating performance after a certain number of layers has been reached.
 An example for this can be seen in \cref{fig:depth-performance-decline} on the left, which depicts the training of a convolutional neural network on the ImageNet classification task \cite{deng09}.
-Here, the 34 layer network shows a higher training and validation error than the 18 layer equivalent, which means the worse performance cannot be attributed to overfitting (which is characterized by very low training and high validation error). 
+Here, the 34 layer network shows a higher training and validation error than the 18 layer equivalent, which means the worse performance cannot be attributed to overfitting, which is characterized by very low training and high validation error. 
 The worse performance of the deeper network is counterintuitive, as models with more layers also have more parameters and hence should be better at learning the given task.
 \citet{he16} constructed an easy example which shows that more layers should at least not worsen the results:
 Take a trained, shallow network and copy its parameters to the first layers of the deep network.
 Set the remaining layers such that they perform an identity mapping, which means they just pass the input through to the next layer.
 Then the deep network produces the same output as the shallow one.
-This indicates that in general, a deeper network should not yield worse results than one with fewer layers.
 
 %Furthermore, deep networks cannot be efficiently replaced by shallow architectures:
 %Non-flattening theorems state the the number of neurons required by a shallow network, i.e. one with only one hidden layer, grows (almost) exponentially compared to a deep network \cite{lin17,delalleau11}.
@@ -20,15 +19,15 @@ This indicates that in general, a deeper network should not yield worse results 
 
 %Yet in practice one can observe deteriorating performance after a certain depth has been reached.
 %An example for this can be seen in \cref{fig:depth-performance-decline} on the left.
-This indicates that deeper networks should generally perform better than shallow ones.
-Nonetheless, the example in \cref{fig:depth-performance-decline} shows the opposite effect.
+This indicates that in general deeper networks should not perform worse than shallow ones.
+Nonetheless, the example in \cref{fig:depth-performance-decline} (left) shows the opposite effect.
 It seems that contemporary optimizers are not able to effectively learn the constructed, deeper solution presented above.
 \citet{he16} conjecture that this is because it is hard to learn the identity mapping through non-linear layers and suggest that it is easier to learn the zero function instead.
 This leads to their proposed network architecture: residual neural networks.
 
 The characteristic feature of ResNets is that they learn residual mappings instead of unreferenced mappings.
 Let $f: \cX \rightarrow \cX$ be the function to be approximated by number of (non-linear) layers and $x \in \cX$.
-\citet{he16} suggest that instead of learning $f$ directly, to learn the \emph{residual}; given by
+\citet{he16} suggest that instead of learning $f$ directly, to learn the \emph{residual} given by
 \begin{equation}
 	\begin{split}
 		g: \cX \rightarrow \cX \\
@@ -40,5 +39,5 @@ An illustration of a typical residual block is shown in \cref{fig:residual-block
 
 \input{figures/figure_residual_block_example}
 
-This residual network layout was able to circumvent the decrease in performance that came with an increased number of layers and even showed better results, as one would expect from a model with a greater number of parameters.
-Nowadays, ResNets have become an essential part of network architectures and are used in virtually all areas of machine learning, including image classification and object detection \cite{he16,carion20}, semantic segmentation \cite{chen17}, 3D human pose estimation \cite{drover18} and natural language processing \cite{keskar19,conneau16,vaswani17}.
+This residual network layout was able to circumvent the decrease in performance that came with an increased number of layers and even showed better results, as one would expect from a model with a greater number of parameters (\cref{fig:depth-performance-decline}, right).
+Since their introduction in 2016, ResNets have become an essential part of modern network architectures and are used in virtually all areas of machine learning, including image classification and object detection \cite{he16,carion20}, semantic segmentation \cite{chen17}, 3D human pose estimation \cite{drover18} and natural language processing \cite{keskar19,conneau16,vaswani17}.
