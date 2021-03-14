@@ -22,8 +22,8 @@ def evaluate_multiple_experiments(name_pattern, config_base_dir, user_dir_overri
 
 
 if __name__ == '__main__':
-    name_pattern = '21_01_14/2021_01_14_s_5_r_0.1_h_0.2_mu_*'
+    name_pattern = '21_*/2021_02_23_*'
     config_base_dir = '/home/nikolas/Projects/thesis-mechanical-regression/training/configs'
-    user_dir_override = '/'
+    user_dir_override = '/home/nikolas/Projects/thesis-mechanical-regression'
 
     evaluate_multiple_experiments(name_pattern, config_base_dir, user_dir_override)
