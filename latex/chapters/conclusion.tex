@@ -1,21 +1,20 @@
 \section{Conclusion}
 
 In this thesis, chapter 3 of the paper "Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Neural Networks" by Houman Owhadi has been presented.
-Starting from a simplified model of ResNets, their equivalence to a discrete stationary action principle has been shown.
+After a brief introduction to ResNets, the concept of mechanical regression was derived from a simpliefied ResNet  model (\cref{sec:mechanical-regression}).
+This was done by first showing the equivalence of the ResNet formulation to a discrete stationary action principle.
+Using Hamiltonian mechanics, this problem was re-formulated as a discrete geodesic shooting problem, which can be parameterized by the initial momentum.
+All three discrete problems have continuous counterparts, which can be obtained when the number of ResNet layers tends towards infinity or equivalently the step width towards $0$.
+It has been shown that the minimal values converge by utilizing the parameterization by the optimal initial momentum.
+Also, the adherence values of sequences of minimizers of the discrete problems are optimal points for the continuous problems.
 
-
-\subsection{Outlook}
+In \cref{sec:algorithm}, an algorithm has been derived from the continuous geodesic shooting formulation.
+The Hamiltonian system was discretized with a modified Leapfrog integrator and the optimal initial momentum was approximated via gradient descent.
+Parts of this algorithm were implemented and numerical experiments were conducted for a common machine learning benchmark dataset.
+The experiment yielded results similar to those presented by \cite{owhadi20}, showing decreasing space deformation with increasing balancing parameter $\nu$.
 
 In this thesis, only the first parts of the paper by \citet{owhadi20} could be discussed.
-In the remaining chapters, the simplified ResNet model is extended to artificial neural networks.
-For this, Owhadi proposes a regularization technique and adds non-linear functions, which play an essential part in practical application of neural networks.
-
-
-
-dropout
-
-Fully connected layers
-
-Convolutional layers
-
-In feature space: Reduction of computational complexity.
+In the remaining chapters, Owhadi extends the simplified ResNet model to artificial neural networks.
+This includes a regularization technique and non-linear activation functions, which play an essential role in the practical application of neural networks.
+The composition of multiple idea registration models (\cref{sec:mechanical-regression}) leads to a model of artificial neural networks.
+\cite{owhadi20} furthermore introduces \emph{reduced equivariant multichannel kernels} which can be used to model convolutional neural networks.

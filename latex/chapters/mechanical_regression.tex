@@ -80,17 +80,18 @@ In the calculations, we will work under the following conditions.
 		\item The function $(x_1, x_2) \rightarrow \Gamma(x_1, x_2)$ and its first and second order partial derivatives are continuous and uniformly bounded.
 		\item There exists an $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$.
 		\item $\cX$ and $\cY$ are finite-dimensional.
-		\item $l: \cX^N \times \cY^N \rightarrow$ is a positive and continuous loss.
+		\item $l: \cY^N \times \cY^N \rightarrow [0, \infty)$ is a positive and continuous loss.
 	\end{enumerate}
 \end{condition}
 Just like in \cref{sec:optimal-recovery}, $\bGamma(X, X)$ is the block operator matrix with entries $\Gamma(X_i, X_j)$.
 We have the following equivalence for \cref{cond:feature-condition} (2).
 \begin{lemma}
-	There exists $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$ if and only if $\bGamma(X, X)$ is non-singular.
+	If there exists $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$, the block operator matrix $\bGamma(X, X)$ is non-singular.
 \end{lemma}
 \begin{proof}
-	If $\bGamma(X, X)$ was singular, there would exist a vector $Z \in \cX^N$ with $\norm{Z}_{\cX^N} > 0$ and $\bGamma(X, X) Z = 0$, implying $Z^\T \bGamma(X, X)Z = 0$, which is a contradiction.
-	Conversely, if there exists a $0 \neq Z \in \cX^N$ such that $Z^\T \bGamma(X, X) Z < \epsilon Z^\T Z$ for all $\epsilon > 0$, then $\bGamma(X, X) Z = 0$.
+	If $\bGamma(X, X)$ was singular, there would exist a vector $Z \in \cX^N$ with $\norm{Z}_{\cX^N} > 0$ and $\bGamma(X, X) Z = 0$, implying $Z^\T \bGamma(X, X)Z = 0$. 
+	This is contradiction.
+%	Conversely, if there exists a $0 \neq Z \in \cX^N$ such that $Z^\T \bGamma(X, X) Z < \epsilon Z^\T Z$ for all $\epsilon > 0$, then $\bGamma(X, X) Z = 0$.
 \end{proof}
 Ideally, we would not need additional conditions like those introduced above.
 They are, however, automatically satisfied in most real world examples and ease calculations and proofs considerably.
