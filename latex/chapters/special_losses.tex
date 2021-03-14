@@ -1,32 +1,34 @@
 In the following we will explore two special loss functions that will be relevant later on.
-We assume $K$ to be a non-degenerate kernel associated to the RKHS $\cH$.
+We assume $K$ to be a non-degenerate kernel associated to the RKHS $\cH$ of functions $f: \cX \rightarrow \cY$.
 
 \subsubsection{Optimal Recovery}
 \label{sec:optimal-recovery}
 
 The optimal recovery loss is defined as
-\begin{equation}
+\begin{gather}
 \label{eq:optimal-recovery-loss}
-l(X, Y) \coloneqq \min\{\norm{f}_\cH^2 ~|~ f\in \mathcal{H} \text{~and~} f(X) = Y\}
-\end{equation}
-In the setting of the supervised learning problem, this loss aims to find the $f \in \cH$ with the smallest $\cH$-norm that still satisfies $f(X) = Y$ in order to approximate the target function $f^\dagger$.
+	l: \cX^N \times \cY^N \rightarrow [0, \infty)\\
+	l(X, Y) \coloneqq \min\{\norm{f}_\cH^2 ~|~ f\in \mathcal{H} \text{~and~} f(X) = Y\} \ .
+\end{gather}
+In the setting of the supervised learning problem, this loss aims to find the $f \in \cH$ with the smallest squared $\cH$-norm that still satisfies $f(X) = Y$ in order to approximate the target function $f^\dagger$.
 
 As $\cH$ is an RKHS, we can derive a closed-form solution for $l(X, Y)$ and also for its minimizer $f$.
 For that, we want to apply \cite[Theorem 3.1]{micchelli05}.
 It requires the evaluation functionals $\{\delta_{X_i}: \cH \rightarrow \cY \ |\ \delta_{X_i}(f) = f(X_i), i \in [N]\}$ to be linearly independent.
-By \cite[Lemma 3.1]{micchelli05} this is equivalent to the statement that for all $d_i \in \cY, i \in [N]$ there exist unique $c_i \in \cY, i \in [N]$ such that
+By \cite[Lemma 3.1]{micchelli05} this is equivalent to the statement that for all $d \in \cY^N$ there exists a unique $c \in \cY^N$ such that
 \begin{equation}
-	\sum_{k=1}^N K(X_i, X_k) c_k = d_k \ ,\ i \in [N] \ .
+	\sum_{k=1}^N K(X_i, X_k) c_k = d_i \  \text{for all~} i \in [N] \ .
 \end{equation}
-We already know $X_i$ are pairwise distinct and $K$ is non-degenerate.
-Applying \cref{lem:kernel-non-singular} gives that the matrix with entries $K(X_i, X_j)$ is non-singular, which implies the existence of such unique $c_k$.
+Within the setting of the supervised learning problem, the $X_i$ are pairwise distinct.
+Additionally, $K$ is non-degenerate.
+Applying \cref{lem:kernel-non-singular} gives that the matrix $(K(X_i, X_j))_{i, j \in [N]}$ is non-singular, which implies the existence of such unique $c_k$.
 
-This means we can now apply \cite[Theorem 3.1]{micchelli05} which states that the minimizer $f$ admits a representation as 
+This means we can now apply \cite[Theorem 3.1]{micchelli05} which states that the minimizer $f$ of $l(X, Y)$ admits a representation as 
 \begin{equation}
 	\label{eq:optimal-recovery-f}
 	f(x) = \sum_{i=1}^N K(x, X_i) Z_i \ ,
 \end{equation}
-where the $Z_i$ are the solutions to the following linear system:
+where $Z \in \cY^N$ is the solution to the following linear system:
 \begin{equation}
 	\sum_{i=1}^{N} K(X_j, X_i) Z_i = Y_j \ ,\ j \in [N] \ .
 \end{equation}
@@ -42,17 +44,19 @@ Because of the non-singularity of $\mathbf{K}(X, X)$ and the ring isomorphism in
 Now for $x \in X$, let $\mathbf{K}(x, X)$ be the vector with elements $K(x, X_i)$.
 Using this notation, we can rewrite \cref{eq:optimal-recovery-f} in a concise way as
 \begin{equation}
-	f(x) = \mathbf{K}(x, X) \cdot \mathbf{K}(X, X) \cdot Y \ .
+	f(x) = \mathbf{K}(x, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
 \end{equation}
 
 With this representation for the optimal $f$ it easy to derive a closed-form expression for the value of the loss, which is just the squared $\mathcal{H}$-norm of the minimizer $f$.
 We get
+\begingroup
+\allowdisplaybreaks
 \begin{align}
 	\norm{f}_\mathcal{H}^2 &= \left< f, f\right>_\mathcal{H}\\
-	&= \left< \sum_{i=1}^N K(x, X_i) Z_i, \sum_{j=1}^N K(x, X_j) Z_j \right>_\mathcal{H}\\
-	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(x, X_i) Z_i, K(x, X_j) Z_j \right>_\mathcal{H}\\
+	&= \left< \sum_{i=1}^N K(\cdot, X_i) Z_i, \sum_{j=1}^N K(\cdot, X_j) Z_j \right>_\mathcal{H}\\
+	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(\cdot, X_i) Z_i, K(\cdot, X_j) Z_j \right>_\mathcal{H}\\
 	&= \sum_{i=1}^N \sum_{j=1}^N \left< K(X_j, X_i)Z_i, Z_j \right>_\cY\\
-	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_j, X_i)^\T Z_j \right>_\cY\\
+%	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_j, X_i)^\T Z_j \right>_\cY\\
 	&= \sum_{i=1}^N \sum_{j=1}^N \left< Z_i, K(X_i, X_j) Z_j \right>_\cY\\
 	&= \left< Z, \mathbf{K}(X, X) \cdot Z\right >_{\cY^N}\\
 	&= \left< \mathbf{K}(X, X)^{-1} \cdot Y, \mathbf{K}(X, X) \cdot \mathbf{K}(X, X)^{-1} \cdot Y\right >_{\cY^N} \\
@@ -60,6 +64,7 @@ We get
 	&= Y^\T \cdot (\mathbf{K}(X, X)^{-1})^\T \cdot Y\\
 	&=  Y^\T \cdot \mathbf{K}(X, X)^{-1} \cdot Y \ .
 \end{align}
+\endgroup
 In the fourth line we used the reproducing property and in the second to last line the fact that $K$ is Hermitian, which implies that $\mathbf{K}(X, X)$ is too.
 All in all, this leaves us with an appealing and compact form for the optimal recovery loss:
 \begin{equation}
@@ -69,7 +74,7 @@ All in all, this leaves us with an appealing and compact form for the optimal re
 
 \subsubsection{Ridge Regression}
 
-Another class of loss functions are the ridge regression losses, which are also known as as Tikhonov regularization.
+Another class of loss functions are the \emph{ridge regression} losses, which are also known as as \emph{Tikhonov regularization}.
 They are also widely used in deep learning \cite{goodfellow16}.
 In general, the ridge regression loss is defined as
 \begin{equation}
@@ -77,7 +82,7 @@ In general, the ridge regression loss is defined as
 	l(X, Y) \coloneqq \inf_{f \in \mathcal{H}} \lambda \norm{f}_\mathcal{H}^2 
 	+ l_\cY (f(X), Y) \ ,
 \end{equation}
-where $l_\cY: \cY^N \times \cY^N \rightarrow \R$ is an arbitrary positive loss function and $\lambda > 0$ a balancing parameter.
+where $l_\cY: \cY^N \times \cY^N \rightarrow [0, \infty)$ is an arbitrary non-negative loss function and $\lambda > 0$ a balancing parameter.
 
 For certain losses $l_\cY$, closed-form expressions can be derived similar to those for the optimal recovery loss.
 As an example, we will take a look at the case where $l_\cY$ is the empirical squared error, given by
@@ -88,10 +93,10 @@ We will not show the whole derivation of the expressions, but take a look at the
 For the squared error, the ridge regression optimizer $f$ can be represented as
 \begin{equation}
 	\label{eq:ridge-regression-f}
-	f(x) = \mathbf{K}(x, X)^\T \left(\mathbf{K}(x, X) + \lambda I\right)^{-1}Y \ .
+	f(x) = \mathbf{K}(x, X)^\T \left(\mathbf{K}(X, X) + \lambda \mathbbm{1}_N \right)^{-1}Y \ .
 \end{equation}
-Let $\mathbbm{1}_N$ be the $(N\times N)$ identity matrix.
-Then the value of the loss for that minimizer is given as
+Here, $\mathbbm{1}_N$ is the $(N\times N)$ identity matrix.
+The value of the loss for that minimizer is given as
 \begin{equation}
 	\label{eq:ridge-regression-loss-se-closed-form}
 	l(X, Y) = \lambda Y^\T (\mathbf{K}(X, X) + \lambda \mathbbm{1}_N)^{-1} Y \ .

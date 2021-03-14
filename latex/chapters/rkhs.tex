@@ -5,7 +5,7 @@ For the definition, we will follow \cite{owhadi20}.
 %Now we want to define RKHS functions $\cX \rightarrow \cY$ where both $\cX$ and $\cY$ are finite Hilbert spaces 
 
 In the following, let $\cX$ be a set and $\cY$ an arbitrary, finite dimensional Hilbert space with inner product $\left<\cdot, \cdot \right>_\cY$.
-If $\cY$ and $\mathcal{Z}$ are Hilbert spaces, denote the space of bounded linear operators $\cY \rightarrow \mathcal{Z}$ with $L(\cY, \mathcal{Z})$ .
+If $\cY$ and $\mathcal{Z}$ are Hilbert spaces, denote the space of bounded linear operators $\cY \rightarrow \mathcal{Z}$ by $L(\cY, \mathcal{Z})$ .
 We start by defining kernel functions.
 \begin{definition}
 	\label{def:kernel}
@@ -14,19 +14,19 @@ We start by defining kernel functions.
 		\item $K$ is Hermitian, that is $K(x_1, x_2) = K(x_2, x_1)^\T$ for all $x_1, x_2 \in \cX$, where $K(x_2, x_1)^\T$ is the adjoint of $K(x_1, x_2)$ with respect to $\left<\cdot, \cdot\right>_\cY$.
 		\item $K$ is non-negative, that is for all $n \in \mathbb{N}$ and $((x_i, y_i))_{i \in [n]}, x_i \in \cX, y_i \in \cY$
 		\begin{equation}
-			\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> \geq 0 \ .
+			\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right>_\cY \geq 0 \ .
 		\end{equation}
 	\end{enumerate}
 \end{definition}
 
 Such kernels are also called \emph{operator-valued kernels} as their target space is a space of linear operators.
-This generalizes the definition of scalar-valued kernels, which are functions $k: \cX \times \cX \rightarrow \R$.
+This generalizes the definition of scalar-valued kernels, which are functions $k: \cX \times \cX \rightarrow \R = L(\R ,\R)$.
 %In other literature \cite{sejdinovic12}, kernels are defined as a function $K: \cX \times \cX \rightarrow L(\cY, \cY)$ without them being Hermitian and non-negative.
 
 \begin{definition}
-	A kernel $K: \cX \times \cX \rightarrow L(\cY, \cY)$ is called \emph{non-degenerate} if for each $n \in \mathbb{N}$ and all pairwise distinct $x_i \in \cX, y_i \in \cY, i \in [n]$
+	A kernel $K: \cX \times \cX \rightarrow L(\cY, \cY)$ is called \emph{non-degenerate} if for each $n \in \mathbb{N}$, all pairwise distinct $x_i \in \cX, i \in [n]$ and all $y_i \in \cY$
 	\begin{equation}
-		\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0 \Leftrightarrow \forall i \in [n]:~ y_i = 0
+		\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right>_\cY = 0 \Leftrightarrow \forall i \in [n]:~ y_i = 0 \ .
 	\end{equation}
 \end{definition}
 
@@ -36,12 +36,12 @@ This generalizes the definition of scalar-valued kernels, which are functions $k
 	Then for all $n \in \mathbb{N}$ and pairwise distinct $x_i \in \cX, i \in [n]$ the matrix with entries $(K(x_i, x_j))_{i, j \in [n]}$ is non-singular.
 \end{lemma}
 \begin{proof}
-	If the kernel of $(K(x_i, x_j))_{i, j \in [n]}$ contained a non-zero element $Y \in \cY^n$, it would follow that $\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0$; a contradiction.
+	If the kernel of the matrix $(K(x_i, x_j))_{i, j \in [n]}$ contained a non-zero element $y \in \cY^n$, it would follow that $\sum_{i=1}^n \sum_{j=1}^n \left< y_i, K(x_i, x_j)  y_j\right> = 0$; a contradiction.
 \end{proof}
 In \cref{sec:block-operator-notation} we will further explore matrices whose elements are operators.
 
 Next, we will define Reproducing Kernel Hilbert Spaces (RKHSs).
-The definition follows \citet{kadri16}, which examine RKHS in the setting where $\cY$ is a Hilbert space of functions.
+The definition follows \citet{kadri16}, who examine RKHS in the setting where $\cY$ is a Hilbert space of functions.
 However, their definition also applies to the more general cases where $\cY$ is an arbitrary Hilbert space.
 \begin{definition}
 	\label{def:rkhs}
@@ -55,10 +55,9 @@ However, their definition also applies to the more general cases where $\cY$ is 
 		\end{equation}
 	\end{enumerate}
 \end{definition}
-
 In an RKHS, the kernel is also called the \emph{reproducing kernel}.
 This definition of an RKHS is in accordance with earlier definitions \cite{berlinet04, sejdinovic12} which only permit $\cY = \R$.
-However, as $\R$ together with the standard scalar product is a Hilbert space itself, it is easy to see that the definition above includes this special case, which we will refer to as the scalar case.
+However, as $\R$ together with the standard scalar product is a Hilbert space itself, it is easy to see that the definition above includes this special case, which is known as the scalar case.
 
 One important result for RKHSs is that a kernel is associated with a unique RKHS and vice versa:
 \begin{theorem}
@@ -67,8 +66,8 @@ One important result for RKHSs is that a kernel is associated with a unique RKHS
 	Conversely, if $K$ is a kernel there exists a unique RKHS $\cH$ so that $K$ is the reproducing kernel of $\cH$.
 \end{theorem}
 \begin{proof}[Proof of the first part]
-	Assume $K, K^\prime$ are two reproducing kernels for $\cH$ and let $f \in \cH, x \in \cX, y \in \cY$.
-	Then
+	Assume $K, K^\prime$ are two reproducing kernels for $\cH$. 
+	Then for arbitrary $f \in \cH, x \in \cX, y \in \cY$ it holds true that
 	\begin{equation}
 		\left< f, K(\cdot, x)y\right>_\cH = \left<f(x), y\right>_\cY = \left<f, K^\prime(\cdot, x) y\right>_\cH \ .
 	\end{equation}
@@ -78,7 +77,7 @@ One important result for RKHSs is that a kernel is associated with a unique RKHS
 		= \left< f, \left(K(\cdot, x) - K^\prime(\cdot, x)\right)y\right>_\cH \ .
 	\end{equation}
 	This equation can only hold true for all $f, x$ and $y$ if $K(\cdot, x) - K^\prime(\cdot, x) = 0$.
-	But this means that for all $x^\prime \in \cX$ $K(x^\prime, x) = K^\prime(x^\prime, x)$.	
+	But this means we have $K(x^\prime, x) = K^\prime(x^\prime, x)$ for all $x^\prime \in \cX$.	
 \end{proof}
 
 We will not prove the second part here.

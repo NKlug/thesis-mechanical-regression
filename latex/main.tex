@@ -27,7 +27,7 @@
 \usepackage{tkz-euclide} % for coordinate system etc.
 \usepackage{pgfplots} % plotting data
 \usepackage[section]{placeins} % place figures in the sections they appear in
-\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny, disable]{todonotes}
 \usepackage{parskip} % space between paragraphs instead of indent
 \usepackage{csquotes} % autmatic left quotation marks
 \usepackage{aliascnt} % alias counts
@@ -103,7 +103,7 @@
 
 \setenumerate{label=(\arabic*),itemsep=0mm} % enumerate labeling and line distance
 \renewcommand{\baselinestretch}{1.1} % line distance
-\allowdisplaybreaks % Make big equations breakable
+%\allowdisplaybreaks % Make big equations breakable
 
 % add possibility to increase verticle spacings in matrices
 \makeatletter
@@ -122,6 +122,7 @@
 \newcommand{\cA}{\mathcal{A}}
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\I}{\mathrm{I}}
 
 \newcommand{\fL}{\mathfrak{L}}
 \newcommand{\fH}{\mathfrak{H}}
@@ -156,11 +157,10 @@
 \theoremstyle{theorem}
 \newtheorem{lemma}[definition]{Lemma}
 \newtheorem{corollary}[definition]{Corollary}
+\newtheorem{proposition}[definition]{Proposition}
 \theoremstyle{break}
 \newtheorem{theorem}[definition]{Theorem}
 \newtheorem{condition}[definition]{Condition}
-
-\newtheorem{proposition}[definition]{Proposition}
 
 
 \pagenumbering{gobble}

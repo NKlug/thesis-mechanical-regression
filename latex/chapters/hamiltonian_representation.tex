@@ -1,6 +1,6 @@
 An alternative formulation of Lagrangian mechanics is the Hamiltonian formalism.
 On its own, it does not add anything particularly new to the Lagrangian theory but rather gives a more powerful framework to work with the already established theory.
-In essence, a change of variables from $(tq, \dot{q})$ to $(t,q, p)$ is applied through a certain kind of transformation called \emph{Legendre transformation}.
+In essence, a change of variables from $(t, q, \dot{q})$ to $(t, q, p)$ is applied through a certain kind of transformation called \emph{Legendre transformation}.
 The obtained $(q, p)$ are known as the \emph{canonical variables}, specifically canonical coordinate and canonical momentum.
 We will briefly cover the derivation of the Hamiltonian formulation within the scope of our application, but exclude most of the theoretical details.
 For a complete formal derivation from a physical point of view, see \cite[Chapter~8]{goldstein01}.
@@ -12,14 +12,13 @@ First, we define the \emph{canonical momentum}
 	p(t) \coloneqq \grad_{\dot{q}} \fL(t, q, \dot{q}) = \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
 \end{equation}
 \sloppy{Note that just as above, this equation is actually defined element-wise: 
-$p_{i, j} = \frac{\partial}{\partial \dot{q}_{i,j}} \fL(t, q(t),\dot{q}(t))$.
-}
+$p_{i, j} = \frac{\partial}{\partial \dot{q}_{i,j}} \fL(t, q(t),\dot{q}(t))$.}
 Next, we define the \emph{Hamiltonian} function, often also called \emph{energy function} \cite{marsden10}:
 \begin{equation}
 	\fH(t, q(t), p(t)) \coloneqq p(t)^\mathrm{T}\dot{q}(t) - \fL(t, q(t), \dot{q}(t)) \ .
 \end{equation}
 Formally the Hamiltonian is defined as a function $\fH: [0,1] \times \cX^N \times \cX^N \rightarrow \R$; \emph{without} the connection between $p$ and $q$ defined in \cref{eq:canonical-momentum}.
-This means that we mostly treat the $p, q$ as independent variables unless mentioned otherwise.
+This means that we mostly treat $p, q$ as independent variables unless mentioned otherwise.
 In a physical context, the Hamiltonian can often be expressed as the sum of the system's kinetic and potential energies and represents the total energy of the system, hence the name "energy function".
 For our application, we can calculate the Hamiltonian explicitly.
 We get
@@ -35,6 +34,7 @@ For better readability and despite the risk of confusion, we will often omit the
 For example, we write $\bGamma(q, q)$ instead of $\bGamma(q(t), q(t))$.
 
 The next theorem describes the classical correspondence between Lagrangian and Hamiltonian mechanics:
+\newline
 \begin{theorem}
 	\label{theo:hamiltonian-dynamic}
 	If $q$ minimizes \cref{prob:cont-least-action} and $p = \grad_{\dot{q}} \fL(t, q, \dot{q})$, $(q, p)$ follow Hamilton's equations
@@ -57,7 +57,7 @@ The next theorem describes the classical correspondence between Lagrangian and H
 From the fact that $\frac{\partial \fL}{\partial t} = 0$ we obtain the following corollary:
 \begin{corollary}
 	\label{cor:energy-preservation}
-	Along the trajectory $q$, the Hamiltonian $\cH$ is constant.
+	If $p(t) = \grad_{\dot{q}} \fL(t, q, \dot{q})$, the Hamiltonian $\fH$ is constant along the trajectory $q$.
 \end{corollary}
 \begin{proof}
 	The Lagrangian is not explicitly time dependent, that is $\frac{\partial \fL}{\partial t} = 0$.
@@ -94,7 +94,7 @@ Of course, we can only identify the flow once we have determined the value of $p
 	The right side of the first line in \cref{eq:hamiltonian-system} is also continuously differentiable by $t$, because $p$ is and $\Gamma$ has continuous partial derivatives.
 	Thus $q$ is $C^2$.
 	
-	For being able to apply Picard-Lindelöf we need the Hamiltonian system to be globally Lipschitz continuous.
+	To apply Picard-Lindelöf we need the Hamiltonian system to be globally Lipschitz continuous.
 	Define
 	\begin{equation}
 	\label{eq:hamiltonian-time-derivative}
@@ -111,7 +111,7 @@ Of course, we can only identify the flow once we have determined the value of $p
 	Then we have to show that $f$ is globally Lipschitz.
 	We do this by proving that the Jacobian matrix $J(t, (q, p)^\T)$ of the system $f$ is bounded.
 	This will do:
-	Let $J$ be bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX^N$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$.
+	Assume $J$ is bounded by $L \in \R$ and $q_1, p_1, q_2, p_2 \in \cX^N$, $x \coloneqq (q_1, p_1)^\T, y \coloneqq (q_2, p_2)^\T$.
 	The mean value theorem states that there exists a point $z \coloneqq (q^\ast, p^\ast)$ with $q^\ast,\ p^\ast \in \cX^N$ such that
 	\begin{align}
 		\norm{f\left(t, x\right) - f\left(t, y\right)}_{\cX^{2N}}
@@ -138,7 +138,7 @@ Of course, we can only identify the flow once we have determined the value of $p
 		= \frac{\partial}{\partial q_{i}} \sum_{k=1}^N \Gamma(q_j, q_k) p_j
 		=  \sum_{k=1}^N \left(\frac{\partial}{\partial q_{i}} \Gamma(q_j, q_k)\right) p_j \ .
 	\end{equation}
-	As $q$, $p$ and $\Gamma$ and its first and second order partial derivatives are bounded, this expression is also bounded.
+	As $q$, $p$ and $\Gamma$ and its first (and second) order partial derivatives are bounded, this expression is also bounded.
 	For the second case, we have
 	\begin{align}
 		\frac{\partial}{\partial q_{i}} \left(-\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)\right)_j

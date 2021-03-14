@@ -2,9 +2,9 @@
 \label{sec:mechanical-regression}
 
 In \cref{sec:neural-networks} we have seen that neural networks are a popular and extremely successful way of approximating a solution to the supervised learning problem.
-ResNets in particular enabled the use of very deep architectures.
+ResNets in particular enable the use of very deep architectures.
 In this section, we take a closer look at a simplified model of ResNets and derive their continuous limit as the number of residual blocks tends towards infinity.
-On the way of doing so, we show that the ResNet regression approach can be regarded as a discrete mechanical system following Hamilton's stationary action principle -- thus the term \emph{mechanical regression}.
+On the way, we show that the ResNet regression approach can be regarded as a discrete mechanical system following Hamilton's stationary action principle -- thus the term \emph{mechanical regression}.
 In the limit, this mechanical system converges towards a continuous version of the same principle, which proves to be equivalent to what in image registration is known as geodesic shooting \cite{allassonniere05}.
 
 \citet{owhadi20} compares these results to the problem formulations used in image shape analysis, computational anatomy and image registration.
@@ -31,7 +31,7 @@ for the approximate solution, where
 $\Phi_L$ is the composition of $L$ residual blocks, that is, functions $\phi_k = I + v_k$.
 Here, the $v_k$ are functions mapping the input space $\cX$ onto itself and $I$ is the identity operator.
 Thus, we can regard $\Phi_L$ as a large deformation of $\cX$.
-$f: \cX \to \cY$ is a function mapping the deformed space to the target space $\cY$.
+The function $f: \cX \to \cY$ the deformed space to the target space $\cY$.
 Note that this model is but a simplified model of ResNets.
 In reality, the residual blocks often map the input space to a different space, as is the case in most convolutional networks \cite{he16}.
 
@@ -41,11 +41,11 @@ Thus, it is common in machine learning \cite{goodfellow16} to apply some form of
 One popular approach, which we will also use here, is to apply penalties to the parameters' norms -- which are, in this case, the norms of $v_k$ and $f$.
 
 In order to do that we have to define appropriate normed spaces for the functions $v_k$ and $f$.
-For that, we introduce two RKHSs:
-$\cV$, consisting of functions $\cX \rightarrow \cX$ and $\cH$, consisting of functions $\cX \rightarrow \cY$.
-We restrict the $v_k$ and $f$ to lie in these spaces, respectively.
-By \cref{theo:kernel-for-rkhs} there is a Kernel associated with each RKHS.
-Let $\Gamma$ be the Kernel associated with $\cV$ and $K$ that of $\cH$.
+For that, we introduce two kernels and two RKHSs of functions:
+$\cV \subseteq \{f: \cX \rightarrow \cX\}$ and $\cH \subseteq \{g: \cX \rightarrow \cY\}$.
+By \cref{theo:kernel-for-rkhs} there is a unique association between the kernel and its RKHS.
+Let $\Gamma$ be the kernel associated with $\cV$ and $K$ that of $\cH$.
+We restrict the $v_k$ and $f$ to lie in the spaces $\cV$ and $\cH$, respectively.
 Then we can identify $f$ and the $v_k$ as solutions to the following problem:
 \begin{problem}
 	\label{prob:min-v-f}
@@ -56,20 +56,21 @@ Then we can identify $f$ and the $v_k$ as solutions to the following problem:
 		\text{such that~} & v_1, \ldots, v_L \in \cV, f \in \cH \ .
 	\end{cases}
 \end{problem}
-Here, $\nu$ and $\lambda$ are strictly positive balancing parameters and $l$ a (positive) loss measuring the similarity of the predicted outputs, that is, the image of $X$ under $f \circ \Phi_L$.
+Here, $\nu$ and $\lambda$ are strictly positive balancing parameters and $l$ a non-negative loss measuring the similarity of the predicted outputs, that is, the image of $X$ under $f \circ \Phi_L$.
 Just as intended, $v_k$ and $f$ with large norms are penalized.
 
 Utilizing the ridge regression loss $l_R$ (\cref{eq:ridge-regression-loss}), we can rewrite the above minimization problem as
 \begin{problem}
+	\label{prob:discrete-resnet}
 	\begin{cases}
 		\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
 		+ l_R(\Phi_L(X), Y) \\
 		\text{such that~} & v_1, \ldots, v_L \in \cV\ .
 	\end{cases}
 \end{problem}
-By hiding the regularity of $f$ in the loss we can, for now, focus exclusively on the functions $v_k$.
-For our calculations we will only assume that $l$ is a positive, continuous loss function.
-If desired, we can later balance the $v_k$ with the regularity of $f$ by choosing the loss appropriately.
+By hiding the regularization of $f$ in the loss we can, for now, focus exclusively on the functions $v_k$.
+For our calculations we will only assume that $l$ is a non-negative, continuous loss function.
+If desired, we can later balance the norms of the $v_k$ with the regularity of $f$ by choosing the loss appropriately.
 
 In the calculations, we will work under the following conditions.
 \begin{condition}
@@ -79,12 +80,12 @@ In the calculations, we will work under the following conditions.
 	\begin{enumerate}
 		\item The function $(x_1, x_2) \rightarrow \Gamma(x_1, x_2)$ and its first and second order partial derivatives are continuous and uniformly bounded.
 		\item There exists an $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$.
-		\item $\cX$ and $\cY$ are finite-dimensional.
+		\item $(\cX, \left< \cdot, \cdot \right >_\cX)$ and $(\cY, \left< \cdot, \cdot\right >_\cY)$ are finite-dimensional Hilbert spaces.
 		\item $l: \cY^N \times \cY^N \rightarrow [0, \infty)$ is a positive and continuous loss.
 	\end{enumerate}
 \end{condition}
 Just like in \cref{sec:optimal-recovery}, $\bGamma(X, X)$ is the block operator matrix with entries $\Gamma(X_i, X_j)$.
-We have the following equivalence for \cref{cond:feature-condition} (2).
+From \cref{cond:feature-condition} (2), we get the following implication.
 \begin{lemma}
 	If there exists $r > 0$ such that $\forall Z \in \cX^N:~Z^\T \bGamma(X, X) Z \geq r Z^\T Z$, the block operator matrix $\bGamma(X, X)$ is non-singular.
 \end{lemma}
@@ -118,7 +119,7 @@ For mechanical regression, the equivalent problem is given by
 	\label{prob:geodesic-shooting}
 	\begin{cases}
 		\text{Minimize~}& \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
-		\text{such that~} & p = \bGamma(q, q)^{-1}\dot{q},\ q(0) = X \\
+		\text{such that~} & p(0) \in \cX^N,\ q(0) = X,\ p = \bGamma(q, q)^{-1}\dot{q}\\
 		&\text{and~} (q,p) \text{~follow Hamilton's equations \ref{eq:hamiltonian-system}} \ .
 	\end{cases}
 \end{problem}
@@ -136,15 +137,15 @@ The following theorem states the equivalence between \cref{prob:cont-least-actio
 \begin{proof}
 	Let $q$ minimize \cref{prob:cont-least-action} and define $p = \bGamma(q, q)^{-1}\dot{q}$.
 	Then $q(0) = X$ and by \cref{theo:hamiltonian-dynamic} $(q, p)$ satisfy Hamilton's equations \ref{eq:hamiltonian-system}.
-	We have $\cL(t, q(t), \dot{q}(t)) = \cH(t, q(t), p(t))$ and know from \cref{cor:energy-preservation} that $\cH$ is constant across time, that is for $t_1, t_2 \in [0, 1]$ $\cH(t_1, q(t_1), p(t_1)) = \cH(t_2, q(t_2), p(t_2))$.
+	We have $\fL(t, q(t), \dot{q}(t)) = \fH(t, q(t), p(t))$ and know from \cref{cor:energy-preservation} that $\fH$ is constant across time, that is $\fH(t_1, q(t_1), p(t_1)) = \fH(t_2, q(t_2), p(t_2))$ holds for all $t_1, t_2 \in [0, 1]$ .
 	This implies that
 	\begin{equation}
-	\mathcal{A}(q) = \int_{0}^{1} \cL(t, q(t), \dot{q}(t)) \mathrm{d}t 
-	= \int_{0}^{1} \cH(t, q(t), p(t)) \mathrm{d}t = \cH(t_1, q, p) \ .
+	\mathcal{A}(q) = \int_{0}^{1} \fL(t, q(t), \dot{q}(t)) \mathrm{d}t 
+	= \int_{0}^{1} \fH(t, q(t), p(t)) \mathrm{d}t = \fH(t_1, q, p) \ .
 	\end{equation}
-	Therefore $(q, p)$ minimize $\nu \cH(t_1, q(t_1), p(t_1) + l(q(1), Y)$ and for $t_1 = 0$ we get
+	Therefore $(q, p)$ minimize $\nu \fH(t_1, q(t_1), p(t_1) + l(q(1), Y)$ and for $t_1 = 0$ we get
 	\begin{align}
-	\nu \cH(0, q(0), p(0)) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \bGamma(q(0), q(0))p(0) + l(q(1), Y)\\
+	\nu \fH(0, q(0), p(0)) + l(q(1), Y) &= \frac{\nu}{2} p(0)^\T \bGamma(q(0), q(0))p(0) + l(q(1), Y)\\
 	&= \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y) \ ,
 	\end{align}
 	which is the target function $\fV$ of \cref{prob:geodesic-shooting}.
