@@ -1,0 +1,130 @@
+
+\documentclass[8pt]{beamer}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{pdfpages}
+\usepackage{color}
+\usepackage{graphicx, import}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics} % norm
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usepackage{pgfplots}
+\usepackage{tabularx}
+\usepackage[numbers, square]{natbib}
+\usepackage{mathtools}
+\usepackage{transparent}
+\usepackage{caption} % change style of figure 
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[super]{nth}
+
+\captionsetup*[subfigure]{position=bottom}
+
+
+\usetikzlibrary{positioning, fit, patterns, snakes, chains, arrows, decorations.markings, arrows.meta}
+%\tikzexternalize[prefix=out/figures/]
+\newcolumntype{Y}{>{\centering\arraybackslash}X} % centered equidistant columns
+
+\bibliographystyle{plainnat}
+\usetheme{metropolis}
+\setbeamertemplate{frame footer}{\insertshortauthor\hfill\insertshortinstitute}
+\setbeamercolor{footline}{fg=gray}
+
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\I}{\mathrm{I}}
+
+\newcommand{\fL}{\mathfrak{L}}
+\newcommand{\fH}{\mathfrak{H}}
+\newcommand{\fV}{\mathfrak{V}}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\dK}{\mathbb{K}}
+
+\newcommand{\closure}{\mathrm{\mathbf{cl}}}
+
+\newcommand{\bGamma}{\mathbf{\Gamma}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\T}{\mathrm{T}}
+
+
+\title[]{Mechanical Regression for Supervised Learning}
+\author[Nikolas Klug]{Nikolas Klug}
+\institute[University of Augsburg]{University of Augsburg}
+\date{\nth{25} March 2021}
+
+
+\begin{document}
+	{
+	\setbeamertemplate{footline}{}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	}
+	\addtocounter{framenumber}{-1}
+
+	\begin{frame}{Source}
+		\textbf{Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks}\linebreak
+		\begin{footnotesize}
+			Houman Owhadi.\linebreak
+			arXiv preprint arXiv:2008.03920, 2020.
+		\end{footnotesize}
+	\end{frame}
+
+	\begin{frame}{Residual Neural Networks}
+		Instead of the direct mapping $f: \cX \rightarrow \cX$, learn residual mapping 
+		\begin{gather*}
+			g: \cX \rightarrow \cX\\
+			g(x) \coloneqq f(x) - x \ .
+		\end{gather*}
+		\input{presentation/figure_resnet_block}
+	\end{frame}
+
+	\begin{frame}{Simplified Model of ResNets}
+		content...
+	\end{frame}
+
+	\begin{frame}{Discrete Stationary Action}
+		content...
+	\end{frame}
+	
+	\begin{frame}{Continuous Stationary Action}
+		content...
+	\end{frame}
+
+	\begin{frame}{Hamiltonian Formulation}
+		content...
+	\end{frame}
+
+	\begin{frame}{Geodesic Shooting}
+		content...
+	\end{frame}
+
+	\begin{frame}{Problem and Convergence Overview}
+		\input{presentation/figure_overview}
+	\end{frame}
+
+	\begin{frame}{Algorithm}
+	\end{frame}
+
+	\begin{frame}{Experimental Results}
+	\end{frame}
+
+
+	\begin{frame}
+		\bibliography{bibliography}
+		\bibliographystyle{plainnat}
+	\end{frame}
+\end{document}

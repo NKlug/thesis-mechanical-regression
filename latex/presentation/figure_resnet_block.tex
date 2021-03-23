@@ -1,0 +1,30 @@
+\begin{figure}
+	\centering
+	\scalebox{0.9}{
+	\begin{tikzpicture}
+		[
+		font=\scriptsize,
+		block/.style ={rectangle, draw=black, thick, text width=15em, align=center, minimum height=1.5em}
+		]
+		\node[] (a) [block] {Fully Connected Layer (1024)};
+		\node[below= -1.5\pgflinewidth of a] (a1) [block] {BatchNorm};
+		\node[below= -1.5\pgflinewidth of a1] (b) [block] {ReLU};
+		\node[below= 4mm of b] (c) [block] {Fully Connected Layer (1024)};
+		\node[below= -1.5\pgflinewidth of c] (c1) [block] {BatchNorm};
+		\node[below= -1.5\pgflinewidth of c1] (d) [block] {ReLU};
+		\node[below= 4mm of d] (e) [block] {$\bigoplus$};
+		\node[above=of a] (x) [] {};
+		\draw[->, line width=1pt] (b.south) -- (c.north);
+		\draw[->, line width=1pt] (d.south) -- (e.north);
+		\draw[->, line width=1pt] (x) -- node [pos=0.1, right] {\small $x$} (a);
+		\node[below=of e] (y) [] {};
+		\draw[->, line width=1pt] (e) -- node [midway, right] {\small $f(x)$} (y);
+		\node[above=.4 of a] (z) [] {};
+		\node[right=12em of z] (h) [] {};
+		\draw[line width=1pt] (z.center) -- (h.center);
+		\draw[->, line width=1pt] (h.center) |- node [pos=.26,right] {\small $x$} (e.east);
+		\draw [decorate, decoration={brace, amplitude=10pt}] ([xshift=-0.3cm]d.south west)-- ([xshift=-0.3cm]a.north west) node [black,midway, left, xshift=-10pt]{\small $g(x)$};
+	\end{tikzpicture}
+}
+	\label{fig:residual-block}
+\end{figure}
