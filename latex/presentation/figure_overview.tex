@@ -2,8 +2,8 @@
 	\makebox[\textwidth][c]{
 		\centering
 		\begin{tikzpicture}[font=\scriptsize, align=center, node distance = 6mm and 6mm]
-				\node[draw, above left, align=center, text width=58mm, minimum height=14mm] (a) {
-					ResNet\\
+				\node[draw=blue!80,thick, above left, align=center, text width=58mm, minimum height=14mm] (a) {
+					\textbf{Discrete ResNet}\\
 					$\begin{cases}
 						\text{Min~} & \frac{\nu \cdot L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
 						+ l_R(\Phi_L(X), Y) \\
@@ -11,7 +11,7 @@
 					\end{cases}$};
 				\node[right=of a, align=center,outer sep=-2em] (z1) {$\stackrel{L \rightarrow \infty}{\longrightarrow}$};
 				\node[draw, right= of z1, align=center,text width=55mm, minimum height=14mm] (b) {
-					Limit of ResNet\\
+					\textbf{Countinuous Limit of ResNet}\\
 					$\begin{cases}
 						\text{Min~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
 						+ l(\phi_v(X, 1), Y)\\
@@ -19,8 +19,8 @@
 						&\dot{\Phi}_v(x, t) = \mathbf{\Gamma}(\Phi_v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
 					\end{cases}$};
 				\node[below= of a,outer sep=-2em] (z2) {\large{$\Updownarrow$}};
-				\node[draw, below= of z2, align=center, text width=58mm, minimum height=18mm] (c) {
-					Discrete Least Action\\
+				\node[draw=blue!80, thick, below= of z2, align=center, text width=58mm, minimum height=18mm] (c) {
+					\textbf{Discrete Least Action}\\
 					$\begin{cases}
 						\text{Min~} & \frac{\nu}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t\\
 						&+ l(q_{L+1}, Y) \\
@@ -29,15 +29,15 @@
 					\end{cases}$};
 				\node[below= of b,outer sep=-2em] (z3) {\large{$\Updownarrow$} };
 				\node[right=of c, align=center,outer sep=-2em] (z4) {$\stackrel{L \rightarrow \infty}{\longrightarrow}$};
-				\node[draw, below= of z3, right=of z4, align=center, text width=55mm, minimum height=18mm] (d) {
-					Least Action\\
+				\node[draw=blue!80,thick, below= of z3, right=of z4, align=center, text width=55mm, minimum height=18mm] (d) {
+					\textbf{Continuous Least Action}\\
 					$\begin{cases}
 					\text{Min~} & \frac{\nu}{2} \int_{0}^{1} \dot{q}(t)^\mathrm{T} \mathbf{\Gamma}(q(t), q(t))^{-1}  \dot{q}(t) \mathrm{d}t + l(q(1), Y)\\
 					\text{s.t.~} & q \in C^1([0,1], \cX^N),\ q(0) = X
 					\end{cases}$};
 				\node[below= of d,outer sep=-2em] (z5) {\large{$\Updownarrow$}};
-				\node[draw, below= of z5, align=center, text width=55mm, minimum height=18mm] (e) {
-					Geodesic Shooting\\
+				\node[draw=blue!80,thick, below= of z5, align=center, text width=55mm, minimum height=18mm] (e) {
+					\textbf{Geodesic Shooting}\\
 					$\begin{cases}
 						\text{Min~} & \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
 						\text{s.t.~} & 	p = \bGamma(q, q)^{-1}\dot{q},\ q(0) = X,\ \dot{q} = \bGamma(q, q) p,\\
@@ -45,7 +45,7 @@
 					\end{cases}$};
 				\node[below= of c,outer sep=-2em] (z6) {\large{$\Updownarrow$}};
 				\node[draw, below= of z6, align=center, text width=58mm, minimum height=18mm] (f) {
-					Discrete Geodesic Shooting\\
+					\textbf{Discrete Geodesic Shooting}\\
 					$\begin{cases}
 					\text{Min~} & \frac{\nu}{2} \sum_{k=1}^L p_k^\T \bGamma(q_k, q_k) p_k \Delta t + l(q_{L+1}, Y)\\
 					\text{s.t.~} & p_k = \bGamma(q_k, q_k)^{-1} \frac{q_{k+1} - q_k}{\Delta t},\ q_1 = X \\

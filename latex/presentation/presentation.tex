@@ -11,7 +11,9 @@
 \usepackage{physics} % norm
 \usepackage{tikz}
 \usepackage{tkz-euclide}
+\usepackage{enumitem}
 \usepackage{pgfplots}
+\usepackage{multicol}
 \usepackage{tabularx}
 \usepackage[numbers, square]{natbib}
 \usepackage{mathtools}
@@ -42,6 +44,7 @@
 \newcommand{\cF}{\mathcal{F}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\I}{\mathrm{I}}
+\newcommand{\cl}{\mathcal{l}}
 
 \newcommand{\fL}{\mathfrak{L}}
 \newcommand{\fH}{\mathfrak{H}}
@@ -79,12 +82,22 @@
 		\textbf{Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks}\linebreak
 		\begin{footnotesize}
 			Houman Owhadi.\linebreak
-			arXiv preprint arXiv:2008.03920, 2020.
+			arXiv preprint arXiv:2008.03920, August 2020.
 		\end{footnotesize}
 	\end{frame}
 
+	\begin{frame}{Supervised Learning}
+		\textbf{Supervised Learning Problem}:\\
+		Given data pairs $(X_i, Y_i)$ and $f^\dagger(X_i) = Y_i$ for $1 \leq i \leq N$,
+		approximate $f^\dagger$.
+		\\~\\
+		In our setting:\\
+		$X_i \in \cX$, $Y_i \in \cY$, where $\cX$ and $\cY$ are Hilbert Spaces.\\
+		Shorthand notation: $f^\dagger(X) = Y$.
+	\end{frame}
+
 	\begin{frame}{Residual Neural Networks}
-		Instead of the direct mapping $f: \cX \rightarrow \cX$, learn residual mapping 
+		Instead of the direct mapping $f: \cX \rightarrow \cX$, learn the residual mapping 
 		\begin{gather*}
 			g: \cX \rightarrow \cX\\
 			g(x) \coloneqq f(x) - x \ .
@@ -92,24 +105,152 @@
 		\input{presentation/figure_resnet_block}
 	\end{frame}
 
-	\begin{frame}{Simplified Model of ResNets}
-		content...
+	\begin{frame}[t]{Simplified Model of ResNets}
+		$\cV$: Reproducing Kernel Hilbert Space (RKHS) of functions $v: \cX \rightarrow \cX$\\
+		$\cH$: RKHS of functions $f: \cX \rightarrow \cY$\\
+		$l: \cY \times \cY \rightarrow [0, \infty)$: loss function\\
+		$\nu, \lambda > 0$: balancing parameters\\
+		\vspace{1cm}
+		\textbf{Discrete ResNet:}
+		\begin{equation*}
+			\label{prob:min-v-f}
+			\begin{cases}
+				\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+				+ \lambda \norm{f}_\cH^2 
+				+ l((f \circ \Phi_L)(X), Y) \\
+				\text{such that~} & v_1, \ldots, v_L \in \cV, f \in \cH \ .
+			\end{cases}
+		\end{equation*}
+		
+		\uncover<2->{
+		Or alternatively:
+		\begin{equation*}
+			\label{prob:discrete-resnet}
+			\begin{cases}
+				\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+				+ l_R(\Phi_L(X), Y) \\
+				\text{such that~} & v_1, \ldots, v_L \in \cV\ .
+			\end{cases}
+		\end{equation*}
+		where $l_R(X, Y) \coloneqq \inf_{f \in \mathcal{H}} \lambda \norm{f}_\mathcal{H}^2 + l (f(X), Y)$.
+	}
 	\end{frame}
 
-	\begin{frame}{Discrete Stationary Action}
-		content...
+	\begin{frame}[t]{Discrete Least Action}
+		\textbf{Discrete ResNet:}
+		\begin{equation*}
+			\label{prob:discrete-resnet}
+			\begin{cases}
+				\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+				+ l_R(\Phi_L(X), Y) \\
+				\text{such that~} & v_1, \ldots, v_L \in \cV\ .
+			\end{cases}
+		\end{equation*}
+		Define 
+		\begin{align*}
+			q_1 &\coloneqq X\\
+			q_k &\coloneqq ((I + v_{k-1}) \circ \ldots \circ (I + v_1)) (X) \ .
+		\end{align*}
+		\uncover<2->{
+			Then
+			\begin{equation}
+				q_{k+1} = v_k(q_k) + q_k
+			\end{equation}
+			and $\norm{v_k}_\cV^2$ can be represented as
+			\begin{equation}
+				\norm{v_k}_\cV^2 = (q_{k+1} - q_k)^\mathrm{T} \bGamma(q_k, q_k)^{-1} (q_{k+1} - q_k) \ ,
+			\end{equation}
+			where $\bGamma: \cX \times \cX \rightarrow L(\cX, \cX)$ is the reproducing kernel associated with the RKHS $\cV$.\\
+		}
+		\uncover<3->{
+			\textbf{Discrete Least Action:}
+			\begin{equation*}
+			\label{prob:min-q}
+				\begin{cases}
+					\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
+					\text{such that~} & q_1 = X,\ q_2, \ldots, q_{L+1} \in \cX^N  \text{~and~} \Delta t = \frac{1}{L} \ .
+				\end{cases}
+		\end{equation*}
+		}
 	\end{frame}
 	
-	\begin{frame}{Continuous Stationary Action}
-		content...
+	\begin{frame}{Continuous Least Action}
+				\textbf{Discrete Least Action:}
+		\begin{equation*}
+		\label{prob:min-q}
+		\begin{cases}
+		\text{Minimize~} & \nu \cdot \frac{1}{2} \sum_{k=1}^{L} \left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) \Delta t+ l(q_{L+1}, Y) \\
+		\text{such that~} & q_1 = X,\ q_2, \ldots, q_{L+1} \in \cX^N  \text{~and~} \Delta t = \frac{1}{L} \ .
+		\end{cases}
+		\end{equation*}
+		
+		Idea:
+		\begin{equation*}
+			\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) 
+			\approx \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q}(t)
+		\end{equation*}
+		Define
+		\begin{equation*}
+			\fL(t, q(t), \dot{q}(t)) \coloneqq \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
+		\end{equation*}
+		\uncover<2->{
+		\textbf{Continuous Least Action:}
+		\begin{equation*}
+			\label{prob:cont-least-action}
+			\begin{cases}
+				\text{Minimize~} & \nu \int_{0}^{1} \fL(t, q(t), \dot{q}(t)) \mathrm{d}t + l(q(1), Y)\\
+				\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+			\end{cases}
+		\end{equation*}
+	}
 	\end{frame}
 
 	\begin{frame}{Hamiltonian Formulation}
-		content...
+		Recall the \emph{Lagrangian}:
+		\begin{equation*}
+			\fL(t, q(t), \dot{q}(t)) \coloneqq \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
+		\end{equation*}
+		
+		Define the \emph{canonical momentum} as
+		\begin{equation*}
+			p(t) \coloneqq \grad_{\dot{q}} \fL(t, q, \dot{q}) = \bGamma(q(t), q(t))^{-1} \dot{q}(t)
+		\end{equation*}
+		and the \emph{Hamiltonian} function
+		\begin{align*}
+			\fH(t, q(t), p(t)) &\coloneqq p(t)^T\dot{q}(t) - \fL(t, q(t), \dot{q}(t))\\
+			& = \frac{1}{2} p(t)^\T \Gamma(q(t), q(t)) p(t)\ .
+		\end{align*}
+%		\begin{equation*}
+%				\label{eq:hamiltonian-system}
+%				\begin{split}
+%					\dot{q} &= \grad_p \fH(q, p) = \bGamma(q, q) p\\
+%					\dot{p} &= -\grad_q \fH(q, p)
+%					= -\grad_q \left(\frac{1}{2} p^\mathrm{T} \bGamma(q, q) p\right)
+%				\end{split}
+%		\end{equation*}
 	\end{frame}
 
 	\begin{frame}{Geodesic Shooting}
-		content...
+		\textbf{Continuous Least Action:}
+		\begin{equation*}
+		\label{prob:cont-least-action}
+			\begin{cases}
+			\text{Minimize~} & \nu \int_{0}^{1} \fL(t, q(t), \dot{q}(t)) \mathrm{d}t + l(q(1), Y)\\
+			\text{such that~} & q \in C^1([0,1], \cX^N),\ q(0) = X \ .
+		\end{cases}
+		\end{equation*}
+		We have $\fH(t, q(t), p(t)) = \fL(t, q(t), p(t))$.
+		It can be shown that the Hamiltonian is constant across time.
+		
+		\textbf{Geodesic Shooting:}
+		\begin{equation*}
+			\label{prob:geodesic-shooting}
+			\begin{cases}
+				\text{Minimize~}& \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
+				\text{such that~} & p(0) \in \cX^N,\ q(0) = X,\ p = \bGamma(q, q)^{-1}\dot{q}\\
+				&\text{and~} (q,p) \text{~follow Hamilton's equations} \ .
+			\end{cases}
+		\end{equation*}
 	\end{frame}
 
 	\begin{frame}{Problem and Convergence Overview}
@@ -117,9 +258,41 @@
 	\end{frame}
 
 	\begin{frame}{Algorithm}
+		Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.\\
+		Choose an initial momentum $p_0$.
+		
+		Modified Leapfrog scheme:
+		\begin{align*}
+			p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \grad_q\fH\left(q_n, p_n\right) \\
+			q_{n+1} &\gets q_n + h \grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
+			p_{n+1} &\gets p_{n+\frac{1}{2}} - \frac{h}{2} \grad_q\fH\left(q_{n+1}, p_{n+\frac{1}{2}}\right) \ .
+		\end{align*}
+		
+		Use $q(1)$ and $p(0)$ to compute and minimize
+		\begin{equation*}
+			\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y) \ .
+		\end{equation*}
+		via gradient descent.
+%		\begin{enumerate}[label=\arabic*.]
+%			\item Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.
+%			\item Choose an initial momentum $p_0$.
+%			\item Minimize $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ by iterating the following steps:
+%			\begin{enumerate}[label=3.\arabic*.]
+%				\item Solve the Hamiltonian system  with initial conditions $q(0) = X$, $p(0) = p_0$.
+%				\item Compute $q(1)$ and with that, the gradient of $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ with respect to $p(0)$.
+%				\item Update $p(0)$ through gradient descent.
+%			\end{enumerate}
+%			\item Solve the differential equation with $q(0) = X$ and the optimal momentum $p(0)$ computed above to obtain $\Phi_v(\cdot, 1): \cX \rightarrow \cX$.
+%			\item Compute $f: \cX \rightarrow \cY$ as the minimizer of $l(\Phi_v(X, 1), Y)$ and approximate the target function $f^\dagger$ with $f \circ \Phi_v(\cdot, 1)$.
+%		\end{enumerate}
+	\end{frame}
+
+	\begin{frame}{Swiss Roll Dataset}
+		\input{presentation/figure_dataset}
 	\end{frame}
 
 	\begin{frame}{Experimental Results}
+		\input{presentation/figure_experimental_results}
 	\end{frame}
 
 

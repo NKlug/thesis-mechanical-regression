@@ -1,0 +1,42 @@
+\begin{figure}
+	\makebox[\textwidth][c]{
+		\centering
+		\def\imagescale{0.15}
+		\begin{tikzpicture}[node distance=-0.25cm and -0.45cm, font=\scriptsize]
+			\node [] (b1) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.01_reg_1e-06_step_0.2.pdf}}; 
+			\node [right= of b1] (b2) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.01_reg_1e-06_step_0.4.pdf}};
+			\node [right= of b2] (b3) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.01_reg_1e-06_step_0.6.pdf}};
+			\node [right= of b3] (b4) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.01_reg_1e-06_step_0.8.pdf}};
+			\node [right= of b4] (b5) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.01_reg_1e-06_step_1.0.pdf}};
+			%
+			\node [below= of b1] (c1) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.02_reg_1e-06_step_0.2.pdf}}; 
+			\node [right= of c1] (c2) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.02_reg_1e-06_step_0.4.pdf}};
+			\node [right= of c2] (c3) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.02_reg_1e-06_step_0.6.pdf}};
+			\node [right= of c3] (c4) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.02_reg_1e-06_step_0.8.pdf}};
+			\node [right= of c4] (c5) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.02_reg_1e-06_step_1.0.pdf}};
+			%
+			\node [below= of c1] (d1) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.03_reg_1e-06_step_0.2.pdf}}; 
+			\node [right= of d1] (d2) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.03_reg_1e-06_step_0.4.pdf}};
+			\node [right= of d2] (d3) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.03_reg_1e-06_step_0.6.pdf}};
+			\node [right= of d3] (d4) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.03_reg_1e-06_step_0.8.pdf}};
+			\node [right= of d4] (d5) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.03_reg_1e-06_step_1.0.pdf}};
+			%
+			\node [below= of d1] (e1) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.05_reg_1e-06_step_0.2.pdf}}; 
+			\node [right= of e1] (e2) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.05_reg_1e-06_step_0.4.pdf}};
+			\node [right= of e2] (e3) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.05_reg_1e-06_step_0.6.pdf}};
+			\node [right= of e3] (e4) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.05_reg_1e-06_step_0.8.pdf}};
+			\node [right= of e4] (e5) {\includegraphics[scale=\imagescale]{presentation/results/best_ckpt_2021_01_14_s_5_r_0.1_h_0.2_mu_0.05_reg_1e-06_step_1.0.pdf}};
+			%
+			\node[left= -0.1cm of b1] (b0) {$\mu=0.01$};
+			\node[left= -0.1cm of c1] (c0) {$\mu=0.02$};
+			\node[left= -0.1cm of d1] (d0) {$\mu=0.03$};
+			\node[left= -0.1cm of e1] (e0) {$\mu=0.05$};
+			%
+			\node[above= -0.1cm of b1] (z1) {$t=0.2$};
+			\node[above= -0.1cm of b2] (z2) {$t=0.4$};
+			\node[above= -0.1cm of b3] (z3) {$t=0.6$};
+			\node[above= -0.1cm of b4] (z4) {$t=0.8$};
+			\node[above= -0.1cm of b5] (z5) {$t=1.0$};
+		\end{tikzpicture}
+	}
+\end{figure}
