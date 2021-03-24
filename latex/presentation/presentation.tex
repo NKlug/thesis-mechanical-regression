@@ -189,11 +189,12 @@
 			\left(\frac{q_{k+1} - q_k}{\Delta t}\right)^\mathrm{T} \bGamma(q_k, q_k)^{-1} \left(\frac{q_{k+1} - q_k}{\Delta t}\right) 
 			\approx \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q}(t)
 		\end{equation*}
+		\uncover<2->{	
 		Define
 		\begin{equation*}
 			\fL(t, q(t), \dot{q}(t)) \coloneqq \frac{1}{2} \dot{q}(t)^\T \bGamma(q(t), q(t))^{-1} \dot{q}(t) \ .
 		\end{equation*}
-		\uncover<2->{
+
 		\textbf{Continuous Least Action:}
 		\begin{equation*}
 			\label{prob:cont-least-action}
@@ -293,6 +294,29 @@
 
 	\begin{frame}{Experimental Results}
 		\input{presentation/figure_experimental_results}
+	\end{frame}
+
+	\begin{frame}{Continuous ResNet}
+		
+		\textbf{Discrete ResNet:}
+		\begin{equation*}
+		\label{prob:min-v-f}
+			\begin{cases}
+				\text{Minimize~} & \nu \cdot \frac{L}{2} \sum_{k=1}^{L} \norm{v_k}_\cV^2
+				+ \lambda \norm{f}_\cH^2 
+				+ l((f \circ \Phi_L)(X), Y) \\
+				\text{such that~} & v_1, \ldots, v_L \in \cV, f \in \cH \ .
+			\end{cases}
+		\end{equation*}
+		\textbf{Continuous ResNet}
+		\begin{equation*}
+			\begin{cases}
+				\text{Min~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
+				+ l(\phi_v(X, 1), Y)\\
+				\text{s.t.~}& v \in C([0, 1], \mathcal{V}),\ \Phi_v(x, 0) = x,\\
+				&\dot{\Phi}_v(x, t) = \mathbf{\Gamma}(\Phi_v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
+			\end{cases}
+		\end{equation*}
 	\end{frame}
 
 
