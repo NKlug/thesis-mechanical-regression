@@ -78,7 +78,7 @@
 	}
 	\addtocounter{framenumber}{-1}
 
-	\begin{frame}{Source}
+	\begin{frame}{Primary Source}
 		\textbf{Do Ideas Have Shape? Plato's Theory of Forms as the Continuous Limit of Artificial Neural Networks}\linebreak
 		\begin{footnotesize}
 			Houman Owhadi.\linebreak
@@ -259,10 +259,24 @@
 	\end{frame}
 
 	\begin{frame}{Algorithm}
+		\noindent\fbox{
+			\parbox{\textwidth}{
+		\textbf{Geodesic Shooting:}
+		\begin{equation*}
+		\label{prob:geodesic-shooting}
+		\begin{cases}
+		\text{Minimize~}& \frac{\nu}{2} p(0)^\T \bGamma(X, X)p(0) + l(q(1), Y)\\
+		\text{such that~} & p(0) \in \cX^N,\ q(0) = X,\ p = \bGamma(q, q)^{-1}\dot{q}\\
+		&\text{and~} (q,p) \text{~follow Hamilton's equations} \ .
+		\end{cases}
+		\end{equation*}
+	}}
+		
 		Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.\\
 		Choose an initial momentum $p_0$.
 		
-		Modified Leapfrog scheme:
+		\uncover<2->{
+			Modified Leapfrog scheme:
 		\begin{align*}
 			p_{n+\frac{1}{2}} &\gets p_n - \frac{h}{2} \grad_q\fH\left(q_n, p_n\right) \\
 			q_{n+1} &\gets q_n + h \grad_p\fH\left(q_n, p_{n+\frac{1}{2}}\right)\\
@@ -274,18 +288,7 @@
 			\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y) \ .
 		\end{equation*}
 		via gradient descent.
-%		\begin{enumerate}[label=\arabic*.]
-%			\item Choose a loss function $l$, kernels $\Gamma$ and $K$ and a balancing parameter $\nu$.
-%			\item Choose an initial momentum $p_0$.
-%			\item Minimize $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ by iterating the following steps:
-%			\begin{enumerate}[label=3.\arabic*.]
-%				\item Solve the Hamiltonian system  with initial conditions $q(0) = X$, $p(0) = p_0$.
-%				\item Compute $q(1)$ and with that, the gradient of $\frac{\nu}{2} p(0)^\T \mathbf{\Gamma}(X, X)p(0) + l(q(1), Y)$ with respect to $p(0)$.
-%				\item Update $p(0)$ through gradient descent.
-%			\end{enumerate}
-%			\item Solve the differential equation with $q(0) = X$ and the optimal momentum $p(0)$ computed above to obtain $\Phi_v(\cdot, 1): \cX \rightarrow \cX$.
-%			\item Compute $f: \cX \rightarrow \cY$ as the minimizer of $l(\Phi_v(X, 1), Y)$ and approximate the target function $f^\dagger$ with $f \circ \Phi_v(\cdot, 1)$.
-%		\end{enumerate}
+		}
 	\end{frame}
 
 	\begin{frame}{Swiss Roll Dataset}
@@ -308,20 +311,25 @@
 				\text{such that~} & v_1, \ldots, v_L \in \cV, f \in \cH \ .
 			\end{cases}
 		\end{equation*}
-		\textbf{Continuous ResNet}
+		
+		\textbf{Continuous ResNet:}
 		\begin{equation*}
 			\begin{cases}
-				\text{Min~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
+				\text{Minimize~}& \frac{\nu}{2} \int_{0}^{1} \norm{v}_\mathcal{V}^2 \mathrm{d}t
 				+ l(\phi_v(X, 1), Y)\\
-				\text{s.t.~}& v \in C([0, 1], \mathcal{V}),\ \Phi_v(x, 0) = x,\\
-				&\dot{\Phi}_v(x, t) = \mathbf{\Gamma}(\Phi_v(x, t), q(t)) \bGamma(q(t), q(t))^{-1} \dot{q}(t)
+				\text{such that~}& v \in C([0, 1], \mathcal{V}),\ \Phi_v(x, 0) = x,\\
+				&\dot{\Phi}_v(x, t) = \mathbf{\Gamma}(\Phi_v(x, t), q(t)) p(t)
 			\end{cases}
 		\end{equation*}
 	\end{frame}
 
 
-	\begin{frame}
-		\bibliography{bibliography}
-		\bibliographystyle{plainnat}
-	\end{frame}
+%	\begin{frame}{Further content}
+%%		\bibliography{bibliography}
+%%		\bibliographystyle{plainnat}
+%		\begin{itemize}
+%			\item Existence of minimizers
+%			\item Convergence of discrete problems
+%		\end{itemize}
+%	\end{frame}
 \end{document}
